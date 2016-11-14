@@ -13,10 +13,29 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="资源文件\OpenCV_props">
+      <UniqueIdentifier>{812359b7-ed5e-481e-81c2-f2a96185167d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="资源文件\Image">
+      <UniqueIdentifier>{1b8f60ed-0267-4765-9600-596ef8cf6db6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="opencv.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="opecv2413x86.Debug.props">
+      <Filter>资源文件\OpenCV_props</Filter>
+    </None>
+    <None Include="opecv2413x86.Release.props">
+      <Filter>资源文件\OpenCV_props</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="opencv.jpg">
+      <Filter>资源文件\Image</Filter>
+    </Image>
   </ItemGroup>
 </Project>
