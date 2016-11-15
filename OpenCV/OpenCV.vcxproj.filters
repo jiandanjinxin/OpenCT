@@ -24,6 +24,9 @@
     <ClCompile Include="opencv.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="HoG.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="opecv2413x86.Debug.props">
