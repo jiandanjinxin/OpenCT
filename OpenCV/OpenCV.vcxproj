@@ -80,6 +80,7 @@
   <ItemGroup>
     <ClCompile Include="HoG.cpp" />
     <ClCompile Include="opencv.cpp" />
+    <ClCompile Include="samples.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="opecv2413x86.Debug.props" />

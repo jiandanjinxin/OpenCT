@@ -16,7 +16,8 @@ int main()
 	}
 
 	imshow("imageshow", img);
-	waitKey();
+
+	waitKey(); // Wait for a keystroke in the window
 
 	return 0;
 }
