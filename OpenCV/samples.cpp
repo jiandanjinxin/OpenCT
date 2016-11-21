@@ -24,32 +24,29 @@ int main()
 
 	while (getline(fin, ImgName))
 	{
-		cout << "processing :" << ImgName << endl;                                      // read the neg samples by line.
-		
+		// cout << "processing :" << ImgName << endl;                                   // read the neg samples by line.	
 		ImgName = "D:\\Computer Vision\\INRIAPerson\\" + ImgName;                       // construct the absoluted path of neg files.
 
-		//src = imread(ImgName, 1);//读取图片
+		src = imread(ImgName, 1);                                                       //read image by opencv function imread 3 channels
 
+		// the size of pic should contain a 64 * 128 window at least.
+		if (src.cols >= 64 && src.rows >= 128)
+		{
+			srand(time(NULL)); // set random seed
 
-		////src =cvLoadImage(imagename,1);
-		////cout<<"宽："<<src.cols<<"，高："<<src.rows<<endl;
+			// Random crop 10 which is size of 64 * 128 samples from the picture of neg samples.
+			for (int i = 0; i < 1; i++)
+			{
+				int x = (rand() % (src.cols - 64));    // x coordinate in top left corner.
+				int y = (rand() % (src.rows - 128));   // y coordinate in top left corner.
+				cout << x << ", " << y << ", " << src.cols - 64 << ", " << src.rows - 128 << endl;
 
-		////图片大小应该能能至少包含一个64*128的窗口
-		//if (src.cols >= 64 && src.rows >= 128)
-		//{
-		//	srand(time(NULL));//设置随机数种子
-
-		//	//从每张图片中随机裁剪10个64*128大小的不包含人的负样本
-		//	for (int i = 0; i<10; i++)
-		//	{
-		//		int x = (rand() % (src.cols - 64)); //左上角x坐标
-		//		int y = (rand() % (src.rows - 128)); //左上角y坐标
-		//		//cout<<x<<","<<y<<endl;
-		//		Mat imgROI = src(Rect(x, y, 64, 128));
-		//		sprintf(saveName, "E:\\运动目标检测\\INRIAPerson\\negphoto\\noperson%06d.jpg", ++CropImageCount);//生成裁剪出的负样本图片的文件名
-		//		imwrite(saveName, imgROI);//保存文件
-		//	}
-		//}
+				Mat imgROI = src(Rect(x, y, 64, 128)); // region of interest being cropped.
+				// generate filename of cropped picture.
+				sprintf(saveName, "D:\\Computer Vision\\INRIAPerson\\Train\\negcrop\\noperson%06d.jpg", ++CropImageCount);
+				imwrite(saveName, imgROI);             // save file
+			}
+		}
 	}
 
 	system("pause");
