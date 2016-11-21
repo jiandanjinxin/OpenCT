@@ -83,6 +83,7 @@
     <ClCompile Include="samples.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\README.md" />
     <None Include="opecv2413x86.Debug.props" />
     <None Include="opecv2413x86.Release.props" />
   </ItemGroup>
