@@ -1,3 +1,15 @@
+/***
+*
+*   opencv.cpp - test opencv lib
+*
+*   Purpose:
+*
+*       This file test your opencv lib is successful linked or not.
+*       If it works, you will be observe a picture.
+*
+****/
+
+/*
 #include <opencv2\opencv.hpp>  
 #include <iostream>  
 #include <string>
@@ -21,3 +33,4 @@ int main()
 
 	return 0;
 }
+*/
