@@ -35,7 +35,7 @@ int main()
 			srand(time(NULL)); // set random seed
 
 			// Random crop 10 which is size of 64 * 128 samples from the picture of neg samples.
-			for (int i = 0; i < 1; i++)
+			for (int i = 0; i < 10; i++)
 			{
 				int x = (rand() % (src.cols - 64));    // x coordinate in top left corner.
 				int y = (rand() % (src.rows - 128));   // y coordinate in top left corner.
