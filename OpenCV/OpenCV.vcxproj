@@ -81,6 +81,7 @@
     <ClCompile Include="HoG.cpp" />
     <ClCompile Include="opencv.cpp" />
     <ClCompile Include="samples.cpp" />
+    <ClCompile Include="util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />

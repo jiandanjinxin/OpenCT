@@ -11,16 +11,16 @@
 using namespace std;
 using namespace cv;
 
-int CropImageCount = 0;                        // the amount of the croped of neg samples. 
+// int CropImageCount = 0;                        // the amount of the croped of neg samples. 
 
-int main()
+void HandleNegativeSamples()
 {
 	Mat src;
 	string ImgName;
 
 	char saveName[256];                                                                 // file name of the croped neg samples pic.
 	ifstream fin("D:\\Computer Vision\\INRIAPerson\\Train\\neg.lst");                   // open neg list, it already included by the dataset.
-
+	int CropImageCount = 0;                                                             // the amount of the croped of neg samples. 
 
 	while (getline(fin, ImgName))
 	{
@@ -48,6 +48,4 @@ int main()
 			}
 		}
 	}
-
-	system("pause");
 }
