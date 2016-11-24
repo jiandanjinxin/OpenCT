@@ -10,28 +10,22 @@
 ****/
 
 
-#include <opencv2\opencv.hpp>  
-#include <iostream>  
-#include <string>
-
-using namespace cv;
-using namespace std;
+#include "HOpencv_Test.h"
 
 int main()
 {
-	//Mat img = imread("opencv.jpg");
+	
+	/*
+	// Test OpenCV
+	OpenCVTest openCVTest;
+	openCVTest.SetImage("opencv.jpg");
+	openCVTest.ShowImage();
 
-	//if (img.empty())
-	//{
-	//	cout << "cannot found the picture in current directory.";
-	//	return 0;
-	//}
+	waitKey();
+	*/
 
-	//imshow("imageshow", img);
-
-	//waitKey(); // Wait for a keystroke in the window
-
-	//HandleNegativeSamples();
 
 	return 0;
 }
+
+
