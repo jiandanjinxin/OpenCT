@@ -10,7 +10,8 @@
 ****/
 
 
-#include "HOpencv_Test.h"
+#include "HTest.h"
+#include "HNegativeSample.h"
 
 int main()
 {
@@ -23,6 +24,12 @@ int main()
 
 	waitKey();
 	*/
+
+	// Negative Samples generation
+	NegativeSample negativeSample = NegativeSample("D:\\Computer Vision\\INRIAPerson\\Train\\neg.lst");
+	negativeSample.HandleNegativeSamples();
+
+
 
 
 	return 0;

@@ -21,19 +21,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="opencv.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="HoG.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="samples.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="util.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="COpencv_Test.cpp">
+    <ClCompile Include="CMain.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CTest.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CNagetiveSample.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -54,7 +54,10 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="HOpencv_Test.h">
+    <ClInclude Include="HTest.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="HNegativeSample.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

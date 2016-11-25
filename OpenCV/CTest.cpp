@@ -1,4 +1,4 @@
-#include "HOpencv_Test.h"
+#include "HTest.h"
 
 void OpenCVTest::SetImage(string filename)
 {

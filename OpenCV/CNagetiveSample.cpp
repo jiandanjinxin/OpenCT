@@ -1,26 +1,17 @@
-#include <iostream>
-#include <fstream>
-#include <stdlib.h>                           //srand() and rand() function
-#include <time.h>                             //time() function
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/objdetect/objdetect.hpp>
-#include <opencv2/ml/ml.hpp>
+#include "HNegativeSample.h"
 
-using namespace std;
-using namespace cv;
+NegativeSample::NegativeSample(string file)
+{
+	filelist = file;
+}
 
-// int CropImageCount = 0;                        // the amount of the croped of neg samples. 
-
-void HandleNegativeSamples()
+void NegativeSample::HandleNegativeSamples()
 {
 	Mat src;
 	string ImgName;
 
 	char saveName[256];                                                                 // file name of the croped neg samples pic.
-	ifstream fin("D:\\Computer Vision\\INRIAPerson\\Train\\neg.lst");                   // open neg list, it already included by the dataset.
-	int CropImageCount = 0;                                                             // the amount of the croped of neg samples. 
+	ifstream fin("D:\\Computer Vision\\INRIAPerson\\Train\\neg.lst");                   // open neg list, it already included by the dataset. 
 
 	while (getline(fin, ImgName))
 	{
@@ -39,7 +30,7 @@ void HandleNegativeSamples()
 			{
 				int x = (rand() % (src.cols - 64));    // x coordinate in top left corner.
 				int y = (rand() % (src.rows - 128));   // y coordinate in top left corner.
-				cout << x << ", " << y << ", " << src.cols - 64 << ", " << src.rows - 128 << endl;
+				// cout << x << ", " << y << ", " << src.cols - 64 << ", " << src.rows - 128 << endl;
 
 				Mat imgROI = src(Rect(x, y, 64, 128)); // region of interest being cropped.
 				// generate filename of cropped picture.
