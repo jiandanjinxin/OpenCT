@@ -15,6 +15,8 @@
 using namespace cv;
 using namespace std;
 
+
+// 行人检测负样本生成类
 class NegativeSample
 {
 public:

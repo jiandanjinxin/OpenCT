@@ -5,6 +5,7 @@
 
 using namespace cv;
 
+// 测试类，后期删去
 class OpenCVTest
 {
 public:

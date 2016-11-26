@@ -79,10 +79,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CTest.cpp" />
-    <ClCompile Include="HoG.cpp" />
+    <ClCompile Include="CHoG.cpp" />
     <ClCompile Include="CMain.cpp" />
     <ClCompile Include="CNagetiveSample.cpp" />
-    <ClCompile Include="util.cpp" />
+    <ClCompile Include="CUtil.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />
@@ -95,6 +95,7 @@
   <ItemGroup>
     <ClInclude Include="HNegativeSample.h" />
     <ClInclude Include="HTest.h" />
+    <ClInclude Include="HUtil.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

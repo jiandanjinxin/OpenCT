@@ -21,12 +21,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="HoG.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="util.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="CMain.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -34,6 +28,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="CNagetiveSample.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CHoG.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CUtil.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -58,6 +58,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="HNegativeSample.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="HUtil.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
