@@ -23,7 +23,7 @@ void NegativeSample::HandleNegativeSamples()
 		// the size of pic should contain a 64 * 128 window at least.
 		if (src.cols >= 64 && src.rows >= 128)
 		{
-			srand(time(NULL)); // set random seed
+			srand( (unsigned)time(NULL) ); // set random seed
 
 			// Random crop 10 which is size of 64 * 128 samples from the picture of neg samples.
 			for (int i = 0; i < 10; i++)
@@ -34,7 +34,7 @@ void NegativeSample::HandleNegativeSamples()
 
 				Mat imgROI = src(Rect(x, y, 64, 128)); // region of interest being cropped.
 				// generate filename of cropped picture.
-				sprintf(saveName, "D:\\Computer Vision\\INRIAPerson\\Train\\negcrop\\noperson%06d.jpg", ++CropImageCount);
+				sprintf_s(saveName, "D:\\Computer Vision\\INRIAPerson\\Train\\negcrop\\noperson%06d.jpg", ++CropImageCount);
 				imwrite(saveName, imgROI);             // save file
 			}
 		}

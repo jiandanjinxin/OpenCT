@@ -70,8 +70,8 @@ bool CBrowseDir::BrowseDir(const char *dir, const char *filespec)
 			if (!(fileinfo.attrib & _A_SUBDIR))
 			{
 				char filename[_MAX_PATH];
-				strcpy(filename, dir);
-				strcat(filename, fileinfo.name);
+				strcpy_s(filename, dir);
+				strcat_s(filename, fileinfo.name);
 				cout << filename << endl;
 				if (!ProcessFile(filename))
 					return false;
@@ -99,9 +99,9 @@ bool CBrowseDir::BrowseDir(const char *dir, const char *filespec)
 					strcmp(fileinfo.name, "..") != 0)
 				{
 					char subdir[_MAX_PATH];
-					strcpy(subdir, dir);
-					strcat(subdir, fileinfo.name);
-					strcat(subdir, "\\");
+					strcpy_s(subdir, dir);
+					strcat_s(subdir, fileinfo.name);
+					strcat_s(subdir, "\\");
 					ProcessDir(subdir, dir);
 					if (!BrowseDir(subdir, filespec))
 						return false;
@@ -132,8 +132,8 @@ vector<string> CBrowseDir::GetDirFilenames(const char *dir, const char *filespec
 			if (!(fileinfo.attrib & _A_SUBDIR))
 			{
 				char filename[_MAX_PATH];
-				strcpy(filename, dir);
-				strcat(filename, fileinfo.name);
+				strcpy_s(filename, dir);
+				strcat_s(filename, fileinfo.name);
 				filename_vector.push_back(filename);
 			}
 		} while (_findnext(hFile, &fileinfo) == 0);
@@ -159,9 +159,9 @@ vector<string> CBrowseDir::GetDirFilenames(const char *dir, const char *filespec
 					strcmp(fileinfo.name, "..") != 0)
 				{
 					char subdir[_MAX_PATH];
-					strcpy(subdir, dir);
-					strcat(subdir, fileinfo.name);
-					strcat(subdir, "\\");
+					strcpy_s(subdir, dir);
+					strcat_s(subdir, fileinfo.name);
+					strcat_s(subdir, "\\");
 					ProcessDir(subdir, dir);
 					vector<string> tmp = GetDirFilenames(subdir, filespec);
 					for (vector<string>::iterator it = tmp.begin(); it < tmp.end(); it++)

@@ -31,12 +31,13 @@ int main()
 	negativeSample.HandleNegativeSamples();
 	*/
 
-
+	/*
 	//构造类对象  
 	CStatDir statdir;
 
-	char buf[256] = "D:\\Computer Vision\\INRIAPerson\\96X160H96";
-
+	char buf[256] = "D:\\Computer Vision\\INRIAPerson\\Train\\negcrop";
+	char posfilename[] = "D:\\Computer Vision\\INRIAPerson\\96X160H96\\Train\\neg.lst";
+	ofstream fout(posfilename);
 	//设置要遍历的目录  
 	if (!statdir.SetInitDir(buf))
 	{
@@ -47,11 +48,14 @@ int main()
 	//开始遍历  
 	vector<string> file_vec = statdir.BeginBrowseFilenames("*.*");
 	for (vector<string>::const_iterator it = file_vec.begin(); it < file_vec.end(); ++it)
-		std::cout << *it << std::endl;
+		fout << *it << endl;
 
-	printf("文件总数: %d\n", file_vec.size());
+	// printf("文件总数: %d\n", file_vec.size());
 
 	waitKey();
+	*/
+
+
 
 	return 0;
 }
