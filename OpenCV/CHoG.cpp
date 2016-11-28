@@ -114,7 +114,48 @@ int main()
 		{
 
 		}
+
+		/*
+		// 输出样本的HOG特征向量矩阵到文件
+		ofstream fout("SampleFeatureMat.txt");
+
+		for (int i = 0; i < PosSamNO + NegSamNO; i++)
+		{
+			fout << i << endl;
+			for (int j = 0; i < DescriptorDim; j++)
+			{
+				fout << sampleFeatureMat.at<float>(i, j) << " ";
+			}
+			fout << endl;
+		}
+		*/
+
+		// 训练SVM分类器
+		// 迭代终止条件，当迭代满1000次或误差小于FLT_EPSILON时停止迭代
+		CvTermCriteria criteria = cvTermCriteria(CV_TERMCRIT_ITER + CV_TERMCRIT_EPS, 1000, FLT_EPSILON);
+		// SVM参数：SVM类型为C_SVC；线性核函数；松弛因子C=0.01
+		CvSVMParams param(CvSVM::C_SVC, CvSVM::LINEAR, 0, 1, 0, 0.01, 0, 0, 0, criteria);
+
+		cout << "开始训练SVM分类器" << endl;
+		svm.train(sampleFeatureMat, sampleLabelMat, Mat(), Mat(), param); // 训练分类器
+		cout << "训练完成" << endl;
+		svm.save("SVM_HOG.xml");  // 将训练好的SVM模型保存为xml文件
 	}
+	else // 若TRAIN为false，从XML文件读取训练好的分类器
+	{
+		// 从XML文件读取训练好的SVM模型
+		svm.load("SVM_HOG.xml");
+	}
+
+	/*************************************************************************************************
+	线性SVM训练完成后得到的XML文件里面，有一个数组，叫做support vector，还有一个数组，叫做alpha,有一个浮点数，叫做rho;
+	将alpha矩阵同support vector相乘，注意，alpha*supportVector,将得到一个列向量。之后，再该列向量的最后添加一个元素rho
+	如此，变得到了一个分类器，利用该分类器，直接替换opencv中行人检测默认的那个分类器（cv::HOGDescriptor::setSVMDetector()），
+	就可以利用你的训练样本训练出来的分类器进行行人检测了。
+	***************************************************************************************************/
+	
+	DescriptorDim = svm.get_var_count(); // 特征向量的维数，即HOG描述子的维数
+	int supportVectorNum = svm.get_support_vector_count(); // 支持向量的个数
 
 	system("pause");
 }
