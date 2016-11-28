@@ -156,6 +156,27 @@ int main()
 	
 	DescriptorDim = svm.get_var_count(); // 特征向量的维数，即HOG描述子的维数
 	int supportVectorNum = svm.get_support_vector_count(); // 支持向量的个数
+	cout << "支持向量个数：" << supportVectorNum << endl;
+
+	Mat alphaMat = Mat::zeros(1, supportVectorNum, CV_32FC1); // alpha向量，长度等于支持向量个数
+	Mat supportVectorMat = Mat::zeros(supportVectorNum, DescriptorDim, CV_32FC1); // 支持向量矩阵
+	Mat resultMat = Mat::zeros(1, DescriptorDim, CV_32FC1); // alpha向量乘以支持向量矩阵的结果
+
+	// 将支持向量的数据复制到supportVectorMat矩阵中
+	for (int i = 0; i < supportVectorNum; i++)
+	{
+		const float *pSVData = svm.get_support_vector(i); // 返回第i个支持向量的数据指针
+		for (int j = 0; j < DescriptorDim; j++)
+		{
+			supportVectorMat.at<float>(i, j) = pSVData[j];
+		}
+	}
+	// 将alpha向量的数据复制到alphaMat中
+	double *pAlphaData = svm.get_alpha_vector(); // 返回SVM的决策函数中的alpha向量
+	for (int i = 0; i < supportVectorNum; i++)
+	{
+		alphaMat.at<float>(0, i) = pAlphaData[i];
+	}
 
 	system("pause");
 }
