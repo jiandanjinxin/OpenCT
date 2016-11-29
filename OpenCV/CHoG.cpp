@@ -31,9 +31,9 @@ public:
 	}
 
 	// get rho parameter in SVM decision function, which is offset.
-	double get_rho()
+	float get_rho()
 	{
-		return this->decision_func->rho;
+		return (float)this->decision_func->rho;
 	}
 };
 
@@ -175,8 +175,89 @@ int main()
 	double *pAlphaData = svm.get_alpha_vector(); // 返回SVM的决策函数中的alpha向量
 	for (int i = 0; i < supportVectorNum; i++)
 	{
-		alphaMat.at<float>(0, i) = pAlphaData[i];
+		alphaMat.at<float>(0, i) = (float)pAlphaData[i];
 	}
+	// 计算-(alphaMat * supportVectorMat),结果放到resultMat中
+	resultMat = -1 * alphaMat * supportVectorMat;
+
+	// 得到最终的setSVMDetector(const vector<float>& detector)参数中可用的检测子
+	vector<float> myDetector;
+	// 将resultMat中的数据复制到数组myDetector中
+	for (int i = 0; i < DescriptorDim; i++)
+	{
+		myDetector.push_back(resultMat.at<float>(0, i));
+	}
+
+	// 最后添加偏移量rho，得到检测子
+	myDetector.push_back(svm.get_rho());
+
+	cout << "检测子维数：" << myDetector.size() << endl;
+
+	// 设置HOGDescriptor的检测子
+	HOGDescriptor myHOG;
+	myHOG.setSVMDetector(myDetector);
+	// myHOG.setSVMDetector(HOGDescriptor::getDefaultPeopleDetector());
+
+	// 保存检测子参数到文件
+	ofstream fout("HOGDetectorForOpenCV.txt");
+	for (unsigned int i = 0; i < myDetector.size(); i++)
+	{
+		fout << myDetector[i] << endl;
+	}
+
+	/**************读入图片进行HOG行人检测******************/
+	Mat src = imread("00000.png");
+
+	vector<Rect> found, found_filtered; // 矩形框数组
+	cout << "进行多尺度HOG人体检测" << endl;
+	// src为输入待检测的图片；found为检测到目标区域列表；参数3为程序内部计算为行人目标的阈值，也就是检测到的特征到SVM分类超平面的距离;
+	// 参数4为滑动窗口每次移动的距离。它必须是块移动的整数倍；参数5为图像扩充的大小；参数6为比例系数，即测试图片每次尺寸缩放增加的比例；
+	// 参数7为组阈值，即校正系数，当一个目标被多个窗口检测出来时，该参数此时就起了调节作用，为0时表示不起调节作用。
+	myHOG.detectMultiScale(src, found, 0, Size(8, 8), Size(32, 32), 1.05, 2); // 对图片进行多尺度行人检测
+	cout << "找到的矩形框个数：" << found.size() << endl;
+
+	// 找出所有没有嵌套的矩形框r,并放入found_filtered中,如果有嵌套的话,则取外面最大的那个矩形框放入found_filtered中
+	for (unsigned int i = 0; i < found.size(); i++)
+	{
+		Rect r = found[i];
+		unsigned int j = 0;
+		for (; j < found.size(); j++)
+		if (j != i && (r & found[j]) == r)
+			break;
+		if (j == found.size())
+			found_filtered.push_back(r);
+	}
+
+	// 画矩形框，因为hog检测出的矩形框比实际人体框要稍微大些,所以这里需要做一些调整
+	for (unsigned int i = 0; i < found_filtered.size(); i++)
+	{
+		Rect r = found_filtered[i];
+		r.x += cvRound(r.width * 0.1);
+		r.width = cvRound(r.width * 0.8);
+		r.y += cvRound(r.height * 0.07);
+		r.height = cvRound(r.height * 0.8);
+		rectangle(src, r.tl(), r.br(), Scalar(0, 255, 0), 3);
+	}
+
+	imwrite("ImgProcessed.jpg", src);
+	namedWindow("src", 0);
+	imshow("src", src);
+	waitKey();    //注意：imshow之后必须加waitKey，否则无法显示图像
+
+	/******************读入单个64*128的测试图并对其HOG描述子进行分类*********************/
+	////读取测试图片(64*128大小)，并计算其HOG描述子
+	//Mat testImg = imread("person014142.jpg");
+	//Mat testImg = imread("noperson000026.jpg");
+	//vector<float> descriptor;
+	//hog.compute(testImg,descriptor,Size(8,8));//计算HOG描述子，检测窗口移动步长(8,8)
+	//Mat testFeatureMat = Mat::zeros(1,3780,CV_32FC1);//测试样本的特征向量矩阵
+	//将计算好的HOG描述子复制到testFeatureMat矩阵中
+	//for(int i=0; i<descriptor.size(); i++)
+	//	testFeatureMat.at<float>(0,i) = descriptor[i];
+
+	//用训练好的SVM分类器对测试图片的特征向量进行分类
+	//int result = svm.predict(testFeatureMat);//返回类标
+	//cout<<"分类结果："<<result<<endl;
 
 	system("pause");
 }
