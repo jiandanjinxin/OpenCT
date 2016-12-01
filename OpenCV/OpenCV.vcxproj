@@ -36,6 +36,7 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="opecv2413x86.Debug.props" />
     <Import Project="CxImage.Debug.props" />
+    <Import Project="DCMTK.Debug.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -79,6 +80,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="C:\Users\Administrator\Downloads\TDcmFileFormat.cpp" />
     <ClCompile Include="CTest.cpp" />
     <ClCompile Include="CHoG.cpp" />
     <ClCompile Include="CMain.cpp" />
@@ -94,6 +96,7 @@
     <Image Include="opencv.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="C:\Users\Administrator\Downloads\TDcmFileFormat.h" />
     <ClInclude Include="HNegativeSample.h" />
     <ClInclude Include="HTest.h" />
     <ClInclude Include="HUtil.h" />

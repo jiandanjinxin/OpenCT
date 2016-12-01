@@ -13,7 +13,20 @@
 #include "HTest.h"
 #include "HNegativeSample.h"
 #include "HUtil.h"
+
 #include "ximage.h"
+
+#include "dcmtk/config/osconfig.h"  
+#include "dcmtk/dcmdata/dctk.h"  
+#include "dcmtk/dcmdata/dcpxitem.h"  
+#include "dcmtk/dcmjpeg/djdecode.h"  
+#include "dcmtk/dcmjpeg/djencode.h"  
+#include "dcmtk/dcmjpeg/djcodece.h"  
+#include "dcmtk/dcmjpeg/djrplol.h"  
+
+#include "TDcmFileFormat.h"
+
+using namespace THU_STD_NAMESPACE;
 
 int main()
 {
@@ -78,6 +91,9 @@ int main()
 	}
 	
 	*/
+	TDcmFileFormat dcm = TDcmFileFormat("000001.dcm");
+	dcm.saveToBmp("000001.bmp");
+
 	
 
 	return 0;

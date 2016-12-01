@@ -36,6 +36,9 @@
     <ClCompile Include="CUtil.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="C:\Users\Administrator\Downloads\TDcmFileFormat.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="opecv2413x86.Debug.props">
@@ -61,6 +64,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="HUtil.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Administrator\Downloads\TDcmFileFormat.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
