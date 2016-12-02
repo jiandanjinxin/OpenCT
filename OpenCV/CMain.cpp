@@ -13,6 +13,8 @@
 #include "HTest.h"
 #include "HNegativeSample.h"
 #include "HUtil.h"
+#include "HDcmFileFormat.h"
+#include "HThresholdBMP.h"
 
 #include "ximage.h"
 
@@ -20,11 +22,16 @@
 #include "dcmtk/dcmdata/dctk.h"  
 #include "dcmtk/dcmdata/dcpxitem.h"  
 #include "dcmtk/dcmjpeg/djdecode.h"  
-#include "dcmtk/dcmjpeg/djencode.h"  
+#include "dcmtk/dcmjpeg/djencode.h" 
 #include "dcmtk/dcmjpeg/djcodece.h"  
 #include "dcmtk/dcmjpeg/djrplol.h"  
 
-#include "TDcmFileFormat.h"
+
+#include "dcmtk/config/osconfig.h"
+#include "dcmtk/dcmdata/dctk.h"
+#include "dcmtk/dcmimgle/dcmimage.h"
+#include "dcmtk/dcmjpeg/djdecode.h"
+#include "dcmtk/dcmdata/dcvrfd.h"
 
 using namespace THU_STD_NAMESPACE;
 
@@ -92,9 +99,15 @@ int main()
 	
 	*/
 	TDcmFileFormat dcm = TDcmFileFormat("000001.dcm");
+	dcm.setWindow(715, 3478);
 	dcm.saveToBmp("000001.bmp");
+	//BMPFileFormat bmpfile = BMPFileFormat("000001.bmp");
+	//bmpfile.ThresholdToDCM();
 
+	//DicomImage image("000001.dcm");
 	
+
+	system("pause");
 
 	return 0;
 }

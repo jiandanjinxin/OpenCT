@@ -80,11 +80,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="C:\Users\Administrator\Downloads\TDcmFileFormat.cpp" />
+    <ClCompile Include="CDcmFileFormat.cpp" />
     <ClCompile Include="CTest.cpp" />
     <ClCompile Include="CHoG.cpp" />
     <ClCompile Include="CMain.cpp" />
     <ClCompile Include="CNagetiveSample.cpp" />
+    <ClCompile Include="CThresholdBMP.cpp" />
     <ClCompile Include="CUtil.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -96,9 +97,10 @@
     <Image Include="opencv.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="C:\Users\Administrator\Downloads\TDcmFileFormat.h" />
+    <ClInclude Include="HDcmFileFormat.h" />
     <ClInclude Include="HNegativeSample.h" />
     <ClInclude Include="HTest.h" />
+    <ClInclude Include="HThresholdBMP.h" />
     <ClInclude Include="HUtil.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

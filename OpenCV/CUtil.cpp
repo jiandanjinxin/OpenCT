@@ -1,10 +1,5 @@
 #include "HUtil.h"
 
-void Util::TraversePos(string filename)
-{
-
-}
-
 // È±Ê¡¹¹ÔìÆ÷
 CBrowseDir::CBrowseDir()
 {

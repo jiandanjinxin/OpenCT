@@ -11,16 +11,6 @@
 
 using namespace std;
 
-// 具体功能实现方法工具类
-class Util
-{
-public:
-	void TraversePos(string filename);
-private:
-
-};
-
-
 // 文件夹下文件遍历工具类
 class CBrowseDir
 {
