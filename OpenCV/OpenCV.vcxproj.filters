@@ -24,9 +24,6 @@
     <ClCompile Include="CMain.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CTest.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="CNagetiveSample.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -39,7 +36,7 @@
     <ClCompile Include="CDcmFileFormat.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CThresholdBMP.cpp">
+    <ClCompile Include="CDisplayBMP.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -60,19 +57,16 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="HTest.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="HNegativeSample.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="HUtil.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="HThresholdBMP.h">
+    <ClInclude Include="HDcmFileFormat.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="HDcmFileFormat.h">
+    <ClInclude Include="HDisplayBMP.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,5 +1,5 @@
-#ifndef __OPENCV_THRESHOLD_H  
-#define __OPENCV_THRESHOLD_H
+#ifndef __OPENCV_DISPLAY_H  
+#define __OPENCV_DISPLAY_H
 
 #include <iostream>
 #include <fstream>

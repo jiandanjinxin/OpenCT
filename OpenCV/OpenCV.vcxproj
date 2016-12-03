@@ -81,11 +81,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CDcmFileFormat.cpp" />
-    <ClCompile Include="CTest.cpp" />
     <ClCompile Include="CHoG.cpp" />
     <ClCompile Include="CMain.cpp" />
     <ClCompile Include="CNagetiveSample.cpp" />
-    <ClCompile Include="CThresholdBMP.cpp" />
+    <ClCompile Include="CDisplayBMP.cpp" />
     <ClCompile Include="CUtil.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -99,8 +98,7 @@
   <ItemGroup>
     <ClInclude Include="HDcmFileFormat.h" />
     <ClInclude Include="HNegativeSample.h" />
-    <ClInclude Include="HTest.h" />
-    <ClInclude Include="HThresholdBMP.h" />
+    <ClInclude Include="HDisplayBMP.h" />
     <ClInclude Include="HUtil.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

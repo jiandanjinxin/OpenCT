@@ -10,11 +10,10 @@
 ****/
 
 
-#include "HTest.h"
 #include "HNegativeSample.h"
 #include "HUtil.h"
 #include "HDcmFileFormat.h"
-#include "HThresholdBMP.h"
+#include "HDisplayBMP.h"
 
 #include "ximage.h"
 
@@ -98,16 +97,18 @@ int main()
 	}
 	
 	*/
-	TDcmFileFormat dcm = TDcmFileFormat("000001.dcm");
-	dcm.setWindow(715, 3478);
-	dcm.saveToBmp("000001.bmp");
-	//BMPFileFormat bmpfile = BMPFileFormat("000001.bmp");
-	//bmpfile.ThresholdToDCM();
+
+	//TDcmFileFormat dcm = TDcmFileFormat("000001.dcm");
+	//dcm.setWindow(715, 3478);
+	//dcm.saveToBmp("000001.bmp");
+
+	BMPFileFormat bmpfile = BMPFileFormat("000001.bmp");
+	bmpfile.ThresholdToDCM();
 
 	//DicomImage image("000001.dcm");
 	
 
-	system("pause");
+
 
 	return 0;
 }

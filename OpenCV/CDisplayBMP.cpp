@@ -1,4 +1,4 @@
-#include "HThresholdBMP.h"
+#include "HDisplayBMP.h"
 
 BMPFileFormat::BMPFileFormat()
 {
@@ -12,7 +12,7 @@ BMPFileFormat::BMPFileFormat(const char *BMPFileName)
 
 void BMPFileFormat::ThresholdToDCM()
 {
-	for (int i = 0; i < image.rows; i++)
+	for (int i = 0; i < 1; i++)
 	{
 		for (int j = 0; j < image.cols; j++)
 		{
