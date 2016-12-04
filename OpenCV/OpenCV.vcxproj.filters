@@ -50,11 +50,12 @@
     <None Include="..\README.md">
       <Filter>资源文件\OpenCV_props</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="opencv.jpg">
-      <Filter>资源文件\Image</Filter>
-    </Image>
+    <None Include="CxImage.Debug.props">
+      <Filter>资源文件\OpenCV_props</Filter>
+    </None>
+    <None Include="DCMTK.Debug.props">
+      <Filter>资源文件\OpenCV_props</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HNegativeSample.h">
@@ -67,6 +68,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="HDisplayBMP.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="HCroppedSample.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

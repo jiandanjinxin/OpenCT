@@ -105,10 +105,7 @@ int main()
 	BMPFileFormat bmpfile = BMPFileFormat("000001.bmp");
 	bmpfile.ThresholdToDCM();
 
-	//DicomImage image("000001.dcm");
 	
-
-
 
 	return 0;
 }

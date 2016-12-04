@@ -89,13 +89,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />
+    <None Include="CxImage.Debug.props" />
+    <None Include="DCMTK.Debug.props" />
     <None Include="opecv2413x86.Debug.props" />
     <None Include="opecv2413x86.Release.props" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="opencv.jpg" />
-  </ItemGroup>
-  <ItemGroup>
+    <ClInclude Include="HCroppedSample.h" />
     <ClInclude Include="HDcmFileFormat.h" />
     <ClInclude Include="HNegativeSample.h" />
     <ClInclude Include="HDisplayBMP.h" />
