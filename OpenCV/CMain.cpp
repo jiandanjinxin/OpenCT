@@ -31,6 +31,7 @@
 #include "dcmtk/dcmimgle/dcmimage.h"
 #include "dcmtk/dcmjpeg/djdecode.h"
 #include "dcmtk/dcmdata/dcvrfd.h"
+#include "dcmtk/dcmdata/dcistrmf.h"
 
 using namespace THU_STD_NAMESPACE;
 
@@ -98,15 +99,31 @@ int main()
 	
 	*/
 
+	/*
+	DcmFileFormat fileformat;
+	OFCondition oc = fileformat.loadFile("000001.dcm");
+	DcmDataset *pDataset = fileformat.getDataset();
+	char query[1000];
+	memset(query, 0, sizeof(char)* 1000);
+
+	const char *tString;
+	pDataset->findAndGetString(DCM_InstanceNumber, tString);
+	int i = atoi(tString);
+
+	cout << i << endl;
+	*/
+
 	//TDcmFileFormat dcm = TDcmFileFormat("000001.dcm");
 	//dcm.setWindow(715, 3478);
 	//dcm.saveToBmp("000001.bmp");
 
-	BMPFileFormat bmpfile = BMPFileFormat("000001.bmp");
-	bmpfile.ThresholdToDCM();
+	TDcmFileFormat dcm = TDcmFileFormat("000001.dcm");
+	dcm.setWindow(715, 3478);
+	dcm.saveToBmp("000001.bmp");
+	int number = dcm.getPositionNumber();
+	cout << number << endl;
 
-	
-
+	system("pause");
 	return 0;
 }
 

@@ -168,6 +168,14 @@ namespace THU_STD_NAMESPACE{
 			return DcmRescaleIntercept;
 
 		};
+		inline int getPositionNumber()
+		{
+			const char *tString;
+			this->getDataset()->findAndGetString(DCM_InstanceNumber, tString);
+			int position = atoi(tString);
+
+			return position;
+		}
 		void* getPixelData();//获得真实像素数据指针
 
 		/*--------------------------------------
