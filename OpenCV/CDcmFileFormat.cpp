@@ -183,7 +183,7 @@ namespace THU_STD_NAMESPACE {
 
 
 			int iLength;
-			TCHAR *tchar;
+			TCHAR tchar[1024] = { 0 };
 			iLength = MultiByteToWideChar(CP_ACP, 0, pBmpFileName, strlen(pBmpFileName) + 1, NULL, 0);
 			MultiByteToWideChar(CP_ACP, 0, pBmpFileName, strlen(pBmpFileName) + 1, tchar, iLength);
 
