@@ -17,9 +17,10 @@
 #include "dcmtk/dcmdata/dcistrmf.h"
 
 using namespace THU_STD_NAMESPACE; // 加载DCM格式转换命名空间
+using namespace std;
 
-#define DirGenerationDcm false // dcm全部数据的文件目录生成
-#define DcmToBmp true // 是否进行dcm到bmp的格式转换
+#define DirGenerationDcm false     // dcm全部数据的文件目录生成
+#define DcmToBmp false             // 是否进行dcm到bmp的格式转换，附：一般性图像格式转换可以调用CxImage
 
 int main()
 {
@@ -54,31 +55,38 @@ int main()
 		// printf("文件总数: %d\n", file_vec.size());
 	}
 
-
-	
-
-	/*
-	CxImage  image;
-	// bmp -> jpg   
-
-	char sourceImg[10] = "00000.png";
-
-	TCHAR Img[100];
-	TCHAR convertImg1[] = _T("iamge.jpg");
-    #ifdef UNICODE  
-	MultiByteToWideChar(CP_ACP, 0, sourceImg, -1, Img, 100);
-    #else  
-	strcpy(Name, strUsr);
-    #endif  
-
-	image.Load(Img, CXIMAGE_FORMAT_PNG);
-	if (image.IsValid())
+	// 对所有dcm文件根据已经生成的file.lst进行全部dcm图像的格式转换
+	if (DcmToBmp)
 	{
-		image.SetJpegQuality(80);
-		image.Save(convertImg1, CXIMAGE_FORMAT_JPG);
+		string ImgName; // image filename, absoluted path
+		ifstream finDcm("F:\\lymph node detection dataset\\DOI\\file.lst");  // Dcm图片名列表文件
+
+		int count = 0;
+
+		// 循环遍历所有dcm文件
+		while ( getline(finDcm, ImgName) )
+		{
+			count++;
+			// 获取原始dcm图像的前缀目录
+			string subImageName = ImgName.substr(0, 50);
+			// 将原始dcm图像的string转换为char*
+			const char *chImageName = ImgName.c_str();
+
+			const char *chSubImageName = subImageName.c_str();
+
+			TDcmFileFormat dcm = TDcmFileFormat(chImageName);
+			int InstancePosition = dcm.getPositionNumber();
+
+			char BmpName[256];
+
+			sprintf_s(BmpName, "%s%06d.bmp", chSubImageName, InstancePosition);
+			
+			dcm.setWindow(715, 3478);
+			dcm.saveToBmp(BmpName);
+
+			cout << count << endl;
+		}
 	}
-	
-	*/
 
 	/*
 	DcmFileFormat fileformat;
@@ -94,23 +102,9 @@ int main()
 	cout << i << endl;
 	*/
 
-	// 对应文件夹的所有文件进行遍历
-	if (DcmToBmp)
-	{
-		
-	}
 
-	//TDcmFileFormat dcm = TDcmFileFormat("000001.dcm");
-	//dcm.setWindow(715, 3478);
-	//dcm.saveToBmp("000001.bmp");
 
-	/*TDcmFileFormat dcm = TDcmFileFormat("000001.dcm");
-	dcm.setWindow(715, 3478);
-	dcm.saveToBmp("000001.bmp");
-	int number = dcm.getPositionNumber();
-	cout << number << endl;
-
-	system("pause");*/
+	system("pause");
 	return 0;
 }
 
