@@ -1,5 +1,5 @@
-#ifndef __OPENCV_DISPLAY_H  
-#define __OPENCV_DISPLAY_H
+#ifndef __OPENCV_BMPCONVERT_H  
+#define __OPENCV_BMPCONVERT_H
 
 #include <iostream>
 #include <fstream>
@@ -13,20 +13,22 @@
 using namespace std;
 using namespace cv;
 
-class BMPFileFormat
+#define EDGELENGTH 64  // 定义512*512原始图像的裁剪边缘长度
+
+
+class BmpConvert
 {
 	// 构造函数
     public:
-	    BMPFileFormat();
-		BMPFileFormat(const char *BMPFileName);
+		BmpConvert(const char *BmpFileName);
+		~BmpConvert();
 
-    // 阈值处理函数
+    // 各类bmp图像处理函数
     public:
-		void ThresholdToDCM();
+		void CroppedEdge();
 
     // 读取的Mat数据结构
     private:
-
 		Mat image;
 
 };

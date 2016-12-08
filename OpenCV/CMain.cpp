@@ -1,7 +1,7 @@
 #include "HNegativeSample.h"
 #include "HUtil.h"
 #include "HDcmFileFormat.h"
-#include "HDisplayBMP.h"
+#include "HBmpConvert.h"
 
 #include "ximage.h"
 
@@ -66,21 +66,23 @@ int main()
 		// 循环遍历所有dcm文件
 		while ( getline(finDcm, ImgName) )
 		{
-			count++;
+			count++; // 记录转换的文件数量
+
 			// 获取原始dcm图像的前缀目录
 			string subImageName = ImgName.substr(0, 50);
+
 			// 将原始dcm图像的string转换为char*
 			const char *chImageName = ImgName.c_str();
-
+			// 获取原始dcm图像的前缀目录的string转换为char*
 			const char *chSubImageName = subImageName.c_str();
-
+			// 基于dcmtk实现类
 			TDcmFileFormat dcm = TDcmFileFormat(chImageName);
+			// 获取dcm图像的InstanceNumber
 			int InstancePosition = dcm.getPositionNumber();
-
+			// 生成bmp图像存储路径
 			char BmpName[256];
-
 			sprintf_s(BmpName, "%s%06d.bmp", chSubImageName, InstancePosition);
-			
+			// 进行图像转换
 			dcm.setWindow(715, 3478);
 			dcm.saveToBmp(BmpName);
 
@@ -88,23 +90,15 @@ int main()
 		}
 	}
 
-	/*
-	DcmFileFormat fileformat;
-	OFCondition oc = fileformat.loadFile("000001.dcm");
-	DcmDataset *pDataset = fileformat.getDataset();
-	char query[1000];
-	memset(query, 0, sizeof(char)* 1000);
+	// 图像分片测试
+	BmpConvert bmpsample = BmpConvert("F:\\lymph node detection dataset\\DOI\\ABD_LYMPH_001\\000001.bmp");
+	bmpsample.CroppedEdge();
 
-	const char *tString;
-	pDataset->findAndGetString(DCM_InstanceNumber, tString);
-	int i = atoi(tString);
-
-	cout << i << endl;
-	*/
 
 
 
 	system("pause");
+
 	return 0;
 }
 

@@ -1,5 +1,12 @@
 #include "HNegativeSample.h"
 
+/*
+*  行人检测负样本生成类
+*
+*
+*
+*/
+
 NegativeSample::NegativeSample(string file)
 {
 	filelist = file;

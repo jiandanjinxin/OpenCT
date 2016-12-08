@@ -84,7 +84,7 @@
     <ClCompile Include="CHoG.cpp" />
     <ClCompile Include="CMain.cpp" />
     <ClCompile Include="CNagetiveSample.cpp" />
-    <ClCompile Include="CDisplayBMP.cpp" />
+    <ClCompile Include="CBmpConvert.cpp" />
     <ClCompile Include="CUtil.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -95,10 +95,9 @@
     <None Include="opecv2413x86.Release.props" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="HCroppedSample.h" />
     <ClInclude Include="HDcmFileFormat.h" />
     <ClInclude Include="HNegativeSample.h" />
-    <ClInclude Include="HDisplayBMP.h" />
+    <ClInclude Include="HBmpConvert.h" />
     <ClInclude Include="HUtil.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
