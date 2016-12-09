@@ -20,6 +20,7 @@ using namespace THU_STD_NAMESPACE; // 加载DCM格式转换命名空间
 using namespace std;
 
 #define DirGenerationDcm false     // dcm全部数据的文件目录生成
+#define DirGenerationPixel false   // dcm真实样本像素坐标文件目录生成
 #define DcmToBmp false             // 是否进行dcm到bmp的格式转换，附：一般性图像格式转换可以调用CxImage
 
 int main()
@@ -90,12 +91,37 @@ int main()
 		}
 	}
 
+	// 对所有真实label标注进行桶排序标注圈定范围
+
+	// 生成所有dcm文件真实像素坐标的目录 F:\\lymph node detection dataset\\pixelfile.lst
+	if (DirGenerationPixel)
+	{
+		//构造类对象  
+		CStatDir statdir;
+
+		char buf[256] = "F:\\lymph node detection dataset\\MED_ABD_LYMPH_ANNOTATIONS\\MED_ABD_LYMPH_ANNOTATIONS";
+		char posfilename[] = "F:\\lymph node detection dataset\\pixelfile.lst";
+		ofstream fout(posfilename);
+		//设置要遍历的目录  
+		if (!statdir.SetInitDir(buf))
+		{
+			puts("目录不存在");
+			return 0;
+		}
+
+		//开始遍历  
+		vector<string> file_vec = statdir.BeginBrowseFilenames("*indices.txt");
+		for (vector<string>::const_iterator it = file_vec.begin(); it < file_vec.end(); ++it)
+			fout << *it << endl;
+
+		printf("文件总数: %d\n", file_vec.size());  // 176
+	}
 	// 图像分片测试
-	BmpConvert bmpsample = BmpConvert("F:\\lymph node detection dataset\\DOI\\ABD_LYMPH_001\\000001.bmp");
-	bmpsample.CroppedEdge();
+	//BmpConvert bmpsample = BmpConvert("F:\\lymph node detection dataset\\DOI\\ABD_LYMPH_001\\000001.bmp");
+	//bmpsample.CroppedEdge();
 
 
-
+	 
 
 	system("pause");
 

@@ -13,7 +13,7 @@
 using namespace std;
 using namespace cv;
 
-#define EDGELENGTH 64  // 定义512*512原始图像的裁剪边缘长度
+#define EDGELENGTH 128  // 定义512*512原始图像的裁剪边缘长度
 
 
 class BmpConvert
