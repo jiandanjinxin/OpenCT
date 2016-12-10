@@ -17,7 +17,7 @@ void BmpConvert::CroppedEdge()
 {
 	Mat croppedImage;
 	// 截取边缘部分
-	Rect roi(EDGELENGTH / 2, EDGELENGTH, image.cols - EDGELENGTH, image.rows - 2 * EDGELENGTH);
+	Rect roi(128, 96, image.cols - 224, image.rows - 224);
 	croppedImage = image(roi);
 	// 深拷贝到当前操作对象
 	image = croppedImage.clone();

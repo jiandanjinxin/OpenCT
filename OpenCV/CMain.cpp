@@ -22,6 +22,31 @@ using namespace std;
 #define DirGenerationDcm false     // dcm全部数据的文件目录生成
 #define DirGenerationPixel false   // dcm真实样本像素坐标文件目录生成
 #define DcmToBmp false             // 是否进行dcm到bmp的格式转换，附：一般性图像格式转换可以调用CxImage
+#define PixelRecords false         // 对所有真实像素坐标进行遍历
+
+// 字符串split
+void split(const string& src, const string& separator, vector<string>& dest)
+{
+	string str = src;
+	string substring;
+	string::size_type start = 0, index;
+
+	do
+	{
+		index = str.find_first_of(separator, start);
+		if (index != string::npos)
+		{
+			substring = str.substr(start, index - start);
+			dest.push_back(substring);
+			start = str.find_first_not_of(separator, index);
+			if (start == string::npos) return;
+		}
+	} while (index != string::npos);
+
+	//the last token
+	substring = str.substr(start);
+	dest.push_back(substring);
+}
 
 int main()
 {
@@ -91,8 +116,6 @@ int main()
 		}
 	}
 
-	// 对所有真实label标注进行桶排序标注圈定范围
-
 	// 生成所有dcm文件真实像素坐标的目录 F:\\lymph node detection dataset\\pixelfile.lst
 	if (DirGenerationPixel)
 	{
@@ -116,9 +139,53 @@ int main()
 
 		printf("文件总数: %d\n", file_vec.size());  // 176
 	}
+
+	// 对所有真实label标注进行桶排序标注圈定范围
+	if (PixelRecords)
+	{
+		string PixelFileName; 
+		ifstream finPixelFile("F:\\lymph node detection dataset\\pixelfile.lst");  
+
+		int pixelRangeX[512] = { 0 };
+		int pixelRangeY[512] = { 0 };
+		int pixelRangeZ[662] = { 0 };
+
+		// 循环遍历所有PixelFile文件
+		while (getline(finPixelFile, PixelFileName))
+		{
+			string Pixel;
+			ifstream finPixel(PixelFileName);
+
+			// 循环遍历像素坐标
+			while (getline(finPixel, Pixel))
+			{
+				
+				//cout << Pixel << endl;
+				vector<string> IntPixel;
+				::split(Pixel, " ", IntPixel);
+				//cout << IntPixel[0] << ", " << IntPixel[1] << ", " << IntPixel[2] << endl;
+				pixelRangeX[atoi(IntPixel[0].c_str())]++;
+				pixelRangeY[atoi(IntPixel[1].c_str())]++;
+				pixelRangeZ[atoi(IntPixel[2].c_str())]++;
+			}
+		}
+		
+		// 查看像素分布
+		for (int i = 0; i < 512; i++)
+			cout << i << ": " << pixelRangeX[i] << endl;
+
+		for (int i = 0; i < 512; i++)
+			cout << i << ": " << pixelRangeY[i] << endl;
+
+		for (int i = 0; i < 662 ; i++)
+			cout << i << ": " << pixelRangeZ[i] << endl;
+			
+	}
+
+
 	// 图像分片测试
-	//BmpConvert bmpsample = BmpConvert("F:\\lymph node detection dataset\\DOI\\ABD_LYMPH_001\\000001.bmp");
-	//bmpsample.CroppedEdge();
+	BmpConvert bmpsample = BmpConvert("F:\\lymph node detection dataset\\DOI\\ABD_LYMPH_001\\000312.bmp");
+	bmpsample.CroppedEdge();
 
 
 	 
