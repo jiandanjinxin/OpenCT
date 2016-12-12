@@ -40,6 +40,12 @@ class BmpConvert
 		*/
 		void MultiImageShow(const std::string& MultiShow_WinName, const vector<Mat>& SrcImg_V, CvSize SubPlot, CvSize ImgMax_Size = cvSize(400, 280));
 
+    public:
+		/*
+		* 查看像素点的宽和高
+		*/
+	    void InfoShow();
+
     // 读取的Mat数据结构
     private:
 		Mat image;

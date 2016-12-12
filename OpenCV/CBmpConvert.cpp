@@ -12,6 +12,11 @@ BmpConvert::~BmpConvert()
 	image.release();
 }
 
+void BmpConvert::InfoShow()
+{
+	cout << image.cols << " " << image.rows << endl;
+}
+
 // 裁剪Bmp图像的边缘
 void BmpConvert::CroppedEdge(int x, int y, int CroppedLengthX, int CroppedLengthY)
 {
@@ -26,6 +31,32 @@ void BmpConvert::CroppedEdge(int x, int y, int CroppedLengthX, int CroppedLength
 	//imshow("CroppedImage", image);
 	// 不间断刷新图像以显示。
 	//waitKey();
+}
+
+// 对边缘裁剪后的图像进行Patch切分
+vector<Mat> BmpConvert::Segmentation(CvSize SubPlot)
+{
+	vector<Mat> result;
+	
+	int height = image.rows;
+	int width = image.cols;
+
+	// 每个小Patch的长度和宽度
+	int pos_height = height / SubPlot.height;
+	int pos_width = width / SubPlot.width;
+
+	for (int i = 0; i < SubPlot.width; i++)
+	{
+		for (int j = 0; j < SubPlot.height; j++)
+		{
+			Rect rect(j * pos_height, i * pos_width, pos_width, pos_height);
+			Mat roi;
+			image(rect).copyTo(roi);
+			result.push_back(roi);
+			roi.release();
+		}
+	}
+	return result;
 }
 
 void BmpConvert::MultiImageShow(const std::string& MultiShow_WinName, const vector<Mat>& SrcImg_V, CvSize SubPlot, CvSize ImgMax_Size)
@@ -61,7 +92,7 @@ void BmpConvert::MultiImageShow(const std::string& MultiShow_WinName, const vect
 
 	//******************** Size for Window ********************//
 	Image_Display.create(Size(ImgDisplay_Size.width * SubPlot.width + DispBlank_Edge.width + (SubPlot.width - 1) * DispBlank_Gap.width,
-		ImgDisplay_Size.height * SubPlot.height + DispBlank_Edge.height + (SubPlot.height - 1) * DispBlank_Gap.height), CV_8U);
+		ImgDisplay_Size.height * SubPlot.height + DispBlank_Edge.height + (SubPlot.height - 1) * DispBlank_Gap.height), CV_8UC3);
 	Image_Display.setTo(0); // Background 
 
 	//Left top position for each image  
