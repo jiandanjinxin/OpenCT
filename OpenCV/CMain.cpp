@@ -185,7 +185,7 @@ int main()
 
 	// ÕºœÒ∑÷∆¨≤‚ ‘
 	BmpConvert bmpsample = BmpConvert("F:\\lymph node detection dataset\\DOI\\ABD_LYMPH_001\\000312.bmp");
-	bmpsample.CroppedEdge();
+	bmpsample.CroppedEdge(128, 96, 224, 224);
 
 
 	 
