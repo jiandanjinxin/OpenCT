@@ -33,8 +33,39 @@ void BmpConvert::CroppedEdge(int x, int y, int CroppedLengthX, int CroppedLength
 	//waitKey();
 }
 
-// 对边缘裁剪后的图像进行Patch切分
-vector<Mat> BmpConvert::Segmentation(CvSize SubPlot)
+// 对边缘裁剪后的图像进行Patch切分，顶层的 8 * 8
+vector<Mat> BmpConvert::SegmentationTop(CvSize SubPlot)
+{
+	Mat croppedImage;
+	// 截取边缘部分
+	Rect roi(16, 16, image.cols - 32, image.rows - 32);
+	croppedImage = image(roi);
+	
+	vector<Mat> result;
+
+	int height = croppedImage.rows;
+	int width = croppedImage.cols;
+
+	// 每个小Patch的长度和宽度
+	int pos_height = height / SubPlot.height;
+	int pos_width = width / SubPlot.width;
+
+	for (int i = 0; i < SubPlot.width; i++)
+	{
+		for (int j = 0; j < SubPlot.height; j++)
+		{
+			Rect rect(j * pos_height, i * pos_width, pos_width, pos_height);
+			Mat roi;
+			croppedImage(rect).copyTo(roi);
+			result.push_back(roi);
+			roi.release();
+		}
+	}
+	return result;
+}
+
+// 对边缘裁剪后的图像进行Patch切分，底层的 9 * 9
+vector<Mat> BmpConvert::SegmentationBottom(CvSize SubPlot)
 {
 	vector<Mat> result;
 	

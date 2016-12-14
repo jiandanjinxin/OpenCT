@@ -31,9 +31,14 @@ class BmpConvert
 		void CroppedEdge(int x, int y, int LengthX, int LengthY);
 
 		/*
-		* 对边缘裁剪后的图像进行Patch切分
+		* 对边缘裁剪后的图像进行Patch切分，底层 9 * 9
 		*/
-		vector<Mat> Segmentation(CvSize SubPlot);
+		vector<Mat> SegmentationBottom(CvSize SubPlot);
+
+		/*
+		* 对边缘裁剪后的图像进行Patch切分，上层 8 * 8
+		*/
+		vector<Mat> SegmentationTop(CvSize SubPlot);
 
 		/*
 		* OpenCV同一窗口下显示多张图片，主要测试切分效果 32*32*81
