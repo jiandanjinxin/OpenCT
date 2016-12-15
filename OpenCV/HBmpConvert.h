@@ -51,6 +51,11 @@ class BmpConvert
 		*/
 	    void InfoShow();
 
+		/*
+		* 对label数据进行读取
+		*/
+
+
     // 读取的Mat数据结构
     private:
 		Mat image;
