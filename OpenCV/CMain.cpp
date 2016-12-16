@@ -2,6 +2,7 @@
 #include "HUtil.h"
 #include "HDcmFileFormat.h"
 #include "HBmpConvert.h"
+#include "HLymphHOG.h"
 
 #include "ximage.h"
 
@@ -182,7 +183,7 @@ int main()
 			
 	}
 
-
+	/*
 	// ÕºœÒ∑÷∆¨≤‚ ‘
 	BmpConvert bmpsample = BmpConvert("F:\\lymph node detection dataset\\DOI\\ABD_LYMPH_001\\000312.bmp");
 	bmpsample.CroppedEdge(128, 96, 224, 224);
@@ -192,8 +193,11 @@ int main()
 
 	vector<Mat> result = bmpsample.SegmentationTop(cvSize(8, 8));
 	bmpsample.MultiImageShow("Multiple Images", result, cvSize(8, 8), cvSize(400, 280));
-
+	*/
 	 
+	// HoGÕºœÒ—µ¡∑
+	LymphHOG lymphhog = LymphHOG();
+	lymphhog.SVMTraining(true);
 
 	system("pause");
 
