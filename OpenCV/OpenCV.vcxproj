@@ -84,7 +84,6 @@
     <ClCompile Include="CHoG.cpp" />
     <ClCompile Include="CLymphHOG.cpp" />
     <ClCompile Include="CMain.cpp" />
-    <ClCompile Include="CNagetiveSample.cpp" />
     <ClCompile Include="CBmpConvert.cpp" />
     <ClCompile Include="CUtil.cpp" />
   </ItemGroup>
@@ -98,7 +97,6 @@
   <ItemGroup>
     <ClInclude Include="HDcmFileFormat.h" />
     <ClInclude Include="HLymphHOG.h" />
-    <ClInclude Include="HNegativeSample.h" />
     <ClInclude Include="HBmpConvert.h" />
     <ClInclude Include="HUtil.h" />
   </ItemGroup>

@@ -28,46 +28,60 @@ void LymphHOG::split(const string& src, const string& separator, vector<string>&
 void LymphHOG::SVMTraining(bool flag)
 {  
 	// detective window (64, 128), block size (16, 16), block stride (8, 8), cell size (8, 8), nbins 9
-	HOGDescriptor hog(Size(32, 32), Size(8, 8), Size(4, 4), Size(4, 4), 9);  // hog descriptor, calculate the hog descriptor.
-	int DescriptorDim;                                                       // hog descriptor dimension depend on size of picture, detective window, block size, cell bin.
-	HOGSVM svm;                                                              // hog classifier
+	//HOGDescriptor hog(Size(32, 32), Size(8, 8), Size(4, 4), Size(4, 4), 9);  // hog descriptor, calculate the hog descriptor.
+	//int DescriptorDim;                                                       // hog descriptor dimension depend on size of picture, detective window, block size, cell bin.
+	//HOGSVM svm;                                                              // hog classifier
 
-	// if train is true, retrain the classifier
 	if (flag)
 	{
 		// 所有训练样本的特征向量组成的矩阵，行数等于所有样本的个数，列数等于HOG描述子维数
-		Mat sampleFeatureMat;
+		//Mat sampleFeatureMat;
 		// 训练样本的类别向量，行数等于所有样本的个数，列数等于1:  1表示有，-1表示无
-		Mat sampleLabelMat;
+		//Mat sampleLabelMat;
 
-
-
+		// 全部注释文件目录
 		string AnnotationName;
-		ifstream finAnnotation("F:\\lymph node detection dataset\\pixelfile.lst");  // 正样本图片名列表文件
-
-		string AnnotationRecord;
-		ifstream finRecord();
+		// 注释文件目录所在路径
+		ifstream finAnnotation("F:\\lymph node detection dataset\\pixelfile.lst");  
 
 		// 依次读取注释文件目录，其中AnnotationName为样例的完整路径
 		for (int num = 0; num < 1 && getline(finAnnotation, AnnotationName); num++)
 		{
 			//cout << AnnotationName << endl;
 
-			// 对应一个人的数据处理
+			// 
 			hash_map<string, bool> records;
 			
+			// 每条label标注
 			string AnnotationRecord;
+			// 对应个人的全部记录的路径annotation_indices
 			ifstream finRecord(AnnotationName);
 
+			// 读取所有记录
 			for (int point = 0; getline(finRecord, AnnotationRecord); point++)
 			{
-				vector<string> IntPixel;
-				split(AnnotationRecord, " ", IntPixel);
+				vector<string> InstancePixel;
+				split(AnnotationRecord, " ", InstancePixel);
 				
-				
-				if (!(records.find(IntPixel[2]) != records.end()))
+				// 未处理当前节点的记录
+				if (!(records.find(InstancePixel[2]) != records.end()))
 				{
-					cout << "process";
+					ifstream finAll(AnnotationName);
+
+					// 依次标记当前图片号下所有相同切片的不同label位置
+					for (int i = 0; getline(finAll, AnnotationRecord); i++)
+					{
+
+						vector<string> Pixel;
+						split(AnnotationRecord, " ", Pixel);
+						// 如果与当前未处理节点相同，则处理
+ 						if (!Pixel[2].compare(InstancePixel[2]))
+						{
+							cout << InstancePixel[2] << " " << Pixel[2] << endl;
+						}					
+					}
+					// 标记当前图片已处理
+					records.insert(std::pair<std::string, bool>(InstancePixel[2], true));
 				}
 				
 			}

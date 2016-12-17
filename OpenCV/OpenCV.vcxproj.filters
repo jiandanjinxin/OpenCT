@@ -24,9 +24,6 @@
     <ClCompile Include="CMain.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CNagetiveSample.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="CHoG.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -61,9 +58,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="HNegativeSample.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="HUtil.h">
       <Filter>头文件</Filter>
     </ClInclude>

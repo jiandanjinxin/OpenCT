@@ -10,7 +10,6 @@
 #include <opencv2/ml/ml.hpp>
 
 using namespace std;
-using namespace cv;
 
 class LymphHOG
 {
@@ -31,20 +30,5 @@ private:
 	
 };
 
-class HOGSVM : public CvSVM
-{
-public:
-	// get alpha array in SVM decision function.
-	double* get_alpha_vector()
-	{
-		return this->decision_func->alpha;
-	}
-
-	// get rho parameter in SVM decision function, which is offset.
-	float get_rho()
-	{
-		return (float)this->decision_func->rho;
-	}
-};
 
 #endif
