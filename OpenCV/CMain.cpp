@@ -1,4 +1,3 @@
-#include "HNegativeSample.h"
 #include "HUtil.h"
 #include "HDcmFileFormat.h"
 #include "HBmpConvert.h"
@@ -185,19 +184,19 @@ int main()
 
 	/*
 	// ÕºœÒ∑÷∆¨≤‚ ‘
-	BmpConvert bmpsample = BmpConvert("F:\\lymph node detection dataset\\DOI\\ABD_LYMPH_001\\000312.bmp");
+	BmpConvert bmpsample = BmpConvert("F:\\lymph node detection dataset\\DOI\\ABD_LYMPH_001\\000367.bmp");
 	bmpsample.CroppedEdge(128, 96, 224, 224);
 	bmpsample.InfoShow();
-	//vector<Mat> result = bmpsample.SegmentationBottom( cvSize(9, 9) );
-	//bmpsample.MultiImageShow("Multiple Images", result, cvSize(9, 9), cvSize(400, 280));
-
-	vector<Mat> result = bmpsample.SegmentationTop(cvSize(8, 8));
-	bmpsample.MultiImageShow("Multiple Images", result, cvSize(8, 8), cvSize(400, 280));
+	vector<Mat> result = bmpsample.SegmentationBottom( cvSize(9, 9) );
+	bmpsample.MultiImageShow("Multiple Images", result, cvSize(9, 9), cvSize(400, 280));
 	*/
+	//vector<Mat> result = bmpsample.SegmentationTop(cvSize(8, 8));
+	//bmpsample.MultiImageShow("Multiple Images", result, cvSize(8, 8), cvSize(400, 280));
+	
 	 
 	// HoGÕºœÒ—µ¡∑
 	LymphHOG lymphhog = LymphHOG();
-	lymphhog.SVMTraining(true);
+	lymphhog.LabelOutput(true);
 
 	system("pause");
 

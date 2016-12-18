@@ -10,6 +10,7 @@
 #include <opencv2/ml/ml.hpp>
 
 using namespace std;
+using namespace cv;
 
 class LymphHOG
 {
@@ -23,6 +24,8 @@ public:
 	* 提取HOG图像特征并训练SVM模型，flag表示是否需要训练，或直接提取训练好的模型
 	*/
 	void SVMTraining(bool flag);
+	// 标注数据文件生成
+	void LabelOutput(bool flag);
 	// 字符串split
 	void split(const string& src, const string& separator, vector<string>& dest);
 
@@ -30,5 +33,22 @@ private:
 	
 };
 
+// Extends from CvSVM, when generate detection parameters in setSVMDetector(), we need to use the trained parameters in SVM's decision_func,
+// the parameters of decision_func is type of protected, we cannot visit it directly, only to extend it and using function to visit it.
+class HOGSVM : public CvSVM
+{
+public:
+	// get alpha array in SVM decision function.
+	double* get_alpha_vector()
+	{
+		return this->decision_func->alpha;
+	}
+
+	// get rho parameter in SVM decision function, which is offset.
+	float get_rho()
+	{
+		return (float)this->decision_func->rho;
+	}
+};
 
 #endif
