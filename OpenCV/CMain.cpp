@@ -193,10 +193,11 @@ int main()
 	//vector<Mat> result = bmpsample.SegmentationTop(cvSize(8, 8));
 	//bmpsample.MultiImageShow("Multiple Images", result, cvSize(8, 8), cvSize(400, 280));
 	
-	 
+	  
 	// HoGÍ¼ÏñÑµÁ·
 	LymphHOG lymphhog = LymphHOG();
 	lymphhog.LabelOutput(true);
+	lymphhog.SVMTraining(true);
 
 	system("pause");
 
