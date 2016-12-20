@@ -196,9 +196,9 @@ int main()
 	  
 	// HoGÍ¼ÏñÑµÁ·
 	LymphHOG lymphhog = LymphHOG();
-	lymphhog.LabelOutput(true);
-	lymphhog.SVMTraining(true);
-
+	lymphhog.LabelOutput(false);
+	lymphhog.SVMTraining(false);
+	lymphhog.classify();
 	system("pause");
 
 	return 0;

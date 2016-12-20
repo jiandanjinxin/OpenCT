@@ -12,6 +12,24 @@
 using namespace std;
 using namespace cv;
 
+// Extends from CvSVM, when generate detection parameters in setSVMDetector(), we need to use the trained parameters in SVM's decision_func,
+// the parameters of decision_func is type of protected, we cannot visit it directly, only to extend it and using function to visit it.
+class HOGSVM : public CvSVM
+{
+public:
+	// get alpha array in SVM decision function.
+	double* get_alpha_vector()
+	{
+		return this->decision_func->alpha;
+	}
+
+	// get rho parameter in SVM decision function, which is offset.
+	float get_rho()
+	{
+		return (float)this->decision_func->rho;
+	}
+};
+
 class LymphHOG
 {
 
@@ -37,26 +55,11 @@ public:
 	// 获取标注文件的正负样本数, [0]为正样本数，[1]为负样本数
 	vector<int> GetSamplesNumber(const char *filename);
 
+	// 统计分类结果
+	void classify();
+
 private:
-	
-};
-
-// Extends from CvSVM, when generate detection parameters in setSVMDetector(), we need to use the trained parameters in SVM's decision_func,
-// the parameters of decision_func is type of protected, we cannot visit it directly, only to extend it and using function to visit it.
-class HOGSVM : public CvSVM
-{
-public:
-	// get alpha array in SVM decision function.
-	double* get_alpha_vector()
-	{
-		return this->decision_func->alpha;
-	}
-
-	// get rho parameter in SVM decision function, which is offset.
-	float get_rho()
-	{
-		return (float)this->decision_func->rho;
-	}
+	HOGSVM svm;
 };
 
 #endif
