@@ -39,6 +39,9 @@
     <ClCompile Include="CLymphHOG.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="CCandidate.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="opecv2413x86.Debug.props">
@@ -68,6 +71,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="HLymphHOG.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="HCandidate.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

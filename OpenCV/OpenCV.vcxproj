@@ -86,6 +86,7 @@
     <ClCompile Include="CMain.cpp" />
     <ClCompile Include="CBmpConvert.cpp" />
     <ClCompile Include="CUtil.cpp" />
+    <ClCompile Include="CCandidate.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />
@@ -95,6 +96,7 @@
     <None Include="opecv2413x86.Release.props" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="HCandidate.h" />
     <ClInclude Include="HDcmFileFormat.h" />
     <ClInclude Include="HLymphHOG.h" />
     <ClInclude Include="HBmpConvert.h" />
