@@ -9,7 +9,10 @@ using namespace std;
 class Candidate
 {
 public:
-
+	/*
+	* 读取Candidate文件的世界坐标数据
+	*/
+	void ReadCandidate();
 
 
 private:
