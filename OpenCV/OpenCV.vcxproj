@@ -85,6 +85,7 @@
     <ClCompile Include="CLymphHOG.cpp" />
     <ClCompile Include="CMain.cpp" />
     <ClCompile Include="CBmpConvert.cpp" />
+    <ClCompile Include="CReadUByte.cpp" />
     <ClCompile Include="CUtil.cpp" />
     <ClCompile Include="CCandidate.cpp" />
   </ItemGroup>
@@ -100,6 +101,7 @@
     <ClInclude Include="HDcmFileFormat.h" />
     <ClInclude Include="HLymphHOG.h" />
     <ClInclude Include="HBmpConvert.h" />
+    <ClInclude Include="HReadUByte.h" />
     <ClInclude Include="HUtil.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
