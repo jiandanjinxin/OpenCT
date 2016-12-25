@@ -97,6 +97,7 @@
     <None Include="opecv2413x86.Release.props" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CNN.h" />
     <ClInclude Include="HCandidate.h" />
     <ClInclude Include="HDcmFileFormat.h" />
     <ClInclude Include="HLymphHOG.h" />
