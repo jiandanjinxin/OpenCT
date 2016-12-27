@@ -1,7 +1,5 @@
 #include "HUtil.h"
 
-
-
 // È±Ê¡¹¹ÔìÆ÷
 CBrowseDir::CBrowseDir()
 {
