@@ -66,4 +66,26 @@ void CNN::release()
 	}
 }
 
+// connection table [Y.Lecun, 1998 Table 1]
+#define O true
+#define X false
+static const bool tb1[6][16] = {
+	O, X, X, X, O, O, O, X, X, O, O, O, O, X, O, O,
+	O, O, X, X, X, O, O, O, X, X, O, O, O, O, X, O,
+	O, O, O, X, X, X, O, O, O, X, X, O, X, O, O, O,
+	X, O, O, O, X, X, O, O, O, O, X, X, O, X, O, O,
+	X, X, O, O, O, X, X, O, O, O, O, X, O, O, X, O,
+	X, X, X, O, O, O, X, X, O, O, O, O, X, O, O, O
+};
+#undef O
+#undef X
+
+void CNN::init_variable(double *val, double c, int len)
+{
+	for (int i = 0; i < len; i++)
+		val[i] = c;
+}
+
+
+
 }

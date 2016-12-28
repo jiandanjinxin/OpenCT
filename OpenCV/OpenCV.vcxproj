@@ -85,6 +85,7 @@
     <ClCompile Include="CLymphHOG.cpp" />
     <ClCompile Include="CMain.cpp" />
     <ClCompile Include="CBmpConvert.cpp" />
+    <ClCompile Include="CNN.cpp" />
     <ClCompile Include="CReadUByte.cpp" />
     <ClCompile Include="CUtil.cpp" />
     <ClCompile Include="CCandidate.cpp" />
