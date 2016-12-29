@@ -126,4 +126,70 @@ void CNN::init()
 	getSrcData();
 }
 
+double CNN::uniform_rand(double min, double max)
+{
+	// C++11 RANDOM GENERATION
+	static std::mt19937 gen(1);
+	std::uniform_real_distribution<double> dst(min, max);
+	return dst(gen);
+}
+
+bool CNN::uniform_rand(double* src, int len, double min, double max)
+{
+	for (int i = 0; i < len; i++)
+		src[i] = uniform_rand(min, max);
+
+	return true;
+}
+
+/*
+* (1)、权值使用函数uniform_real_distribution均匀分布初始化，tiny-cnn中每次初始化权值数值都相同，
+*      这里作了调整，使每次初始化的权值均不同。每层权值初始化大小范围都不一样；
+* (2)、所有层的偏置均初始化为0.
+*/
+bool CNN::initWeightThreshold()
+{
+	srand(time(0) + rand());
+	const double scale = 6.0;
+
+	double min_ = -std::sqrt(scale / (25.0 + 150.0));
+	double max_ = std::sqrt(scale / (25.0 + 150.0));
+	uniform_rand(weight_C1, LEN_WEIGHT_C1_CNN, min_, max_);
+	for (int i = 0; i < LEN_BIAS_C1_CNN; i++)
+		bias_C1[i] = 0.0;
+
+	min_ = -std::sqrt(scale / (4.0 + 1.0));
+	max_ = std::sqrt(scale / (4.0 + 1.0));
+	uniform_rand(weight_S2, LEN_WEIGHT_S2_CNN, min_, max_);
+	for (int i = 0; i < LEN_BIAS_S2_CNN; i++)
+		bias_S2[i] = 0.0;
+
+	min_ = -std::sqrt(scale / (150.0 + 400.0));
+	max_ = std::sqrt(scale / (150.0 + 400.0));
+	uniform_rand(weight_C3, LEN_WEIGHT_C3_CNN, min_, max_);
+	for (int i = 0; i < LEN_BIAS_C3_CNN; i++)
+		bias_C3[i] = 0.0;
+
+	min_ = -std::sqrt(scale / (4.0 + 1.0));
+	max_ = std::sqrt(scale / (4.0 + 1.0));
+	uniform_rand(weight_S4, LEN_WEIGHT_S4_CNN, min_, max_);
+	for (int i = 0; i < LEN_BIAS_S4_CNN; i++)
+		bias_S4[i] = 0.0;
+
+	min_ = -std::sqrt(scale / (400.0 + 3000.0));
+	max_ = std::sqrt(scale / (400.0 + 3000.0));
+	uniform_rand(weight_C5, LEN_WEIGHT_C5_CNN, min_, max_);
+	for (int i = 0; i < LEN_BIAS_C5_CNN; i++)
+		bias_C5[i] = 0.0;
+
+	min_ = -std::sqrt(scale / (120.0 + 10.0));
+	max_ = std::sqrt(scale / (120.0 + 10.0));
+	uniform_rand(weight_output, LEN_WEIGHT_OUTPUT_CNN, min_, max_);
+	for (int i = 0; i < LEN_BIAS_OUTPUT_CNN; i++)
+		bias_output[i] = 0.0;
+
+	return true;
+
+}
+
 }
