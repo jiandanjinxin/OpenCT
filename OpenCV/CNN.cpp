@@ -273,4 +273,97 @@ static void readMnistLabels(std::string filename, double *data_dst, int num_imag
 	}
 }
 
+bool CNN::getSrcData()
+{
+	assert(data_input_train && data_output_train && data_input_test && data_output_test);
+
+	std::string filename_train_images = "data/train-images.idx3-ubyte";
+	std::string filename_train_labels = "data/train-labels.idx1-ubyte";
+	readMnistImages(filename_train_images, data_input_train, NUM_PATTERNS_TRAIN_CNN);
+	readMnistLabels(filename_train_labels, data_output_train, NUM_PATTERNS_TRAIN_CNN);
+
+	std::string filename_test_images = "data/t10k-images.idx3-ubyte";
+	std::string filename_test_labels = "data/t10k-labels.idx1-ubyte";
+	readMnistImages(filename_test_images, data_input_test, NUM_PATTERNS_TEST_CNN);
+	readMnistLabels(filename_test_labels, data_output_test, NUM_PATTERNS_TEST_CNN);
+
+	return true;
+}
+
+bool CNN::train()
+{
+	out2wi_S2.clear();
+	out2bias_S2.clear();
+
+	out2wi_S4.clear();
+	out2bias_S4.clear();
+
+	in2wo_C3.clear();
+	weight2io_C3.clear();
+	bias2out_C3.clear();
+
+	in2wo_C1.clear();
+	weight2io_C1.clear();
+	bias2out_C1.clear();
+
+	calc_out2wi(WIDTH_IMAGE_C1_CNN, HEIGHT_IMAGE_C1_CNN, WIDTH_IMAGE_S2_CNN, HEIGHT_IMAGE_S2_CNN, NUM_MAP_S2_CNN, out2wi_S2);
+	calc_out2bias(WIDTH_IMAGE_S2_CNN, HEIGHT_IMAGE_S2_CNN, NUM_MAP_S2_CNN, out2bias_S2);
+	calc_out2wi(WIDTH_IMAGE_C3_CNN, HEIGHT_IMAGE_C3_CNN, WIDTH_IMAGE_S4_CNN, HEIGHT_IMAGE_S4_CNN, NUM_MAP_S4_CNN, out2wi_S4);
+	calc_out2bias(WIDTH_IMAGE_S4_CNN, HEIGHT_IMAGE_S4_CNN, NUM_MAP_S4_CNN, out2bias_S4);
+	calc_in2wo(WIDTH_IMAGE_C3_CNN, HEIGHT_IMAGE_C3_CNN, WIDTH_IMAGE_S4_CNN, HEIGHT_IMAGE_S4_CNN, NUM_MAP_C3_CNN, NUM_MAP_S4_CNN, in2wo_C3);
+	calc_weight2io(WIDTH_IMAGE_C3_CNN, HEIGHT_IMAGE_C3_CNN, WIDTH_IMAGE_S4_CNN, HEIGHT_IMAGE_S4_CNN, NUM_MAP_C3_CNN, NUM_MAP_S4_CNN, weight2io_C3);
+	calc_bias2out(WIDTH_IMAGE_C3_CNN, HEIGHT_IMAGE_C3_CNN, WIDTH_IMAGE_S4_CNN, HEIGHT_IMAGE_S4_CNN, NUM_MAP_C3_CNN, NUM_MAP_S4_CNN, bias2out_C3);
+	calc_in2wo(WIDTH_IMAGE_C1_CNN, HEIGHT_IMAGE_C1_CNN, WIDTH_IMAGE_S2_CNN, HEIGHT_IMAGE_S2_CNN, NUM_MAP_C1_CNN, NUM_MAP_C3_CNN, in2wo_C1);
+	calc_weight2io(WIDTH_IMAGE_C1_CNN, HEIGHT_IMAGE_C1_CNN, WIDTH_IMAGE_S2_CNN, HEIGHT_IMAGE_S2_CNN, NUM_MAP_C1_CNN, NUM_MAP_C3_CNN, weight2io_C1);
+	calc_bias2out(WIDTH_IMAGE_C1_CNN, HEIGHT_IMAGE_C1_CNN, WIDTH_IMAGE_S2_CNN, HEIGHT_IMAGE_S2_CNN, NUM_MAP_C1_CNN, NUM_MAP_C3_CNN, bias2out_C1);
+
+	int iter = 0;
+	for (iter = 0; iter < NUM_EPOCHS_CNN; iter++)
+	{
+		std::cout << "epoch: " << iter + 1;
+
+		for (int i = 0; i < NUM_PATTERNS_TRAIN_CNN; i++)
+		{
+			// 根据图片大小1024移动指针读取每张图片
+			data_single_image = data_input_train + i * NUM_NEURON_INPUT_CNN;
+			data_single_label = data_output_train + i * NUM_NEURON_OUTPUT_CNN;
+			// 前向传播
+			Forward_C1();
+			Forward_S2();
+			Forward_C3();
+			Forward_S4();
+			Forward_C5();
+			Forward_output();
+			// 反向传播
+			Backward_output();
+			Backward_C5();
+			Backward_S4();
+			Backward_C3();
+			Backward_S2();
+			Backward_C1();
+			Backward_input();
+			// 更新权值
+			UpdateWeights();
+		}
+
+		double accuracyRate = test();
+		std::cout << ", accuracy rate: " << accuracyRate << std::endl;
+
+		if (accuracyRate > ACCURACY_RATE_CNN)
+		{
+			saveModelFile("data/cnn.model");
+			std::cout << "generate cnn model." << std::endl;
+			break;
+		}
+	}
+
+	if (iter == NUM_EPOCHS_CNN)
+	{
+		saveModelFile("data/cnn.model");
+		std::cout << "generate cnn model." << std::endl;
+	}
+
+	return true;
+}
+
 }
