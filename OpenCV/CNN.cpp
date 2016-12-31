@@ -366,4 +366,75 @@ bool CNN::train()
 	return true;
 }
 
+double CNN::activation_function_tanh(double x)
+{
+	double ep = std::exp(x);
+	double em = std::exp(-x);
+
+	return (ep - em) / (ep + em);
+}
+
+double CNN::activation_function_tanh_derivative(double x)
+{
+	return (1.0 - x * x);
+}
+
+double CNN::activation_function_identity(double x)
+{
+	return x;
+}
+
+double CNN::activation_function_identity_derivative(double x)
+{
+	return 1;
+}
+
+double CNN::loss_function_mse(double y, double t)
+{
+	return (y - t) * (y - t) / 2;
+}
+
+double CNN::loss_function_mse_derivative(double y, double t)
+{
+	return (y - t);
+}
+
+void CNN::loss_function_gradient(const double* y, const double* t, double* dst, int len)
+{
+	for (int i = 0; i < len; i++) 
+	{
+		dst[i] = loss_function_mse_derivative(y[i], t[i]);
+	}
+}
+
+double CNN::dot_product(const double* s1, const double* s2, int len)
+{
+	double result = 0.0;
+
+	for (int i = 0; i < len; i++) 
+	{
+		result += s1[i] * s2[i];
+	}
+
+	return result;
+}
+
+bool CNN::muladd(const double* src, double c, int len, double* dst)
+{
+	for (int i = 0; i < len; i++) 
+	{
+		dst[i] += (src[i] * c);
+	}
+
+	return true;
+}
+
+int CNN::get_index(int x, int y, int channel, int width, int height, int depth)
+{
+	assert(x >= 0 && x < width);
+	assert(y >= 0 && y < height);
+	assert(channel >= 0 && channel < depth);
+	return (height * channel + y) * width + x;
+}
+
 }
