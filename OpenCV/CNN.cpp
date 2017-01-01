@@ -437,4 +437,139 @@ int CNN::get_index(int x, int y, int channel, int width, int height, int depth)
 	return (height * channel + y) * width + x;
 }
 
+void CNN::calc_out2wi(int width_in, int height_in, int width_out, int height_out, int depth_out, std::vector<wi_connections> &out2wi)
+{
+	for (int i = 0; i < depth_out; i++)
+	{
+		int block = width_in * height_in * i;
+
+		for (int y = 0; y < height_out; y++)
+		{
+			for (int x = 0; x < width_out; x++)
+			{
+				int rows = y * WIDTH_KERNEL_POOLING_CNN;
+				int cols = x * HEIGHT_KERNEL_POOLING_CNN;
+
+				wi_connections wi_connections_;
+				std::pair<int, int> pair_;
+
+				for (int m = 0; m < WIDTH_KERNEL_POOLING_CNN; m++)
+				{
+					for (int n = 0; n < HEIGHT_KERNEL_POOLING_CNN; n++)
+					{
+						pair_.first = i;
+						pair_.second = (rows + m) * width_in + cols + n + block;
+						wi_connections_.push_back(pair_);
+					}
+				}
+				out2wi.push_back(wi_connections_);
+			}
+		}
+	}
+}
+
+void CNN::calc_out2bias(int width, int height, int depth, std::vector<int> &out2bias)
+{
+	for (int i = 0; i < depth; i++)
+	{
+		for (int y = 0; y < height; y++)
+		{
+			for (int x = 0; x < width; x++)
+			{
+				out2bias.push_back(i);
+			}
+		}
+	}
+}
+
+void CNN::calc_in2wo(int width_in, int height_in, int width_out, int height_out, int depth_in, int depth_out, std::vector<wo_connections> &in2wo)
+{
+	int len = width_in * height_in * depth_in;
+	in2wo.resize(len);
+
+	for (int c = 0; c < depth_in; c++)
+	{
+		for (int y = 0; y < height_in; y += HEIGHT_KERNEL_POOLING_CNN)
+		{
+			for (int x = 0; x < width_in; x += WIDTH_KERNEL_POOLING_CNN)
+			{
+				int dymax = min(SIZE_POOLING_CNN, height_in - y);
+				int dxmax = min(SIZE_POOLING_CNN, width_in - x);
+				int dstx = x / WIDTH_KERNEL_POOLING_CNN;
+				int dsty = y / HEIGHT_KERNEL_POOLING_CNN;
+
+				for (int dy = 0; dy < dymax; dy++)
+				{
+					for (int dx = 0; dx < dxmax; dx++)
+					{
+						int index_in = get_index(x + dx, y + dy, c, width_in, height_in, depth_in);
+						int index_out = get_index(dstx, dsty, c, width_out, height_out, depth_out);
+
+						wo_connections wo_connections_;
+						std::pair<int, int> pair_;
+						pair_.first = c;
+						pair_.second = index_out;
+						wo_connections_.push_back(pair_);
+
+						in2wo[index_in] = wo_connections_;
+					}
+				}
+			}
+		}
+	}
+}
+
+void CNN::calc_weight2io(int width_in, int height_in, int width_out, int height_out, int depth_in, int depth_out, std::vector<io_connections> &weight2io)
+{
+	int len = depth_in;
+	weight2io.resize(len);
+
+	for (int c = 0; c < depth_in; c++)
+	{
+		for (int y = 0; y < height_in; y += HEIGHT_KERNEL_POOLING_CNN)
+		{
+			for (int x = 0; x < width_in; x += WIDTH_KERNEL_POOLING_CNN)
+			{
+				int dymax = min(SIZE_POOLING_CNN, height_in - y);
+				int dxmax = min(SIZE_POOLING_CNN, width_in - x);
+				int dstx = x / WIDTH_KERNEL_POOLING_CNN;
+				int dsty = y / HEIGHT_KERNEL_POOLING_CNN;
+
+				for (int dy = 0; dy < dymax; dy++)
+				{
+					for (int dx = 0; dx < dxmax; dx++)
+					{
+						int index_in = get_index(x + dx, y + dy, c, width_in, height_in, depth_in);
+						int index_out = get_index(dstx, dsty, width_out, height_out, depth_out);
+
+						std::pair<int, int> pair_;
+						pair_.first = index_in;
+						pair_.second = index_out;
+
+						weight2io[c].push_back(pair_);
+					}
+				}
+			}
+		}
+	}
+}
+
+void CNN::calc_bias2out(int width_in, int height_in, int width_out, int height_out, int depth_in, int depth_out, std::vector<std::vector<int> > &bias2out)
+{
+	int len = depth_in;
+	bias2out.resize(len);
+
+	for (int c = 0; c < depth_in; c++)
+	{
+		for (int y = 0; y < height_out; y++)
+		{
+			for (int x = 0; x < width_out; x++)
+			{
+				int index_out = get_index(x, y, c, width_out, height_out, depth_out);
+				bias2out[c].push_back(index_out);
+			}
+		}
+	}
+}
+
 }
