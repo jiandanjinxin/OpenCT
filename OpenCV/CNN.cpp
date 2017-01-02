@@ -572,4 +572,41 @@ void CNN::calc_bias2out(int width_in, int height_in, int width_out, int height_o
 	}
 }
 
+bool CNN::Forward_C1()
+{
+	init_variable(neuron_C1, 0.0, NUM_NEURON_C1_CNN);
+
+	for (int o = 0; o < NUM_MAP_C1_CNN; o++)
+	{
+		for (int inc = 0; inc < NUM_MAP_INPUT_CNN; inc++)
+		{
+			int addr1 = get_index(0, 0, NUM_MAP_INPUT_CNN * o + inc, WIDTH_KERNEL_CONV_CNN, HEIGHT_KERNEL_CONV_CNN, NUM_MAP_C1_CNN * NUM_MAP_INPUT_CNN);
+			int addr2 = get_index(0, 0, inc, WIDTH_IMAGE_INPUT_CNN, HEIGHT_IMAGE_INPUT_CNN, NUM_MAP_INPUT_CNN);
+			int addr3 = get_index(0, 0, o, WIDTH_IMAGE_C1_CNN, HEIGHT_IMAGE_C1_CNN, NUM_MAP_C1_CNN);
+
+			const double *pw = &weight_C1[0] + addr1;
+			const double *pi = data_single_image + addr2;
+			double *pa = &neuron_C1[0] + addr3;
+
+			for (int y = 0; y < HEIGHT_IMAGE_C1_CNN; y++)
+			{
+				for (int x = 0; x < WIDTH_IMAGE_C1_CNN; x++)
+				{
+					const double *ppw = pw;
+					const double *ppi = pi + y * WIDTH_IMAGE_INPUT_CNN + x;
+					double sum = 0.0;
+
+					for (int y = 0; y < HEIGHT_IMAGE_C1_CNN; y++)
+					{
+						for (int x = 0; x < WIDTH_IMAGE_C1_CNN; x++)
+						{
+
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 }
