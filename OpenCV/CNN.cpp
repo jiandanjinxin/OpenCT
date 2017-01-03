@@ -540,7 +540,7 @@ void CNN::calc_weight2io(int width_in, int height_in, int width_out, int height_
 					for (int dx = 0; dx < dxmax; dx++)
 					{
 						int index_in = get_index(x + dx, y + dy, c, width_in, height_in, depth_in);
-						int index_out = get_index(dstx, dsty, width_out, height_out, depth_out);
+						int index_out = get_index(dstx, dsty, c, width_out, height_out, depth_out);
 
 						std::pair<int, int> pair_;
 						pair_.first = index_in;
@@ -596,17 +596,38 @@ bool CNN::Forward_C1()
 					const double *ppi = pi + y * WIDTH_IMAGE_INPUT_CNN + x;
 					double sum = 0.0;
 
-					for (int y = 0; y < HEIGHT_IMAGE_C1_CNN; y++)
+					for (int wy = 0; wy < HEIGHT_KERNEL_CONV_CNN; wy++)
 					{
-						for (int x = 0; x < WIDTH_IMAGE_C1_CNN; x++)
+						for (int wx = 0; wx < WIDTH_KERNEL_CONV_CNN; wx++)
 						{
-
+							sum += *ppw++ * ppi[wy * WIDTH_IMAGE_INPUT_CNN + wx];
 						}
 					}
+
+					pa[y * WIDTH_IMAGE_C1_CNN + x] += sum;
 				}
 			}
 		}
+
+		int addr3 = get_index(0, 0, o, WIDTH_IMAGE_C1_CNN, HEIGHT_IMAGE_C1_CNN, NUM_MAP_C1_CNN);
+		double *pa = &neuron_C1[0] + addr3;
+		double b = bias_C1[o];
+
+		for (int y = 0; y < HEIGHT_IMAGE_C1_CNN; y++)
+		{
+			for (int x = 0; x < WIDTH_IMAGE_C1_CNN; x++)
+			{
+				pa[y * WIDTH_IMAGE_C1_CNN + x] += b;
+			}
+		}
 	}
+
+	for (int i = 0; i < NUM_NEURON_C1_CNN; i++)
+	{
+		neuron_C1[i] = activation_function_tanh(neuron_C1[i]);
+	}
+
+	return true;
 }
 
 }
