@@ -69,7 +69,7 @@ void CNN::release()
 // connection table [Y.Lecun, 1998 Table 1]
 #define O true
 #define X false
-static const bool tb1[6][16] = {
+static const bool tbl[6][16] = {
 	O, X, X, X, O, O, O, X, X, O, O, O, O, X, O, O,
 	O, O, X, X, X, O, O, O, X, X, O, O, O, O, X, O,
 	O, O, O, X, X, X, O, O, O, X, X, O, X, O, O, O,
@@ -625,6 +625,202 @@ bool CNN::Forward_C1()
 	for (int i = 0; i < NUM_NEURON_C1_CNN; i++)
 	{
 		neuron_C1[i] = activation_function_tanh(neuron_C1[i]);
+	}
+
+	return true;
+}
+
+bool CNN::Forward_S2()
+{
+	init_variable(neuron_S2, 0.0, NUM_NEURON_S2_CNN);
+	double scale_factor = 1.0 / (WIDTH_KERNEL_POOLING_CNN * HEIGHT_KERNEL_POOLING_CNN);
+
+	assert(out2wi_S2.size() == NUM_NEURON_S2_CNN);
+	assert(out2bias_S2.size() == NUM_NEURON_S2_CNN);
+
+	for (int i = 0; i < NUM_NEURON_S2_CNN; i++)
+	{
+		const wi_connections &connections = out2wi_S2[i];
+		neuron_S2[i] = 0;
+
+		for (int index = 0; index < connections.size(); index++)
+		{
+			neuron_S2[i] += weight_S2[connections[index].first] * neuron_C1[connections[index].second];
+		}
+
+		neuron_S2[i] += scale_factor;
+		neuron_S2[i] += bias_S2[out2bias_S2[i]];
+	}
+
+	for (int i = 0; i < NUM_NEURON_S2_CNN; i++)
+	{
+		neuron_S2[i] = activation_function_tanh(neuron_S2[i]);
+	}
+
+	return true;
+}
+
+bool CNN::Forward_C3()
+{
+	init_variable(neuron_C3, 0.0, NUM_NEURON_C3_CNN);
+
+	for (int o = 0; o < NUM_MAP_C3_CNN; o++) {
+		for (int inc = 0; inc < NUM_MAP_S2_CNN; inc++) {
+			if (!tbl[inc][o]) continue;
+
+			int addr1 = get_index(0, 0, NUM_MAP_S2_CNN * o + inc, WIDTH_KERNEL_CONV_CNN, HEIGHT_KERNEL_CONV_CNN, NUM_MAP_C3_CNN * NUM_MAP_S2_CNN);
+			int addr2 = get_index(0, 0, inc, WIDTH_IMAGE_S2_CNN, HEIGHT_IMAGE_S2_CNN, NUM_MAP_S2_CNN);
+			int addr3 = get_index(0, 0, o, WIDTH_IMAGE_C3_CNN, HEIGHT_IMAGE_C3_CNN, NUM_MAP_C3_CNN);
+
+			const double *pw = &weight_C3[0] + addr1;
+			const double *pi = &neuron_S2[0] + addr2;
+			double *pa = &neuron_C3[0] + addr3;
+
+			for (int y = 0; y < HEIGHT_IMAGE_C3_CNN; y++) {
+				for (int x = 0; x < WIDTH_IMAGE_C3_CNN; x++) {
+					const double *ppw = pw;
+					const double *ppi = pi + y * WIDTH_IMAGE_S2_CNN + x;
+					double sum = 0.0;
+
+					for (int wy = 0; wy < HEIGHT_KERNEL_CONV_CNN; wy++) {
+						for (int wx = 0; wx < WIDTH_KERNEL_CONV_CNN; wx++) {
+							sum += *ppw++ * ppi[wy * WIDTH_IMAGE_S2_CNN + wx];
+						}
+					}
+
+					pa[y * WIDTH_IMAGE_C3_CNN + x] += sum;
+				}
+			}
+		}
+
+		int addr3 = get_index(0, 0, o, WIDTH_IMAGE_C3_CNN, HEIGHT_IMAGE_C3_CNN, NUM_MAP_C3_CNN);
+		double* pa = &neuron_C3[0] + addr3;
+		double b = bias_C3[o];
+		for (int y = 0; y < HEIGHT_IMAGE_C3_CNN; y++) {
+			for (int x = 0; x < WIDTH_IMAGE_C3_CNN; x++) {
+				pa[y * WIDTH_IMAGE_C3_CNN + x] += b;
+			}
+		}
+	}
+
+	for (int i = 0; i < NUM_NEURON_C3_CNN; i++) {
+		neuron_C3[i] = activation_function_tanh(neuron_C3[i]);
+	}
+
+	return true;
+}
+
+bool CNN::Forward_S4()
+{
+	double scale_factor = 1.0 / (WIDTH_KERNEL_POOLING_CNN * HEIGHT_KERNEL_POOLING_CNN);
+	init_variable(neuron_S4, 0.0, NUM_NEURON_S4_CNN);
+
+	assert(out2wi_S4.size() == NUM_NEURON_S4_CNN);
+	assert(out2bias_S4.size() == NUM_NEURON_S4_CNN);
+
+	for (int i = 0; i < NUM_NEURON_S4_CNN; i++) {
+		const wi_connections& connections = out2wi_S4[i];
+		neuron_S4[i] = 0.0;
+
+		for (int index = 0; index < connections.size(); index++) {
+			neuron_S4[i] += weight_S4[connections[index].first] * neuron_C3[connections[index].second];
+		}
+
+		neuron_S4[i] *= scale_factor;
+		neuron_S4[i] += bias_S4[out2bias_S4[i]];
+	}
+
+	for (int i = 0; i < NUM_NEURON_S4_CNN; i++) {
+		neuron_S4[i] = activation_function_tanh(neuron_S4[i]);
+	}
+
+	return true;
+}
+
+bool CNN::Forward_C5()
+{
+	init_variable(neuron_C5, 0.0, NUM_NEURON_C5_CNN);
+
+	for (int o = 0; o < NUM_MAP_C5_CNN; o++) {
+		for (int inc = 0; inc < NUM_MAP_S4_CNN; inc++) {
+			int addr1 = get_index(0, 0, NUM_MAP_S4_CNN * o + inc, WIDTH_KERNEL_CONV_CNN, HEIGHT_KERNEL_CONV_CNN, NUM_MAP_C5_CNN * NUM_MAP_S4_CNN);
+			int addr2 = get_index(0, 0, inc, WIDTH_IMAGE_S4_CNN, HEIGHT_IMAGE_S4_CNN, NUM_MAP_S4_CNN);
+			int addr3 = get_index(0, 0, o, WIDTH_IMAGE_C5_CNN, HEIGHT_IMAGE_C5_CNN, NUM_MAP_C5_CNN);
+
+			const double *pw = &weight_C5[0] + addr1;
+			const double *pi = &neuron_S4[0] + addr2;
+			double *pa = &neuron_C5[0] + addr3;
+
+			for (int y = 0; y < HEIGHT_IMAGE_C5_CNN; y++) {
+				for (int x = 0; x < WIDTH_IMAGE_C5_CNN; x++) {
+					const double *ppw = pw;
+					const double *ppi = pi + y * WIDTH_IMAGE_S4_CNN + x;
+					double sum = 0.0;
+
+					for (int wy = 0; wy < HEIGHT_KERNEL_CONV_CNN; wy++) {
+						for (int wx = 0; wx < WIDTH_KERNEL_CONV_CNN; wx++) {
+							sum += *ppw++ * ppi[wy * WIDTH_IMAGE_S4_CNN + wx];
+						}
+					}
+
+					pa[y * WIDTH_IMAGE_C5_CNN + x] += sum;
+				}
+			}
+		}
+
+		int addr3 = get_index(0, 0, o, WIDTH_IMAGE_C5_CNN, HEIGHT_IMAGE_C5_CNN, NUM_MAP_C5_CNN);
+		double *pa = &neuron_C5[0] + addr3;
+		double b = bias_C5[o];
+		for (int y = 0; y < HEIGHT_IMAGE_C5_CNN; y++) {
+			for (int x = 0; x < WIDTH_IMAGE_C5_CNN; x++) {
+				pa[y * WIDTH_IMAGE_C5_CNN + x] += b;
+			}
+		}
+	}
+
+	for (int i = 0; i < NUM_NEURON_C5_CNN; i++) {
+		neuron_C5[i] = activation_function_tanh(neuron_C5[i]);
+	}
+
+	return true;
+}
+
+bool CNN::Forward_output()
+{
+	init_variable(neuron_output, 0.0, NUM_NEURON_OUTPUT_CNN);
+
+	for (int i = 0; i < NUM_NEURON_OUTPUT_CNN; i++) {
+		neuron_output[i] = 0.0;
+
+		for (int c = 0; c < NUM_NEURON_C5_CNN; c++) {
+			neuron_output[i] += weight_output[c * NUM_NEURON_OUTPUT_CNN + i] * neuron_C5[c];
+		}
+
+		neuron_output[i] += bias_output[i];
+	}
+
+	for (int i = 0; i < NUM_NEURON_OUTPUT_CNN; i++) {
+		neuron_output[i] = activation_function_tanh(neuron_output[i]);
+	}
+
+	return true;
+}
+
+bool CNN::Backward_output()
+{
+	init_variable(delta_neuron_output, 0.0, NUM_NEURON_OUTPUT_CNN);
+
+	double dE_dy[NUM_NEURON_OUTPUT_CNN];
+	init_variable(dE_dy, 0.0, NUM_NEURON_OUTPUT_CNN);
+	loss_function_gradient(neuron_output, data_single_label, dE_dy, NUM_NEURON_OUTPUT_CNN); // ËðÊ§º¯Êý: mean squared error(¾ù·½²î)  
+
+	// delta = dE/da = (dE/dy) * (dy/da)  
+	for (int i = 0; i < NUM_NEURON_OUTPUT_CNN; i++) {
+		double dy_da[NUM_NEURON_OUTPUT_CNN];
+		init_variable(dy_da, 0.0, NUM_NEURON_OUTPUT_CNN);
+
+		dy_da[i] = activation_function_tanh_derivative(neuron_output[i]);
+		delta_neuron_output[i] = dot_product(dE_dy, dy_da, NUM_NEURON_OUTPUT_CNN);
 	}
 
 	return true;
