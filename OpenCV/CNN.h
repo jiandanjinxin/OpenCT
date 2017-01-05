@@ -18,6 +18,8 @@ namespace CNN {
 #define HEIGHT_IMAGE_S4_CNN       5
 #define WIDTH_IMAGE_C5_CNN        1
 #define HEIGHT_IMAGE_C5_CNN       1
+#define WIDTH_IMAGE_OUTPUT_CNN    1
+#define HEIGHT_IMAGE_OUTPUT_CNN   1
 
 #define WIDTH_KERNEL_CONV_CNN     5  // ¾í»ýºË
 #define HEIGHT_KERNEL_CONV_CNN    5

@@ -1177,5 +1177,381 @@ bool CNN::Backward_input()
 	return true;
 }
 
+void CNN::update_weights_bias(const double *delta, double *e_weight, double *weight, int len)
+{
+	for (int i = 0; i < len; i++)
+	{
+		e_weight[i] += delta[i] * delta[i];
+		weight[i] -= LEARNING_RATE_CNN * delta[i] / (std::sqrt(e_weight[i]) + EPS_CNN);
+	}
+}
+
+bool CNN::UpdateWeights()
+{
+	update_weights_bias(delta_weight_C1, E_weight_C1, weight_C1, LEN_WEIGHT_C1_CNN);
+	update_weights_bias(delta_bias_C1, E_bias_C1, bias_C1, LEN_BIAS_C1_CNN);
+
+	update_weights_bias(delta_weight_S2, E_weight_S2, weight_S2, LEN_WEIGHT_S2_CNN);
+	update_weights_bias(delta_bias_S2, E_bias_S2, bias_S2, LEN_BIAS_S2_CNN);
+
+	update_weights_bias(delta_weight_C3, E_weight_C3, weight_C3, LEN_WEIGHT_C3_CNN);
+	update_weights_bias(delta_bias_C3, E_bias_C3, bias_C3, LEN_BIAS_C3_CNN);
+
+	update_weights_bias(delta_weight_S4, E_weight_S4, weight_S4, LEN_WEIGHT_S4_CNN);
+	update_weights_bias(delta_bias_S4, E_bias_S4, bias_S4, LEN_BIAS_S4_CNN);
+
+	update_weights_bias(delta_weight_C5, E_weight_C5, weight_C5, LEN_WEIGHT_C5_CNN);
+	update_weights_bias(delta_bias_C5, E_bias_C5, bias_C5, LEN_BIAS_C5_CNN);
+
+	update_weights_bias(delta_weight_output, E_weight_output, weight_output, LEN_WEIGHT_OUTPUT_CNN);
+	update_weights_bias(delta_bias_output, E_bias_output, bias_output, LEN_BIAS_OUTPUT_CNN);
+
+	return true;
+}
+
+int CNN::predict(const unsigned char *data, int width, int height)
+{
+	assert(data && width == WIDTH_IMAGE_INPUT_CNN && height == HEIGHT_IMAGE_INPUT_CNN);
+
+	const double scale_min = -1;
+	const double scale_max = 1;
+
+	double tmp[WIDTH_IMAGE_INPUT_CNN * HEIGHT_IMAGE_INPUT_CNN];
+	for (int y = 0; y < height; y++)
+	{
+		for (int x = 0; x < width; x++)
+		{
+			tmp[y * width + x] = (data[y * width + x] / 255.0) * (scale_max - scale_min) + scale_min;
+		}
+	}
+
+	data_single_image = &tmp[0];
+
+	Forward_C1();
+	Forward_S2();
+	Forward_C3();
+	Forward_S4();
+	Forward_C5();
+	Forward_output();
+
+	int pos = -1;
+	double max_value = -9999.0;
+
+	for (int i = 0; i < NUM_NEURON_OUTPUT_CNN; i++)
+	{
+		if (neuron_output[i] > max_value)
+		{
+			max_value = neuron_output[i];
+			pos = i;
+		}
+	}
+
+	return pos;
+}
+
+bool CNN::readModelFile(const char *name)
+{
+	FILE* fp = fopen(name, "rb");
+	if (fp == NULL) {
+		return false;
+	}
+
+	int width_image_input = 0;
+	int height_image_input = 0;
+	int width_image_C1 = 0;
+	int height_image_C1 = 0;
+	int width_image_S2 = 0;
+	int height_image_S2 = 0;
+	int width_image_C3 = 0;
+	int height_image_C3 = 0;
+	int width_image_S4 = 0;
+	int height_image_S4 = 0;
+	int width_image_C5 = 0;
+	int height_image_C5 = 0;
+	int width_image_output = 0;
+	int height_image_output = 0;
+
+	int width_kernel_conv = 0;
+	int height_kernel_conv = 0;
+	int width_kernel_pooling = 0;
+	int height_kernel_pooling = 0;
+
+	int num_map_input = 0;
+	int num_map_C1 = 0;
+	int num_map_S2 = 0;
+	int num_map_C3 = 0;
+	int num_map_S4 = 0;
+	int num_map_C5 = 0;
+	int num_map_output = 0;
+
+	int len_weight_C1 = 0;
+	int len_bias_C1 = 0;
+	int len_weight_S2 = 0;
+	int len_bias_S2 = 0;
+	int len_weight_C3 = 0;
+	int len_bias_C3 = 0;
+	int len_weight_S4 = 0;
+	int len_bias_S4 = 0;
+	int len_weight_C5 = 0;
+	int len_bias_C5 = 0;
+	int len_weight_output = 0;
+	int len_bias_output = 0;
+
+	int num_neuron_input = 0;
+	int num_neuron_C1 = 0;
+	int num_neuron_S2 = 0;
+	int num_neuron_C3 = 0;
+	int num_neuron_S4 = 0;
+	int num_neuron_C5 = 0;
+	int num_neuron_output = 0;
+
+	fread(&width_image_input, sizeof(int), 1, fp);
+	fread(&height_image_input, sizeof(int), 1, fp);
+	fread(&width_image_C1, sizeof(int), 1, fp);
+	fread(&height_image_C1, sizeof(int), 1, fp);
+	fread(&width_image_S2, sizeof(int), 1, fp);
+	fread(&height_image_S2, sizeof(int), 1, fp);
+	fread(&width_image_C3, sizeof(int), 1, fp);
+	fread(&height_image_C3, sizeof(int), 1, fp);
+	fread(&width_image_S4, sizeof(int), 1, fp);
+	fread(&height_image_S4, sizeof(int), 1, fp);
+	fread(&width_image_C5, sizeof(int), 1, fp);
+	fread(&height_image_C5, sizeof(int), 1, fp);
+	fread(&width_image_output, sizeof(int), 1, fp);
+	fread(&height_image_output, sizeof(int), 1, fp);
+
+	fread(&width_kernel_conv, sizeof(int), 1, fp);
+	fread(&height_kernel_conv, sizeof(int), 1, fp);
+	fread(&width_kernel_pooling, sizeof(int), 1, fp);
+	fread(&height_kernel_pooling, sizeof(int), 1, fp);
+
+	fread(&num_map_input, sizeof(int), 1, fp);
+	fread(&num_map_C1, sizeof(int), 1, fp);
+	fread(&num_map_S2, sizeof(int), 1, fp);
+	fread(&num_map_C3, sizeof(int), 1, fp);
+	fread(&num_map_S4, sizeof(int), 1, fp);
+	fread(&num_map_C5, sizeof(int), 1, fp);
+	fread(&num_map_output, sizeof(int), 1, fp);
+
+	fread(&len_weight_C1, sizeof(int), 1, fp);
+	fread(&len_bias_C1, sizeof(int), 1, fp);
+	fread(&len_weight_S2, sizeof(int), 1, fp);
+	fread(&len_bias_S2, sizeof(int), 1, fp);
+	fread(&len_weight_C3, sizeof(int), 1, fp);
+	fread(&len_bias_C3, sizeof(int), 1, fp);
+	fread(&len_weight_S4, sizeof(int), 1, fp);
+	fread(&len_bias_S4, sizeof(int), 1, fp);
+	fread(&len_weight_C5, sizeof(int), 1, fp);
+	fread(&len_bias_C5, sizeof(int), 1, fp);
+	fread(&len_weight_output, sizeof(int), 1, fp);
+	fread(&len_bias_output, sizeof(int), 1, fp);
+
+	fread(&num_neuron_input, sizeof(int), 1, fp);
+	fread(&num_neuron_C1, sizeof(int), 1, fp);
+	fread(&num_neuron_S2, sizeof(int), 1, fp);
+	fread(&num_neuron_C3, sizeof(int), 1, fp);
+	fread(&num_neuron_S4, sizeof(int), 1, fp);
+	fread(&num_neuron_C5, sizeof(int), 1, fp);
+	fread(&num_neuron_output, sizeof(int), 1, fp);
+
+	fread(weight_C1, sizeof(weight_C1), 1, fp);
+	fread(bias_C1, sizeof(bias_C1), 1, fp);
+	fread(weight_S2, sizeof(weight_S2), 1, fp);
+	fread(bias_S2, sizeof(bias_S2), 1, fp);
+	fread(weight_C3, sizeof(weight_C3), 1, fp);
+	fread(bias_C3, sizeof(bias_C3), 1, fp);
+	fread(weight_S4, sizeof(weight_S4), 1, fp);
+	fread(bias_S4, sizeof(bias_S4), 1, fp);
+	fread(weight_C5, sizeof(weight_C5), 1, fp);
+	fread(bias_C5, sizeof(bias_C5), 1, fp);
+	fread(weight_output, sizeof(weight_output), 1, fp);
+	fread(bias_output, sizeof(bias_output), 1, fp);
+
+	fflush(fp);
+	fclose(fp);
+
+	out2wi_S2.clear();
+	out2bias_S2.clear();
+	out2wi_S4.clear();
+	out2bias_S4.clear();
+
+	calc_out2wi(WIDTH_IMAGE_C1_CNN, HEIGHT_IMAGE_C1_CNN, WIDTH_IMAGE_S2_CNN, HEIGHT_IMAGE_S2_CNN, NUM_MAP_S2_CNN, out2wi_S2);
+	calc_out2bias(WIDTH_IMAGE_S2_CNN, HEIGHT_IMAGE_S2_CNN, NUM_MAP_S2_CNN, out2bias_S2);
+	calc_out2wi(WIDTH_IMAGE_C3_CNN, HEIGHT_IMAGE_C3_CNN, WIDTH_IMAGE_S4_CNN, HEIGHT_IMAGE_S4_CNN, NUM_MAP_S4_CNN, out2wi_S4);
+	calc_out2bias(WIDTH_IMAGE_S4_CNN, HEIGHT_IMAGE_S4_CNN, NUM_MAP_S4_CNN, out2bias_S4);
+
+	return true;
+}
+
+bool CNN::saveModelFile(const char *name)
+{
+	FILE* fp = fopen(name, "wb");
+	if (fp == NULL) {
+		return false;
+	}
+
+	int width_image_input = WIDTH_IMAGE_INPUT_CNN;
+	int height_image_input = HEIGHT_IMAGE_INPUT_CNN;
+	int width_image_C1 = WIDTH_IMAGE_C1_CNN;
+	int height_image_C1 = HEIGHT_IMAGE_C1_CNN;
+	int width_image_S2 = WIDTH_IMAGE_S2_CNN;
+	int height_image_S2 = HEIGHT_IMAGE_S2_CNN;
+	int width_image_C3 = WIDTH_IMAGE_C3_CNN;
+	int height_image_C3 = HEIGHT_IMAGE_C3_CNN;
+	int width_image_S4 = WIDTH_IMAGE_S4_CNN;
+	int height_image_S4 = HEIGHT_IMAGE_S4_CNN;
+	int width_image_C5 = WIDTH_IMAGE_C5_CNN;
+	int height_image_C5 = HEIGHT_IMAGE_C5_CNN;
+	int width_image_output = WIDTH_IMAGE_OUTPUT_CNN;
+	int height_image_output = HEIGHT_IMAGE_OUTPUT_CNN;
+
+	int width_kernel_conv = WIDTH_KERNEL_CONV_CNN;
+	int height_kernel_conv = HEIGHT_KERNEL_CONV_CNN;
+	int width_kernel_pooling = WIDTH_KERNEL_POOLING_CNN;
+	int height_kernel_pooling = HEIGHT_KERNEL_POOLING_CNN;
+
+	int num_map_input = NUM_MAP_INPUT_CNN;
+	int num_map_C1 = NUM_MAP_C1_CNN;
+	int num_map_S2 = NUM_MAP_S2_CNN;
+	int num_map_C3 = NUM_MAP_C3_CNN;
+	int num_map_S4 = NUM_MAP_S4_CNN;
+	int num_map_C5 = NUM_MAP_C5_CNN;
+	int num_map_output = NUM_MAP_OUTPUT_CNN;
+
+	int len_weight_C1 = LEN_WEIGHT_C1_CNN;
+	int len_bias_C1 = LEN_BIAS_C1_CNN;
+	int len_weight_S2 = LEN_WEIGHT_S2_CNN;
+	int len_bias_S2 = LEN_BIAS_S2_CNN;
+	int len_weight_C3 = LEN_WEIGHT_C3_CNN;
+	int len_bias_C3 = LEN_BIAS_C3_CNN;
+	int len_weight_S4 = LEN_WEIGHT_S4_CNN;
+	int len_bias_S4 = LEN_BIAS_S4_CNN;
+	int len_weight_C5 = LEN_WEIGHT_C5_CNN;
+	int len_bias_C5 = LEN_BIAS_C5_CNN;
+	int len_weight_output = LEN_WEIGHT_OUTPUT_CNN;
+	int len_bias_output = LEN_BIAS_OUTPUT_CNN;
+
+	int num_neuron_input = NUM_NEURON_INPUT_CNN;
+	int num_neuron_C1 = NUM_NEURON_C1_CNN;
+	int num_neuron_S2 = NUM_NEURON_S2_CNN;
+	int num_neuron_C3 = NUM_NEURON_C3_CNN;
+	int num_neuron_S4 = NUM_NEURON_S4_CNN;
+	int num_neuron_C5 = NUM_NEURON_C5_CNN;
+	int num_neuron_output = NUM_NEURON_OUTPUT_CNN;
+
+	fwrite(&width_image_input, sizeof(int), 1, fp);
+	fwrite(&height_image_input, sizeof(int), 1, fp);
+	fwrite(&width_image_C1, sizeof(int), 1, fp);
+	fwrite(&height_image_C1, sizeof(int), 1, fp);
+	fwrite(&width_image_S2, sizeof(int), 1, fp);
+	fwrite(&height_image_S2, sizeof(int), 1, fp);
+	fwrite(&width_image_C3, sizeof(int), 1, fp);
+	fwrite(&height_image_C3, sizeof(int), 1, fp);
+	fwrite(&width_image_S4, sizeof(int), 1, fp);
+	fwrite(&height_image_S4, sizeof(int), 1, fp);
+	fwrite(&width_image_C5, sizeof(int), 1, fp);
+	fwrite(&height_image_C5, sizeof(int), 1, fp);
+	fwrite(&width_image_output, sizeof(int), 1, fp);
+	fwrite(&height_image_output, sizeof(int), 1, fp);
+
+	fwrite(&width_kernel_conv, sizeof(int), 1, fp);
+	fwrite(&height_kernel_conv, sizeof(int), 1, fp);
+	fwrite(&width_kernel_pooling, sizeof(int), 1, fp);
+	fwrite(&height_kernel_pooling, sizeof(int), 1, fp);
+
+	fwrite(&num_map_input, sizeof(int), 1, fp);
+	fwrite(&num_map_C1, sizeof(int), 1, fp);
+	fwrite(&num_map_S2, sizeof(int), 1, fp);
+	fwrite(&num_map_C3, sizeof(int), 1, fp);
+	fwrite(&num_map_S4, sizeof(int), 1, fp);
+	fwrite(&num_map_C5, sizeof(int), 1, fp);
+	fwrite(&num_map_output, sizeof(int), 1, fp);
+
+	fwrite(&len_weight_C1, sizeof(int), 1, fp);
+	fwrite(&len_bias_C1, sizeof(int), 1, fp);
+	fwrite(&len_weight_S2, sizeof(int), 1, fp);
+	fwrite(&len_bias_S2, sizeof(int), 1, fp);
+	fwrite(&len_weight_C3, sizeof(int), 1, fp);
+	fwrite(&len_bias_C3, sizeof(int), 1, fp);
+	fwrite(&len_weight_S4, sizeof(int), 1, fp);
+	fwrite(&len_bias_S4, sizeof(int), 1, fp);
+	fwrite(&len_weight_C5, sizeof(int), 1, fp);
+	fwrite(&len_bias_C5, sizeof(int), 1, fp);
+	fwrite(&len_weight_output, sizeof(int), 1, fp);
+	fwrite(&len_bias_output, sizeof(int), 1, fp);
+
+	fwrite(&num_neuron_input, sizeof(int), 1, fp);
+	fwrite(&num_neuron_C1, sizeof(int), 1, fp);
+	fwrite(&num_neuron_S2, sizeof(int), 1, fp);
+	fwrite(&num_neuron_C3, sizeof(int), 1, fp);
+	fwrite(&num_neuron_S4, sizeof(int), 1, fp);
+	fwrite(&num_neuron_C5, sizeof(int), 1, fp);
+	fwrite(&num_neuron_output, sizeof(int), 1, fp);
+
+	fwrite(weight_C1, sizeof(weight_C1), 1, fp);
+	fwrite(bias_C1, sizeof(bias_C1), 1, fp);
+	fwrite(weight_S2, sizeof(weight_S2), 1, fp);
+	fwrite(bias_S2, sizeof(bias_S2), 1, fp);
+	fwrite(weight_C3, sizeof(weight_C3), 1, fp);
+	fwrite(bias_C3, sizeof(bias_C3), 1, fp);
+	fwrite(weight_S4, sizeof(weight_S4), 1, fp);
+	fwrite(bias_S4, sizeof(bias_S4), 1, fp);
+	fwrite(weight_C5, sizeof(weight_C5), 1, fp);
+	fwrite(bias_C5, sizeof(bias_C5), 1, fp);
+	fwrite(weight_output, sizeof(weight_output), 1, fp);
+	fwrite(bias_output, sizeof(bias_output), 1, fp);
+
+	fflush(fp);
+	fclose(fp);
+
+	return true;
+}
+
+double CNN::test()
+{
+	int count_accuracy = 0;
+
+	for (int num = 0; num < NUM_PATTERNS_TEST_CNN; num++)
+	{
+		data_single_image = data_input_test + num * NUM_NEURON_INPUT_CNN;
+		data_single_label = data_output_test + num * NUM_NEURON_OUTPUT_CNN;
+
+		Forward_C1();
+		Forward_S2();
+		Forward_C3();
+		Forward_S4();
+		Forward_C5();
+		Forward_output();
+
+		int pos_t = -1;
+		int pos_y = -2;
+		double max_value_t = -9999.0;
+		double max_value_y = -9999.0;
+
+		for (int i = 0; i < NUM_NEURON_OUTPUT_CNN; i++)
+		{
+			if (neuron_output[i] > max_value_y)
+			{
+				max_value_y = neuron_output[i];
+				pos_y = i;
+			}
+
+			if (data_single_label[i] > max_value_t)
+			{
+				max_value_t = data_single_label[i];
+				pos_t = i;
+			}
+		}
+
+		if (pos_y == pos_t)
+		{
+			++count_accuracy;
+		}
+
+		Sleep(1);
+	}
+
+	return (count_accuracy * 1.0 / NUM_PATTERNS_TEST_CNN);
+}
 
 }
