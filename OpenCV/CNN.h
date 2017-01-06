@@ -37,7 +37,7 @@ namespace CNN {
 
 #define NUM_PATTERNS_TRAIN_CNN    60000
 #define NUM_PATTERNS_TEST_CNN     10000
-#define NUM_EPOCHS_CNN            100
+#define NUM_EPOCHS_CNN            10
 #define ACCURACY_RATE_CNN         0.985
 #define LEARNING_RATE_CNN         0.01
 #define EPS_CNN                   1e-8

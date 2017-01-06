@@ -277,13 +277,13 @@ bool CNN::getSrcData()
 {
 	assert(data_input_train && data_output_train && data_input_test && data_output_test);
 
-	std::string filename_train_images = "data/train-images.idx3-ubyte";
-	std::string filename_train_labels = "data/train-labels.idx1-ubyte";
+	std::string filename_train_images = "data//train-images.idx3-ubyte";
+	std::string filename_train_labels = "data//train-labels.idx1-ubyte";
 	readMnistImages(filename_train_images, data_input_train, NUM_PATTERNS_TRAIN_CNN);
 	readMnistLabels(filename_train_labels, data_output_train, NUM_PATTERNS_TRAIN_CNN);
 
-	std::string filename_test_images = "data/t10k-images.idx3-ubyte";
-	std::string filename_test_labels = "data/t10k-labels.idx1-ubyte";
+	std::string filename_test_images = "data//t10k-images.idx3-ubyte";
+	std::string filename_test_labels = "data//t10k-labels.idx1-ubyte";
 	readMnistImages(filename_test_images, data_input_test, NUM_PATTERNS_TEST_CNN);
 	readMnistLabels(filename_test_labels, data_output_test, NUM_PATTERNS_TEST_CNN);
 

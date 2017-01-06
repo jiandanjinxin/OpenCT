@@ -2,6 +2,7 @@
 #include "HDcmFileFormat.h"
 #include "HBmpConvert.h"
 #include "HLymphHOG.h"
+#include "CNN.h"
 
 #include "ximage.h"
 
@@ -50,6 +51,16 @@ void split(const string& src, const string& separator, vector<string>& dest)
 	substring = str.substr(start);
 	dest.push_back(substring);
 }
+
+int test_CNN_train()
+{
+	CNN::CNN cnn1;
+	cnn1.init();
+	cnn1.train();
+
+	return 0;
+}
+
 
 int main()
 {
@@ -252,7 +263,7 @@ int main()
 		printf("文件总数: %d\n", file_vec.size());  // 176
 	}
 
-
+	test_CNN_train();
 
 	return 0;
 }
