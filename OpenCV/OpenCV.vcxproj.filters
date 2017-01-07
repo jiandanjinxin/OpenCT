@@ -65,6 +65,12 @@
     <None Include="DCMTK.Debug.props">
       <Filter>资源文件\OpenCV_props</Filter>
     </None>
+    <None Include="CxImage.Release.props">
+      <Filter>资源文件\OpenCV_props</Filter>
+    </None>
+    <None Include="DCMTK.Release.props">
+      <Filter>资源文件\OpenCV_props</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HUtil.h">

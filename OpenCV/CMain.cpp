@@ -17,7 +17,7 @@
 #include "dcmtk/dcmdata/dcvrfd.h"
 #include "dcmtk/dcmdata/dcistrmf.h"
 
-//#include "TestLib.h"
+#include "TestLib.h"
 
 using namespace THU_STD_NAMESPACE; // 加载DCM格式转换命名空间
 using namespace std;
@@ -266,7 +266,7 @@ int main()
 	}
 
 	//test_CNN_train();
-	//Print();
+	Print();
 	system("pause");
 	return 0;
 }

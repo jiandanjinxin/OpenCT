@@ -37,12 +37,14 @@
     <Import Project="opecv2413x86.Debug.props" />
     <Import Project="CxImage.Debug.props" />
     <Import Project="DCMTK.Debug.props" />
+    <Import Project="EasyCNN.Debug.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="opecv2413x86.Release.props" />
     <Import Project="CxImage.Release.props" />
     <Import Project="DCMTK.Release.props" />
+    <Import Project="EasyCNN.Release.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -58,13 +60,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../EasyCNN/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\MFC\Samples\OpenCV\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalOptions>EasyCNN.lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -98,7 +99,9 @@
   <ItemGroup>
     <None Include="..\README.md" />
     <None Include="CxImage.Debug.props" />
+    <None Include="CxImage.Release.props" />
     <None Include="DCMTK.Debug.props" />
+    <None Include="DCMTK.Release.props" />
     <None Include="opecv2413x86.Debug.props" />
     <None Include="opecv2413x86.Release.props" />
   </ItemGroup>
