@@ -17,12 +17,14 @@
 #include "dcmtk/dcmdata/dcvrfd.h"
 #include "dcmtk/dcmdata/dcistrmf.h"
 
+//#include "TestLib.h"
+
 using namespace THU_STD_NAMESPACE; // 加载DCM格式转换命名空间
 using namespace std;
 
 #define DirGenerationDcm false     // dcm全部数据的文件目录生成
 #define DirGenerationPixel false   // dcm真实样本像素坐标文件目录生成
-#define DcmToBmp false             // 是否进行dcm到bmp的格式转换，附：一般性图像格式转换可以调用CxImage
+#define DcmToBmp true             // 是否进行dcm到bmp的格式转换，附：一般性图像格式转换可以调用CxImage
 #define PixelRecords false         // 对所有真实像素坐标进行遍历
 #define CandidateGenerateNeg false  // 对所有数据坐标文件进行正负类标记文件生成
 #define CandidateGeneratePos false  // 对所有数据坐标文件进行正负类标记文件生成
@@ -104,7 +106,7 @@ int main()
 		int count = 0;
 
 		// 循环遍历所有dcm文件
-		while ( getline(finDcm, ImgName) )
+		while ( getline(finDcm, ImgName) && count < 1 )
 		{
 			count++; // 记录转换的文件数量
 
@@ -263,8 +265,9 @@ int main()
 		printf("文件总数: %d\n", file_vec.size());  // 176
 	}
 
-	test_CNN_train();
-
+	//test_CNN_train();
+	//Print();
+	system("pause");
 	return 0;
 }
 
