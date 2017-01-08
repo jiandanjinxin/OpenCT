@@ -24,7 +24,7 @@ using namespace std;
 
 #define DirGenerationDcm false     // dcm全部数据的文件目录生成
 #define DirGenerationPixel false   // dcm真实样本像素坐标文件目录生成
-#define DcmToBmp true             // 是否进行dcm到bmp的格式转换，附：一般性图像格式转换可以调用CxImage
+#define DcmToBmp false             // 是否进行dcm到bmp的格式转换，附：一般性图像格式转换可以调用CxImage
 #define PixelRecords false         // 对所有真实像素坐标进行遍历
 #define CandidateGenerateNeg false  // 对所有数据坐标文件进行正负类标记文件生成
 #define CandidateGeneratePos false  // 对所有数据坐标文件进行正负类标记文件生成
@@ -266,7 +266,10 @@ int main()
 	}
 
 	//test_CNN_train();
-	Print();
+	//Print();
+
+
+
 	system("pause");
 	return 0;
 }
