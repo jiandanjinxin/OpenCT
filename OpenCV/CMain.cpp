@@ -267,10 +267,29 @@ int main()
 
 	//test_CNN_train();
 	//Print();
+	 
+	// 实例化dcm解析类
+	TDcmFileFormat dcm = TDcmFileFormat("000000.dcm");
+	// 获取dcm图像的ImagePositionPatient
+	string result = dcm.getImagePositionPatient();
+	vector<string> ImagePosition;
+	::split(result, "\\", ImagePosition);
+	double value0 = atof(ImagePosition[0].c_str());
+	double value1 = atof(ImagePosition[1].c_str());
+	double value2 = atof(ImagePosition[2].c_str());
+	cout << value0 << " " << value1 << " " << value2 << endl;
 
+	// 获取dcm图像的PixelSpacing
+	string result1 = dcm.getPixelSpacing();
+	vector<string> PixelSpacing;
+	::split(result1, "\\", PixelSpacing);
+	double value3 = atof(PixelSpacing[0].c_str());
+	double value4 = atof(PixelSpacing[1].c_str());
+	cout << value3 << " " << value4 << endl;
 
 
 	system("pause");
+
 	return 0;
 }
 

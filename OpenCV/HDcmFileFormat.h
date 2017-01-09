@@ -22,7 +22,6 @@
 #include "dcmtk/dcmimgle/dcmimage.h"//主要负责图像的显示，如调整窗宽窗位
 //包含系统文件
 
-
 namespace THU_STD_NAMESPACE{
 
 	//define the image buffer type
@@ -168,13 +167,26 @@ namespace THU_STD_NAMESPACE{
 			return DcmRescaleIntercept;
 
 		};
-		inline int getPositionNumber()
-		{
+		inline int getPositionNumber(){
 			const char *tString;
 			this->getDataset()->findAndGetString(DCM_InstanceNumber, tString);
 			int position = atoi(tString);
 
 			return position;
+		};
+		std::string getImagePositionPatient()
+		{
+			const char *tString;
+			this->getDataset()->findAndGetString(DCM_ImagePositionPatient, tString);
+			std::string result(tString);
+			return result;
+		}
+		std::string getPixelSpacing()
+		{
+			const char *tString;
+			this->getDataset()->findAndGetString(DCM_PixelSpacing, tString);
+			std::string result(tString);
+			return result;
 		}
 		void* getPixelData();//获得真实像素数据指针
 
@@ -209,7 +221,8 @@ namespace THU_STD_NAMESPACE{
 		void getImageStreamBySize(BYTE** pImageStream, long& StreamSize, long ImageWidth, long ImageHeight, THUIMAGESTREAMTYPE Type = THU_JPEG);
 
 	public://图像处理函数
-
+		
+				
 		void setWindow();//使用默认的窗宽、窗位
 		void setWindow(const double WindowCenter, const double WindowWidth);//自定义窗宽，窗位
 
