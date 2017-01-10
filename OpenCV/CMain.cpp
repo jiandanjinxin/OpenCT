@@ -28,6 +28,7 @@ using namespace std;
 #define PixelRecords false         // 对所有真实像素坐标进行遍历
 #define CandidateGenerateNeg false  // 对所有数据坐标文件进行正负类标记文件生成
 #define CandidateGeneratePos false  // 对所有数据坐标文件进行正负类标记文件生成
+#define WorldCoordinate true
 
 
 // 字符串split
@@ -265,27 +266,57 @@ int main()
 		printf("文件总数: %d\n", file_vec.size());  // 176
 	}
 
-	//test_CNN_train();
-	//Print();
-	 
-	// 实例化dcm解析类
-	TDcmFileFormat dcm = TDcmFileFormat("000000.dcm");
-	// 获取dcm图像的ImagePositionPatient
-	string result = dcm.getImagePositionPatient();
-	vector<string> ImagePosition;
-	::split(result, "\\", ImagePosition);
-	double value0 = atof(ImagePosition[0].c_str());
-	double value1 = atof(ImagePosition[1].c_str());
-	double value2 = atof(ImagePosition[2].c_str());
-	cout << value0 << " " << value1 << " " << value2 << endl;
+    // 生成世界坐标初始坐标文件
+	if (WorldCoordinate)
+	{
+		//构造类对象  
+		CStatDir statdir;
 
-	// 获取dcm图像的PixelSpacing
-	string result1 = dcm.getPixelSpacing();
-	vector<string> PixelSpacing;
-	::split(result1, "\\", PixelSpacing);
-	double value3 = atof(PixelSpacing[0].c_str());
-	double value4 = atof(PixelSpacing[1].c_str());
-	cout << value3 << " " << value4 << endl;
+		char buf[256] = "F:\\lymph node detection dataset\\DOI";
+		char filename[] = "F:\\lymph node detection dataset\\DATA\\coordinate.txt";
+		ofstream fout(filename);
+		//设置要遍历的目录  
+		if (!statdir.SetInitDir(buf))
+		{
+			puts("目录不存在");
+			return 0;
+		}
+
+		//开始遍历  
+		vector<string> file_vec = statdir.BeginBrowseFilenames("*000000.dcm");
+		for (vector<string>::const_iterator it = file_vec.begin(); it < file_vec.end(); ++it)
+			fout << *it << endl;
+
+		//printf("文件总数: %d\n", file_vec.size());  // 176
+
+		string DcmFileName;
+		ifstream finFile("F:\\lymph node detection dataset\\DATA\\coordinate.txt");
+
+		while (getline(finFile, DcmFileName))
+		{
+			// 实例化dcm解析类
+			TDcmFileFormat dcm = TDcmFileFormat(DcmFileName.c_str());
+			// 获取dcm图像的ImagePositionPatient
+			string result = dcm.getImagePositionPatient();
+			vector<string> ImagePosition;
+			::split(result, "\\", ImagePosition);
+			double value0 = atof(ImagePosition[0].c_str());
+			double value1 = atof(ImagePosition[1].c_str());
+			double value2 = atof(ImagePosition[2].c_str());
+			cout << value0 << " " << value1 << " " << value2 << endl;
+
+			// 获取dcm图像的PixelSpacing
+			string result1 = dcm.getPixelSpacing();
+			vector<string> PixelSpacing;
+			::split(result1, "\\", PixelSpacing);
+			double value3 = atof(PixelSpacing[0].c_str());
+			double value4 = atof(PixelSpacing[1].c_str());
+			cout << value3 << " " << value4 << endl;
+		}
+
+	}
+	 
+	
 
 
 	system("pause");
