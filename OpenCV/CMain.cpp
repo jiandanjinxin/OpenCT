@@ -3,6 +3,7 @@
 #include "HBmpConvert.h"
 #include "HLymphHOG.h"
 #include "CNN.h"
+#include "HCandidate.h"
 
 #include "ximage.h"
 
@@ -28,7 +29,7 @@ using namespace std;
 #define PixelRecords false         // 对所有真实像素坐标进行遍历
 #define CandidateGenerateNeg false  // 对所有数据坐标文件进行正负类标记文件生成
 #define CandidateGeneratePos false  // 对所有数据坐标文件进行正负类标记文件生成
-#define WorldCoordinate true
+#define WorldCoordinate false
 
 
 // 字符串split
@@ -309,14 +310,18 @@ int main()
 			string result1 = dcm.getPixelSpacing();
 			vector<string> PixelSpacing;
 			::split(result1, "\\", PixelSpacing);
-			double value3 = atof(PixelSpacing[0].c_str());
+			double value3 = atof(PixelSpacing[0].c_str());	
 			double value4 = atof(PixelSpacing[1].c_str());
 			cout << value3 << " " << value4 << endl;
+
+			int InstancePosition = dcm.getPositionNumber();
+			cout << InstancePosition << " " << value2 - InstancePosition + 1 << endl;
 		}
 
 	}
 	 
-	
+	Candidate candidate;
+	candidate.WorldCoordinateConvert();
 
 
 	system("pause");
