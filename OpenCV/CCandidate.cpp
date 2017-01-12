@@ -1,8 +1,49 @@
 #include "HCandidate.h"
 
+/*
+* 读取Candidate文件的世界坐标数据,并转换为像素数据，写入pos及neg文件中
+*/
 void Candidate::OutputCandidate()
 {
+	// 根据人数进行遍历
+	string InitData;
+	ifstream finInitData("F:\\lymph node detection dataset\\DATA\\init.txt");
 
+	string PosFileName;
+	ifstream finFile("F:\\lymph node detection dataset\\candidatepos.lst");
+
+	while (getline(finInitData, InitData))
+	{
+		//cout << InitData << endl;
+		vector<string> initData;
+		split(InitData, " ", initData);
+		double initx = atof(initData[0].c_str());
+		double inity = atof(initData[1].c_str());
+		double initz = atof(initData[2].c_str());
+		double pixelstep = atof(initData[3].c_str());
+		// 遍历所有的正例pos的候选集文件，当然要求已经生成记录文件
+		getline(finFile, PosFileName);
+        // cout << PosFileName << endl;
+		string PosCoordidate;
+		ifstream finPos(PosFileName);
+		while (getline(finPos, PosCoordidate))
+		{
+			// cout << PosCoordidate << endl; 每个正例的世界坐标
+			
+			vector<string> posCoordidate;
+			split(PosCoordidate, " ", posCoordidate);
+			double realx = atof(posCoordidate[0].c_str());
+			double realy = atof(posCoordidate[1].c_str());
+			double realz = atof(posCoordidate[2].c_str());
+
+			int pixelx = (int)((realx - initx) / pixelstep + 0.5);
+			int pixely = (int)((realy - inity) / pixelstep + 0.5);
+			int pixelz = (int)(realz - initz);
+
+			cout << pixelx << " " << pixely << " " << pixelz << endl;
+		}
+
+	}
 }
 
 
