@@ -12,6 +12,8 @@ void Candidate::OutputCandidate()
 	string PosFileName;
 	ifstream finFile("F:\\lymph node detection dataset\\candidatepos.lst");
 
+	int count = 0;
+	// 读取每个人员的初始世界坐标
 	while (getline(finInitData, InitData))
 	{
 		//cout << InitData << endl;
@@ -21,9 +23,13 @@ void Candidate::OutputCandidate()
 		double inity = atof(initData[1].c_str());
 		double initz = atof(initData[2].c_str());
 		double pixelstep = atof(initData[3].c_str());
+		double zstep = atof(initData[4].c_str());
+		string PatientName = initData[5];
 		// 遍历所有的正例pos的候选集文件，当然要求已经生成记录文件
+		// 进行正例文件读取
+
 		getline(finFile, PosFileName);
-        // cout << PosFileName << endl;
+        cout << PosFileName << endl;
 		string PosCoordidate;
 		ifstream finPos(PosFileName);
 		while (getline(finPos, PosCoordidate))
@@ -38,9 +44,22 @@ void Candidate::OutputCandidate()
 
 			int pixelx = (int)((realx - initx) / pixelstep + 0.5);
 			int pixely = (int)((realy - inity) / pixelstep + 0.5);
-			int pixelz = (int)(realz - initz);
-
-			cout << pixelx << " " << pixely << " " << pixelz << endl;
+			int pixelz = (int)((realz - initz) / zstep + 0.5);
+			
+			if (pixelz > 0)
+			{
+				cout << pixelx << " " << pixely << " " << pixelz << endl;
+				// 生成pos图像路径
+				char PosBmpName[256];
+				char CandidateImgName[256];
+				sprintf_s(PosBmpName, "F:\\lymph node detection dataset\\DOI\\%s\\%06d.bmp", PatientName.c_str(), pixelz + 1);
+				sprintf_s(CandidateImgName, "F:\\lymph node detection dataset\\DATA\\Pos\\%06d_%s.bmp", ++count, PatientName.c_str());
+				//cout << PosBmpName << endl;
+				//cout << count << endl;
+				BmpConvert bmp = BmpConvert(PosBmpName);
+				bmp.OutputCandidateImage(CandidateImgName, pixelx, pixely);
+				bmp.~BmpConvert();
+			}
 		}
 
 	}
@@ -98,7 +117,22 @@ void Candidate::WorldCoordinateConvert()
 		//cout << InstancePosition << " " << value2 - InstancePosition + 1 << endl;
 		double initz = realz - InstancePosition + 1;
 
-		coordinateout << initx << " " << inity << " " << initz << " " << pixelstep << endl;
+		string PatientName = DcmFileName.substr(36, 13);
+		//cout << PatientName << endl;
+		string DcmFileName1 = DcmFileName.replace(DcmFileName.end() - 5, DcmFileName.end() - 4, "1");
+		//cout << next << endl;
+		TDcmFileFormat dcmnext = TDcmFileFormat(DcmFileName1.c_str());
+		string result2 = dcmnext.getImagePositionPatient();
+		vector<string> ImagePosition1;
+		split(result2, "\\", ImagePosition1);
+
+		double realz1 = atof(ImagePosition1[2].c_str());
+		int InstancePosition1 = dcmnext.getPositionNumber();
+
+		double zstep = (realz1 - realz) / (InstancePosition1 - InstancePosition);
+		cout << zstep << endl;
+
+		coordinateout << initx << " " << inity << " " << initz << " " << pixelstep << " " << zstep << " " << PatientName << endl;
 
 	}
 }

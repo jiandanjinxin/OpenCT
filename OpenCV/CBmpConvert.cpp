@@ -17,6 +17,20 @@ void BmpConvert::InfoShow()
 	cout << image.cols << " " << image.rows << endl;
 }
 
+/*
+* 根据bmp图像的绝对路径及，X坐标及Y坐标，生成32*32的候选集图像
+*/
+void BmpConvert::OutputCandidateImage(const char *filename, int x, int y)
+{
+	Mat croppedImage;
+	// 截取边缘部分
+	Rect roi(x - 16, y - 16, 32, 32);
+	croppedImage = image(roi);
+	imwrite(filename, croppedImage);
+
+	croppedImage.release();
+}
+
 // 裁剪Bmp图像的边缘
 void BmpConvert::CroppedEdge(int x, int y, int CroppedLengthX, int CroppedLengthY)
 {

@@ -26,6 +26,11 @@ class BmpConvert
     // 各类bmp图像处理函数
     public:
 		/*
+		* 根据bmp图像的绝对路径及，X坐标及Y坐标，生成32*32的候选集图像
+		*/
+		void OutputCandidateImage(const char *filename, int x, int y);
+
+		/*
 		* 查看边缘裁剪后的效果，基本在128*96 length 228
 		*/
 		void CroppedEdge(int x, int y, int LengthX, int LengthY);

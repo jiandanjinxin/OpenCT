@@ -321,6 +321,7 @@ int main()
 	}
 	 
 	Candidate candidate;
+	//candidate.WorldCoordinateConvert();
 	candidate.OutputCandidate();
 
 
