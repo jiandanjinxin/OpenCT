@@ -12,6 +12,9 @@ void Candidate::OutputCandidate()
 	string PosFileName;
 	ifstream finFile("F:\\lymph node detection dataset\\candidatepos.lst");
 
+	string NegFileName;
+	ifstream finFileNeg("F:\\lymph node detection dataset\\candidateneg.lst");
+
 	int count = 0;
 	// 读取每个人员的初始世界坐标
 	while (getline(finInitData, InitData))
@@ -27,7 +30,7 @@ void Candidate::OutputCandidate()
 		string PatientName = initData[5];
 		// 遍历所有的正例pos的候选集文件，当然要求已经生成记录文件
 		// 进行正例文件读取
-
+		
 		getline(finFile, PosFileName);
         cout << PosFileName << endl;
 		string PosCoordidate;
@@ -61,7 +64,43 @@ void Candidate::OutputCandidate()
 				bmp.~BmpConvert();
 			}
 		}
+		
+		// 遍历所有的负例neg的候选集文件，当然要求已经生成记录文件
+		// 进行负例文件读取
 
+		getline(finFileNeg, NegFileName);
+		cout << NegFileName << endl;
+		string NegCoordidate;
+		ifstream finNeg(NegFileName);
+		while (getline(finNeg, NegCoordidate))
+		{
+			// cout << PosCoordidate << endl; 每个正例的世界坐标
+
+			vector<string> negCoordidate;
+			split(NegCoordidate, " ", negCoordidate);
+			double realx = atof(negCoordidate[0].c_str());
+			double realy = atof(negCoordidate[1].c_str());
+			double realz = atof(negCoordidate[2].c_str());
+
+			int pixelx = (int)((realx - initx) / pixelstep + 0.5);
+			int pixely = (int)((realy - inity) / pixelstep + 0.5);
+			int pixelz = (int)((realz - initz) / zstep + 0.5);
+
+			if (pixelz > 0)
+			{
+				cout << pixelx << " " << pixely << " " << pixelz << endl;
+				// 生成pos图像路径
+				char NegBmpName[256];
+				char CandidateImgName[256];
+				sprintf_s(NegBmpName, "F:\\lymph node detection dataset\\DOI\\%s\\%06d.bmp", PatientName.c_str(), pixelz + 1);
+				sprintf_s(CandidateImgName, "F:\\lymph node detection dataset\\DATA\\Neg\\%06d_%s.bmp", ++count, PatientName.c_str());
+				//cout << PosBmpName << endl;
+				//cout << count << endl;
+				BmpConvert bmp = BmpConvert(NegBmpName);
+				bmp.OutputCandidateImage(CandidateImgName, pixelx, pixely);
+				bmp.~BmpConvert();
+			}
+		}
 	}
 }
 
