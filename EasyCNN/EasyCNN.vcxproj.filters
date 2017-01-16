@@ -21,5 +21,17 @@
     <ClInclude Include="Configure.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="EasyAssert.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="EasyLogger.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DataBucket.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ParamBucket.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
