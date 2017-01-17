@@ -83,6 +83,7 @@
     <ClInclude Include="DataBucket.h" />
     <ClInclude Include="EasyAssert.h" />
     <ClInclude Include="EasyLogger.h" />
+    <ClInclude Include="Layer.h" />
     <ClInclude Include="ParamBucket.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
