@@ -80,6 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Configure.h" />
+    <ClInclude Include="ConvolutionLayer.h" />
     <ClInclude Include="DataBucket.h" />
     <ClInclude Include="EasyAssert.h" />
     <ClInclude Include="EasyLogger.h" />
