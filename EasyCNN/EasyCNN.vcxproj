@@ -84,6 +84,7 @@
     <ClInclude Include="DataBucket.h" />
     <ClInclude Include="EasyAssert.h" />
     <ClInclude Include="EasyLogger.h" />
+    <ClInclude Include="InputLayer.h" />
     <ClInclude Include="Layer.h" />
     <ClInclude Include="ParamBucket.h" />
   </ItemGroup>

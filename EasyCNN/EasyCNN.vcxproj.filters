@@ -39,5 +39,8 @@
     <ClInclude Include="ConvolutionLayer.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="InputLayer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
