@@ -48,5 +48,8 @@
     <ClInclude Include="ActivationLayer.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="FullconnectLayer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
