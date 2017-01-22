@@ -90,6 +90,7 @@
     <ClInclude Include="Layer.h" />
     <ClInclude Include="ParamBucket.h" />
     <ClInclude Include="PoolingLayer.h" />
+    <ClInclude Include="SoftmaxLayer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
