@@ -54,5 +54,8 @@
     <ClInclude Include="SoftmaxLayer.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="LossFunction.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
