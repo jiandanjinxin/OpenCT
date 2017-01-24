@@ -89,6 +89,7 @@
     <ClInclude Include="InputLayer.h" />
     <ClInclude Include="Layer.h" />
     <ClInclude Include="LossFunction.h" />
+    <ClInclude Include="NetWork.h" />
     <ClInclude Include="ParamBucket.h" />
     <ClInclude Include="PoolingLayer.h" />
     <ClInclude Include="SoftmaxLayer.h" />
