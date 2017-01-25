@@ -63,5 +63,8 @@
     <ClInclude Include="CommonTools.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="EasyCNN.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

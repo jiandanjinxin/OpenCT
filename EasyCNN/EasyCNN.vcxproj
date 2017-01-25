@@ -85,6 +85,7 @@
     <ClInclude Include="ConvolutionLayer.h" />
     <ClInclude Include="DataBucket.h" />
     <ClInclude Include="EasyAssert.h" />
+    <ClInclude Include="EasyCNN.h" />
     <ClInclude Include="EasyLogger.h" />
     <ClInclude Include="FullconnectLayer.h" />
     <ClInclude Include="InputLayer.h" />
