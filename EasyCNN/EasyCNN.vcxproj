@@ -80,6 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ActivationLayer.h" />
+    <ClInclude Include="CommonTools.h" />
     <ClInclude Include="Configure.h" />
     <ClInclude Include="ConvolutionLayer.h" />
     <ClInclude Include="DataBucket.h" />

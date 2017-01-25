@@ -60,5 +60,8 @@
     <ClInclude Include="NetWork.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="CommonTools.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
