@@ -96,6 +96,9 @@
     <ClInclude Include="PoolingLayer.h" />
     <ClInclude Include="SoftmaxLayer.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DataBucket.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
