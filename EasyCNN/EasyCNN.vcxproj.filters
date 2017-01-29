@@ -77,5 +77,8 @@
     <ClCompile Include="ParamBucket.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="EasyLogger.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
