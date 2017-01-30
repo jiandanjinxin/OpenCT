@@ -100,6 +100,7 @@
     <ClCompile Include="DataBucket.cpp" />
     <ClCompile Include="EasyAssert.cpp" />
     <ClCompile Include="EasyLogger.cpp" />
+    <ClCompile Include="InputLayer.cpp" />
     <ClCompile Include="ParamBucket.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
