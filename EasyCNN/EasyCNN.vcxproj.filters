@@ -83,5 +83,8 @@
     <ClCompile Include="InputLayer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="ConvolutionLayer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
