@@ -124,5 +124,30 @@ void EasyCNN::ConvolutionLayer::forward(const std::shared_ptr<DataBucket> prevDa
 	const DataSize prevDataSize = prevDataBucket->getSize();
 	const DataSize nextDataSize = nextDataBucket->getSize();
 
+	const float* prevRawData = prevDataBucket->getData().get();
+	const float* kernelRawData = kernelData->getData().get();
+	const float* biasRawData = biasData->getData().get();
+	float* nextRawData = nextDataBucket->getData().get();
 
+	// four loop for convolution
+	for (size_t nn = 0; nn < nextDataSize.number; nn++) // number
+	{
+		for (size_t nc = 0; nc < nextDataSize.channels; nc++) // channels
+		{
+			for (size_t nh = 0; nh < nextDataSize.height; nh++) // height
+			{
+				for (size_t nw = 0; nw < nextDataSize.width; nw++) // width
+				{
+					const size_t inStartX = nw * widthStep;
+					const size_t inStartY = nh * heightStep;
+					float sum = 0;
+
+					for (size_t kc = 0; kc < kernelSize.channels; kc++)
+					{
+
+					}
+				}
+			}
+		}
+	}
 }
