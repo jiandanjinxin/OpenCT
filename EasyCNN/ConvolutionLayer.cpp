@@ -144,10 +144,31 @@ void EasyCNN::ConvolutionLayer::forward(const std::shared_ptr<DataBucket> prevDa
 
 					for (size_t kc = 0; kc < kernelSize.channels; kc++)
 					{
+						for (size_t kh = 0; kh < kernelSize.height; kh++)
+						{
+							for (size_t kw = 0; kw < kernelSize.width; kw++)
+							{
+								const size_t prevDataIdx = prevDataSize.getIndex(nn, kc, inStartY + kh, inStartX + kw);
+								const size_t kernelIdx = kernelSize.getIndex(nc, kc, kh, kw);
 
+								sum += prevRawData[prevDataIdx] * kernelRawData[kernelIdx];
+							}
+						}
 					}
+					if (enabledBias)
+					{
+						const size_t biasIdx = nc;
+						sum += biasRawData[biasIdx];
+					}
+					const size_t nextDataIdx = nextDataSize.getIndex(nn, nc, nh, nw);
+					nextRawData[nextDataIdx] = sum;
 				}
 			}
 		}
 	}
+}
+
+void EasyCNN::ConvolutionLayer::backward(std::shared_ptr<DataBucket> prevDataBucket, const std::shared_ptr<DataBucket> nextDataBucket, std::shared_ptr<DataBucket>& nextDiffBucket)
+{
+
 }
