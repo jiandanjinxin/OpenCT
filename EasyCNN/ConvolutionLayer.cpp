@@ -170,5 +170,86 @@ void EasyCNN::ConvolutionLayer::forward(const std::shared_ptr<DataBucket> prevDa
 
 void EasyCNN::ConvolutionLayer::backward(std::shared_ptr<DataBucket> prevDataBucket, const std::shared_ptr<DataBucket> nextDataBucket, std::shared_ptr<DataBucket>& nextDiffBucket)
 {
+	easyAssert(getPhase() == Phase::Train, "backward only in train phase.");
+	const DataSize prevDataSize = prevDataBucket->getSize();
+	const DataSize nextDataSize = nextDataBucket->getSize();
+	const DataSize nextDiffSize = nextDiffBucket->getSize();
+	const ParamSize biasSize = biasData->getSize();
+	const float* prevData = prevDataBucket->getData().get();
+	const float* nextData = nextDataBucket->getData().get();
+	const float* nextDiff = nextDiffBucket->getData().get();
+	float *kernel = kernelData->getData().get();
+	float *bias = biasData->getData().get();
 
+	//update prevDiff data
+	const DataSize prevDiffSize(prevDataSize.number, prevDataSize.channels, prevDataSize.height, prevDataSize.width);
+	std::shared_ptr<DataBucket> prevDiffBucket(std::make_shared<DataBucket>(prevDiffSize));
+	prevDiffBucket->fillData(0.0f);
+	float* prevDiff = prevDiffBucket->getData().get();
+
+	//calculate current inner diff
+	for (size_t pn = 0; pn < prevDataSize.number; pn++)
+	{
+		for (size_t nc = 0; nc < nextDataSize.channels; nc++)
+		{
+			for (size_t nh = 0; nh < nextDataSize.height; nh++)
+			{
+				for (size_t nw = 0; nw < nextDataSize.width; nw++)
+				{
+					const size_t inStartX = nw * widthStep;
+					const size_t inStartY = nh * heightStep;
+					const size_t nextDiffIdx = nextDataSize.getIndex(pn, nc, nh, nw);
+					const size_t kn = nc;
+					for (size_t kc = 0; kc < kernelSize.channels; kc++)
+					{
+						for (size_t kh = 0; kh < kernelSize.height; kh++)
+						{
+							for (size_t kw = 0; kw < kernelSize.width; kw++)
+							{
+								const size_t prevDiffIdx = prevDiffSize.getIndex(pn, kc, inStartY + kh, inStartX + kw);
+								const size_t kernelIdx = kernelSize.getIndex(kn, kc, kh, kw);
+								prevDiff[prevDiffIdx] += kernel[kernelIdx] * nextDiff[nextDiffIdx];
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	//update this layer's param
+	const ParamSize kernelDiffSize(kernelSize);
+	std::shared_ptr<ParamBucket> kernelDiffBucket(std::make_shared<ParamBucket>(kernelDiffSize));
+	kernelDiffBucket->fillData(0.0f);
+	float* kernelDiff = kernelDiffBucket->getData().get();
+
+	//update kernel
+	for (size_t pn = 0; pn < prevDataSize.number; pn++)
+	{
+		for (size_t nc = 0; nc < nextDataSize.channels; nc++)
+		{
+			for (size_t nh = 0; nh < nextDataSize.height; nh++)
+			{
+				for (size_t nw = 0; nw < nextDataSize.width; nw++)
+				{
+					const size_t inStartX = nw * widthStep;
+					const size_t inStartY = nh*heightStep;
+					const size_t nextDiffIdx = nextDataSize.getIndex(pn, nc, nh, nw);
+					const size_t kn = nc;
+					for (size_t kc = 0; kc < kernelSize.channels; kc++)
+					{
+						for (size_t kh = 0; kh < kernelSize.height; kh++)
+						{
+							for (size_t kw = 0; kw < kernelSize.width; kw++)
+							{
+								const size_t kernelDiffIdx = kernelDiffSize.getIndex(kn, kc, kh, kw);
+								const size_t prevDataIdx = prevDataSize.getIndex(pn, kc, inStartY + kh, inStartX + kw);
+								kernelDiff[kernelDiffIdx] += prevData[prevDataIdx] * nextDiff[nextDiffIdx];
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }
