@@ -252,4 +252,40 @@ void EasyCNN::ConvolutionLayer::backward(std::shared_ptr<DataBucket> prevDataBuc
 			}
 		}
 	}
+
+	//apply change
+	for (size_t kernelIdx = 0; kernelIdx < kernelSize._4DSize(); kernelIdx++)
+	{
+		kernel[kernelIdx] -= getLearningRate() * kernelDiff[kernelIdx] / nextDataSize.number;
+	}
+
+	//update bias
+	const ParamSize biasDiffSize(biasSize);
+	std::shared_ptr<ParamBucket> biasDiffBucket(std::make_shared<ParamBucket>(biasDiffSize));
+	biasDiffBucket->fillData(0.0f);
+	float* biasDiff = biasDiffBucket->getData().get();
+	for (size_t pn = 0; pn < prevDataSize.number; pn++)
+	{
+		for (size_t nc = 0; nc < nextDiffSize.channels; nc++)
+		{
+			const size_t biasDiffIdx = nc;
+			for (size_t nh = 0; nh < nextDiffSize.height; nh++)
+			{
+				for (size_t nw = 0; nw < nextDiffSize.width; nw++)
+				{
+					const size_t nextDiffIdx = nextDiffSize.getIndex(pn, nc, nh, nw);
+					biasDiff[biasDiffIdx] += 1.0f * nextDiff[nextDiffIdx];
+				}
+			}
+		}
+	}
+
+	//apply change
+	for (size_t biasIdx = 0; biasIdx < biasSize._4DSize(); biasIdx++)
+	{
+		bias[biasIdx] -= getLearningRate() * biasDiff[biasIdx] / nextDataSize.number;
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	nextDiffBucket = prevDiffBucket;
 }
