@@ -97,6 +97,7 @@
     <ClInclude Include="SoftmaxLayer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ActivationLayer.cpp" />
     <ClCompile Include="ConvolutionLayer.cpp" />
     <ClCompile Include="DataBucket.cpp" />
     <ClCompile Include="EasyAssert.cpp" />
