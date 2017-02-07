@@ -56,3 +56,60 @@ void EasyCNN::SigmodLayer::forward(const std::shared_ptr<DataBucket> prevDataBuc
 		}
 	}
 }
+//Sigmoid backward
+void EasyCNN::SigmodLayer::backward(std::shared_ptr<DataBucket> prevDataBucket, const std::shared_ptr<DataBucket> nextDataBucket, std::shared_ptr<DataBucket>& nextDiffBucket)
+{
+	easyAssert(getPhase() == Phase::Train, "backward only in train phase.")
+	const DataSize prevDataSize = prevDataBucket->getSize();
+	const DataSize nextDataSize = nextDataBucket->getSize();
+	const DataSize nextDiffSize = nextDiffBucket->getSize();
+	const float* prevData = prevDataBucket->getData().get();
+	const float* nextData = nextDataBucket->getData().get();
+	const float* nextDiff = nextDiffBucket->getData().get();
+	easyAssert(prevDataSize == nextDataSize, "size must be equal!");
+
+	//update prevDiff data, initial
+	const DataSize prevDiffSize(prevDataSize.number, prevDataSize.channels, prevDataSize.height, prevDataSize.width);
+	std::shared_ptr<DataBucket> prevDiffBucket(std::make_shared<DataBucket>(prevDiffSize));
+	prevDiffBucket->fillData(0.0f);
+	float* prevDiff = prevDiffBucket->getData().get();
+
+	//calculate current inner diff
+	for (size_t pn = 0; pn < prevDataSize.number; pn++)
+	{
+		for (size_t pc = 0; pc < prevDiffSize.channels; pc++)
+		{
+			for (size_t ph = 0; ph < prevDiffSize.height; ph++)
+			{
+				for (size_t pw = 0; pw < prevDiffSize.width; pw++)
+				{
+					const size_t dataIdx = nextDataSize.getIndex(pn, pc, ph, pw);
+					const size_t paramIdx = prevDiffSize.getIndex(pn, pc, ph, pw);
+					prevDiff[paramIdx] += sigmodDfOperator(nextData[dataIdx]);
+				}
+			}
+		}
+	}
+
+	//multiply next diff
+	for (size_t i = 0; i < prevDiffBucket->getSize()._4DSize(); i++)
+	{
+		prevDiff[i] *= nextDiff[i];
+	}
+
+	nextDiffBucket = prevDiffBucket;
+
+	//update this layer's param
+	//Tanh layer : nop
+}
+
+//TanhLayer
+EasyCNN::TanhLayer::TanhLayer()
+{
+
+}
+
+EasyCNN::TanhLayer::~TanhLayer()
+{
+
+}
