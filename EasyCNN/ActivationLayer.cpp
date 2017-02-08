@@ -113,3 +113,50 @@ EasyCNN::TanhLayer::~TanhLayer()
 {
 
 }
+
+DEFINE_LAYER_TYPE(EasyCNN::TanhLayer, "TanhLayer");
+std::string EasyCNN::TanhLayer::getLayerType() const
+{
+	return layerType;
+}
+
+//f(x)=(e^x-e^(-x))/(e^x+e^(-x))
+static inline float tanhOperator(const float x)
+{
+	float result = 0;
+	const float ex = std::exp(x);
+	const float efx = std::exp(-x);
+	result = (ex - efx) / (ex + efx);
+	return result;
+}
+
+//f'(x)=1-x^(1/2)
+static inline float tanhDfOperator(const float x)
+{
+	return 1.0f - std::sqrt(x);
+}
+
+//tanh forward
+void EasyCNN::TanhLayer::forward(const std::shared_ptr<DataBucket> prevDataBucket, std::shared_ptr<DataBucket> nextDataBucket)
+{
+	const DataSize prevDataSize = prevDataBucket->getSize();
+	const DataSize nextDataSize = nextDataBucket->getSize();
+
+	const float* prevRawData = prevDataBucket->getData().get();
+	float* nextRawData = nextDataBucket->getData().get();
+
+	for (size_t nn = 0; nn < nextDataSize.number; nn++)
+	{
+		for (size_t nc = 0; nc < nextDataSize.channels; nc++)
+		{
+			for (size_t nh = 0; nh < nextDataSize.height; nh++)
+			{
+				for (size_t nw = 0; nw < nextDataSize.width; nw++)
+				{
+					const size_t nextDataIdx = nextDataSize.getIndex(nn, nc, nh, nw);
+					nextRawData[nextDataIdx] += tanhOperator(prevRawData[nextDataIdx]);
+				}
+			}
+		}
+	}
+}
