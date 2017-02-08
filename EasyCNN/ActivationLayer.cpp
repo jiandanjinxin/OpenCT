@@ -207,3 +207,59 @@ void EasyCNN::TanhLayer::backward(std::shared_ptr<DataBucket> prevDataBucket, co
 	//update this layer's param
 	//Tanh layer : nop
 }
+
+//ReluLayer
+EasyCNN::ReluLayer::ReluLayer()
+{
+
+}
+
+EasyCNN::ReluLayer::~ReluLayer()
+{
+
+}
+
+DEFINE_LAYER_TYPE(EasyCNN::ReluLayer, "ReluLayer");
+std::string EasyCNN::ReluLayer::getLayerType() const
+{
+	return layerType;
+}
+
+//f(x)=max(x,0)
+static inline float reluOperator(const float x)
+{
+	float result = std::max(x, 0.0f);
+	return result;
+}
+
+//f'(x)=0(x<=0),1(x>0)
+static inline float reluDfOperator(const float x)
+{
+	//note : too small df is not suitable.
+	return x <= 0.0f ? 0.01f : 1.0f;
+}
+//ReluLayer forward
+void EasyCNN::ReluLayer::forward(const std::shared_ptr<DataBucket> prevDataBucket, std::shared_ptr<DataBucket> nextDataBucket)
+{
+	const DataSize prevDataSize = prevDataBucket->getSize();
+	const DataSize nextDataSize = nextDataBucket->getSize();
+
+	const float* prevRawData = prevDataBucket->getData().get();
+	float* nextRawData = nextDataBucket->getData().get();
+
+	for (size_t nn = 0; nn < nextDataSize.number; nn++)
+	{
+		for (size_t nc = 0; nc < nextDataSize.channels; nc++)
+		{
+			for (size_t nh = 0; nh < nextDataSize.height; nh++)
+			{
+				for (size_t nw = 0; nw < nextDataSize.width; nw++)
+				{
+					const size_t nextDataIdx = nextDataSize.getIndex(nn, nc, nh, nw);
+					nextRawData[nextDataIdx] = reluOperator(prevRawData[nextDataIdx]);
+				}
+			}
+		}
+	}
+}
+
