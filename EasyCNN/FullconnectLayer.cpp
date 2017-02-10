@@ -155,3 +155,108 @@ void EasyCNN::FullconnectLayer::forward(const std::shared_ptr<DataBucket> prevDa
 		}
 	}
 }
+
+void EasyCNN::FullconnectLayer::backward(std::shared_ptr<DataBucket> prevDataBucket, const std::shared_ptr<DataBucket> nextDataBucket, std::shared_ptr<DataBucket>& nextDiffBucket)
+{
+	easyAssert(getPhase() == Phase::Train, "backward only in train phase.");
+	const DataSize prevDataSize = prevDataBucket->getSize();
+	const DataSize nextDataSize = nextDataBucket->getSize();
+	const DataSize nextDiffSize = nextDiffBucket->getSize();
+	const ParamSize weightSize = weightsData->getSize();
+	const ParamSize biasSize = enabledBias ? biasData->getSize() : ParamSize();
+	const float* prevData = prevDataBucket->getData().get();
+	const float* nextData = nextDataBucket->getData().get();
+	const float* nextDiff = nextDiffBucket->getData().get();
+
+	float* weight = weightsData->getData().get();
+	float* bias = enabledBias ? biasData->getData().get() : nullptr;
+	easyAssert(nextDataSize.width == 1 && nextDataSize.height == 1, "use channel only!");
+	easyAssert(weightSize._4DSize() == prevDataSize._3DSize() * nextDataSize._3DSize(), "weight size is invalidate!");
+
+	if (enabledBias)
+	{
+		easyAssert(biasSize._4DSize() == nextDataSize._3DSize(), "bias size is invalidate!");
+	}
+
+	//update prevDiff data
+	const DataSize prevDiffSize(prevDataSize.number, prevDataSize.channels, prevDataSize.height, prevDataSize.width);
+	std::shared_ptr<DataBucket> prevDiffBucket(std::make_shared<DataBucket>(prevDiffSize));
+	prevDiffBucket->fillData(0.0f);
+	float* prevDiff = prevDiffBucket->getData().get();
+
+	//calculate current inner diff && multiply next diff
+	for (size_t pn = 0; pn < prevDataSize.number; pn++)
+	{
+		for (size_t pc = 0; pc < prevDiffSize.channels; pc++)
+		{
+			for (size_t ph = 0; ph < prevDiffSize.height; ph++)
+			{
+				for (size_t pw = 0; pw < prevDiffSize.width; pw++)
+				{
+					const size_t prevDiffIdx = prevDiffSize.getIndex(pn, pc, ph, pw);
+
+					for (size_t nc = 0; nc < nextDiffSize.channels; nc++)
+					{
+						const size_t weightIdx = nc * prevDataSize._3DSize() + prevDataSize.getIndex(pc, ph, pw);
+						const size_t nextDiffIdx = pn * nextDiffSize._3DSize() + nc;
+						prevDiff[prevDiffIdx] += weight[weightIdx] * nextDiff[nextDiffIdx];
+					}
+				}
+			}
+		}
+	}
+
+	//update this layer's param
+	//update weight
+	//get weight diff
+	std::shared_ptr<ParamBucket> weightDiffBucket(std::make_shared<ParamBucket>(weightSize));
+	weightDiffBucket->fillData(0.0f);
+	float* weightDiff = weightDiffBucket->getData().get();
+
+	for (size_t nn = 0; nn < nextDataSize.number; nn++)
+	{
+		for (size_t nc = 0; nc < nextDataSize.channels; nc++)
+		{
+			const size_t nextDiffIdx = nn * nextDiffSize._3DSize() + nc;
+
+			for (size_t prevData3DIdx = 0; prevData3DIdx < prevDataSize._3DSize(); prevData3DIdx++)
+			{
+				const size_t weightDiffIdx = nc * prevDiffSize._3DSize() + prevData3DIdx;
+				const size_t prevDataIdx = nn * prevDataSize._3DSize() + prevData3DIdx;
+				weightDiff[weightDiffIdx] += prevData[prevDataIdx] * nextDiff[nextDiffIdx];
+			}
+		}
+	}
+
+	//apply change
+	for (size_t weightIdx = 0; weightIdx < weightSize._4DSize(); weightIdx++)
+	{
+		weight[weightIdx] -= getLearningRate() * weightDiff[weightIdx] / nextDataSize.number;
+	}
+
+	//update bias
+	if (enabledBias)
+	{
+		//get bias diff
+		std::shared_ptr<ParamBucket> biasDiffBucket(std::make_shared<ParamBucket>(biasSize));
+		biasDiffBucket->fillData(0.0f);
+		float* biasDiff = biasDiffBucket->getData().get();
+
+		for (size_t nn = 0; nn < nextDataSize.number; nn++)
+		{
+			for (size_t biasDiffIdx = 0; biasDiffIdx < biasSize._3DSize(); biasDiffIdx++)
+			{
+				biasDiff[biasDiffIdx] += 1.0f * nextDiff[nn*biasSize._3DSize() + biasDiffIdx];
+			}
+		}
+
+		//apply change
+		for (size_t biasDiffIdx = 0; biasDiffIdx < biasSize._4DSize(); biasDiffIdx++)
+		{
+			bias[biasDiffIdx] -= getLearningRate() * biasDiff[biasDiffIdx] / nextDataSize.number;
+		}
+	}
+
+	//chain goto previous layer
+	nextDiffBucket = prevDiffBucket;
+}
