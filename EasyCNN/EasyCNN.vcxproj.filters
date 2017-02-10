@@ -92,5 +92,8 @@
     <ClCompile Include="FullconnectLayer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="LossFunction.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

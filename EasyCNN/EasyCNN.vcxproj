@@ -104,6 +104,7 @@
     <ClCompile Include="EasyLogger.cpp" />
     <ClCompile Include="FullconnectLayer.cpp" />
     <ClCompile Include="InputLayer.cpp" />
+    <ClCompile Include="LossFunction.cpp" />
     <ClCompile Include="ParamBucket.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
