@@ -167,3 +167,75 @@ void EasyCNN::PoolingLayer::forward(const std::shared_ptr<DataBucket> prevDataBu
 		}
 	}
 }
+
+void EasyCNN::PoolingLayer::backward(std::shared_ptr<DataBucket> prevDataBucket, const std::shared_ptr<DataBucket> nextDataBucket, std::shared_ptr<DataBucket>& nextDiffBucket)
+{
+	easyAssert(getPhase() == Phase::Train, "backward only in train phase.")
+	const DataSize prevDataSize = prevDataBucket->getSize();
+	const DataSize nextDataSize = nextDataBucket->getSize();
+	const DataSize nextDiffSize = nextDiffBucket->getSize();
+	easyAssert(maxIdxesBucket->getSize()._3DSize() == nextDataSize._3DSize(), "idx size must equals with next data.");
+
+	//update prevDiff data
+	const float* maxIdxes = maxIdxesBucket->getData().get();
+	const DataSize prevDiffSize(prevDataSize.number, prevDataSize.channels, prevDataSize.height, prevDataSize.width);
+	std::shared_ptr<DataBucket> prevDiffBucket(std::make_shared<DataBucket>(prevDiffSize));
+	prevDiffBucket->fillData(0.0f);
+
+	//calculate current inner diff 
+	//none
+	//pass next layer's diff to previous layer
+	for (size_t pn = 0; pn < prevDataSize.number; pn++)
+	{
+		const float* nextDiff = nextDiffBucket->getData().get() + pn * nextDiffSize._3DSize();
+		float* prevDiff = prevDiffBucket->getData().get() + pn * prevDataSize._3DSize();
+
+		for (size_t nc = 0; nc < nextDataSize.channels; nc++)
+		{
+			for (size_t nh = 0; nh < nextDataSize.height; nh++)
+			{
+				for (size_t nw = 0; nw < nextDataSize.width; nw++)
+				{
+					const size_t inStartX = nw * widthStep;
+					const size_t inStartY = nh * heightStep;
+					const size_t nextDataIdx = nextDataSize.getIndex(nc, nh, nw);
+
+					//MaxPooling
+					if (poolingType == PoolingType::MaxPooling)
+					{
+						for (size_t ph = 0; ph < poolingKernelSize.height; ph++)
+						{
+							for (size_t pw = 0; pw < poolingKernelSize.width; pw++)
+							{
+								const size_t prevDiffIdx = prevDataSize.getIndex(nc, inStartY + ph, inStartX + pw);
+								if (ph * poolingKernelSize.width + pw == maxIdxes[nextDataIdx])
+								{
+									prevDiff[prevDiffIdx] += nextDiff[nextDataIdx];
+								}
+							}
+						}
+					}
+					//MeanPooling
+					else if (poolingType == PoolingType::MeanPooling)
+					{
+						const float meanDiff = nextDiff[nextDataIdx] / (float)(poolingKernelSize._2DSize());
+
+						for (size_t ph = 0; ph < poolingKernelSize.height; ph++)
+						{
+							for (size_t pw = 0; pw < poolingKernelSize.width; pw++)
+							{
+								const size_t prevDiffIdx = prevDataSize.getIndex(nc, inStartY + ph, inStartX + pw);
+								prevDiff[prevDiffIdx] += meanDiff;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	//update this layer's param
+	//nop
+
+	nextDiffBucket = prevDiffBucket;
+}
