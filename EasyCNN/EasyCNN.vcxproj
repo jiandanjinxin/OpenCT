@@ -107,6 +107,7 @@
     <ClCompile Include="LossFunction.cpp" />
     <ClCompile Include="ParamBucket.cpp" />
     <ClCompile Include="PoolingLayer.cpp" />
+    <ClCompile Include="SoftmaxLayer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
