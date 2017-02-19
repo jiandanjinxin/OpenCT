@@ -117,7 +117,7 @@ std::vector<std::shared_ptr<EasyCNN::Layer>> EasyCNN::NetWork::serializeFromStri
 	}
 	return tmpLayers;
 }
-
+// forward
 std::shared_ptr<EasyCNN::DataBucket> EasyCNN::NetWork::forward(const std::shared_ptr<DataBucket> inputDataBucket)
 {
 	logVerbose("NetWork forward begin.");
@@ -151,4 +151,34 @@ std::shared_ptr<EasyCNN::DataBucket> EasyCNN::NetWork::forward(const std::shared
 
 	logVerbose("NetWork forward end.");
 	return dataBuckets[dataBuckets.size() - 1];
+}
+// backward
+float EasyCNN::NetWork::backward(const std::shared_ptr<EasyCNN::DataBucket> labelDataBucket, const float learningRate)
+{
+	logVerbose("NetWork backward begin.");
+	easyAssert(layers.size() > 1, "layer count is less than 2.");
+	easyAssert(layers[0]->getLayerType() == InputLayer::layerType, "first layer is not input layer.");
+	easyAssert(lossFunctor.get() != nullptr, "loss functor can't be empty!");
+
+	const auto lastOutputData = dataBuckets[dataBuckets.size() - 1];
+
+	easyAssert(lastOutputData->getSize() == labelDataBucket->getSize(), "last data bucket's size must be equals with label.");
+
+	//get loss
+	const float loss = lossFunctor->getLoss(labelDataBucket, lastOutputData);
+
+	//get diff
+	std::shared_ptr<DataBucket> nextDiffBucket = lossFunctor->getDiff(labelDataBucket, lastOutputData);
+
+	//other layer backward
+	for (int i = (int)(layers.size()) - 1; i >= 0; i--)
+	{
+		logVerbose("NetWork layer[%d](%s) backward begin.", i, layers[i]->getLayerType().c_str());
+		layers[i]->setLearningRate(learningRate);
+		layers[i]->backward(dataBuckets[i], dataBuckets[i + 1], nextDiffBucket);
+		logVerbose("NetWork layer[%d](%s) backward end.", i, layers[i]->getLayerType().c_str());
+	}
+	logVerbose("NetWork backward end.");
+
+	return loss;
 }
