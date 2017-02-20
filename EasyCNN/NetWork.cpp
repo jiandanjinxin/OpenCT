@@ -248,3 +248,39 @@ bool EasyCNN::NetWork::saveModel(const std::string& modelFile)
 
 	return true;
 }
+
+//test only
+bool EasyCNN::NetWork::loadModel(const std::string& modelFile)
+{
+	std::ifstream ifs(modelFile);
+	if (!ifs.is_open())
+	{
+		return false;
+	}
+	//network param
+	std::string line;
+	std::getline(ifs, line);
+	line = line;
+	std::vector<std::shared_ptr<EasyCNN::Layer>> tmpLayers = this->serializeFromString(line);
+	//layers' param
+	for (auto& layer : tmpLayers)
+	{
+		std::getline(ifs, line);
+		line = line;
+		//init input size
+		const std::shared_ptr<DataBucket> prevDataBucket = dataBuckets[dataBuckets.size() - 1];
+		easyAssert(prevDataBucket.get() != nullptr, "previous bucket is null.");
+		const DataSize inputSize = prevDataBucket->getSize();
+		layer->setInputBucketSize(inputSize);
+		layer->serializeFromString(line);
+		addLayer(layer);
+	}
+	setPhase(Phase::Test);
+	return true;
+}
+
+//train phase may use this
+std::shared_ptr<EasyCNN::DataBucket> EasyCNN::NetWork::testBatch(const std::shared_ptr<DataBucket> inputDataBucket)
+{
+	return forward(inputDataBucket);
+}
