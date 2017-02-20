@@ -182,3 +182,69 @@ float EasyCNN::NetWork::backward(const std::shared_ptr<EasyCNN::DataBucket> labe
 
 	return loss;
 }
+
+//train only
+void EasyCNN::NetWork::setInputSize(const DataSize size)
+{
+	logVerbose("NetWork setInputSize begin.");
+	easyAssert(size.number > 0 && size.channels > 0 && size.width > 0 && size.height > 0, "parameter invalidate.");
+	easyAssert(dataBuckets.empty(), "dataBuckets must be empty now!");
+	std::shared_ptr<DataBucket> dataBucket = std::make_shared<DataBucket>(size);
+	dataBuckets.push_back(dataBucket);
+	logVerbose("NetWork setInputSize end.");
+}
+
+void EasyCNN::NetWork::setLossFunctor(std::shared_ptr<LossFunctor> lossFunctor)
+{
+	logVerbose("NetWork setInputSize begin.");
+	this->lossFunctor = lossFunctor;
+	logVerbose("NetWork setInputSize end.");
+}
+
+void EasyCNN::NetWork::addLayer(std::shared_ptr<Layer> layer)
+{
+	const auto layer_type = layer->getLayerType();
+	logVerbose("NetWork addayer begin , type : %s", layer_type.c_str());
+	layers.push_back(layer);
+
+	easyAssert(dataBuckets.size() >= 1, "bucket count is less than 1.");
+	const std::shared_ptr<DataBucket> prevDataBucket = dataBuckets[dataBuckets.size() - 1];
+	easyAssert(prevDataBucket.get() != nullptr, "previous bucket is null.");
+	const DataSize inputSize = prevDataBucket->getSize();
+	layer->setPhase(phase);
+	layer->setInputBucketSize(inputSize);
+	layer->solveInnerParams();
+	const DataSize outputSize = layer->getOutputBucketSize();
+	std::shared_ptr<DataBucket> dataBucket = std::make_shared<DataBucket>(outputSize);
+	//dataBucket setting params
+	dataBuckets.push_back(dataBucket);
+	logVerbose("NetWork addLayer end. add data bucket done.");
+}
+
+float EasyCNN::NetWork::trainBatch(const std::shared_ptr<DataBucket> inputDataBucket, const std::shared_ptr<DataBucket> labelDataBucket, float learningRate)
+{
+	easyAssert(phase == Phase::Train, "phase must be train!");
+	logVerbose("NetWork trainBatch begin.");
+	forward(inputDataBucket);
+	const float loss = backward(labelDataBucket, learningRate);
+	logVerbose("NetWork trainBatch end.");
+	return loss;
+}
+
+bool EasyCNN::NetWork::saveModel(const std::string& modelFile)
+{
+	std::ofstream ofs(modelFile);
+	if (!ofs.is_open())
+	{
+		return false;
+	}
+	//network param
+	ofs << this->serializeToString() + "\n";
+	//layers' param
+	for (const auto& layer : layers)
+	{
+		ofs << layer->serializeToString() + "\n";
+	}
+
+	return true;
+}

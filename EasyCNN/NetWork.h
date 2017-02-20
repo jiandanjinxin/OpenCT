@@ -23,7 +23,7 @@ namespace EasyCNN
 		//train only!
 		void setInputSize(const DataSize size);
 		void setLossFunctor(std::shared_ptr<LossFunctor> lossFunctor);
-		void addayer(std::shared_ptr<Layer> layer);
+		void addLayer(std::shared_ptr<Layer> layer);
 		float trainBatch(const std::shared_ptr<DataBucket> inputDataBucket,
 			const std::shared_ptr<DataBucket> labelDataBucket, float learningRate);
 		bool saveModel(const std::string& modelFile);
