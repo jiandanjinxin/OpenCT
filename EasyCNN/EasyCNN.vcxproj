@@ -95,6 +95,7 @@
     <ClInclude Include="ParamBucket.h" />
     <ClInclude Include="PoolingLayer.h" />
     <ClInclude Include="SoftmaxLayer.h" />
+    <ClInclude Include="TestPrint.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ActivationLayer.cpp" />
@@ -109,6 +110,7 @@
     <ClCompile Include="ParamBucket.cpp" />
     <ClCompile Include="PoolingLayer.cpp" />
     <ClCompile Include="SoftmaxLayer.cpp" />
+    <ClCompile Include="TestPrint.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

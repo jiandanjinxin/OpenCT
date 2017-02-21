@@ -18,7 +18,8 @@
 #include "dcmtk/dcmdata/dcvrfd.h"
 #include "dcmtk/dcmdata/dcistrmf.h"
 
-#include "TestLib.h"
+#include "../EasyCNN/EasyCNN.h"
+
 
 using namespace THU_STD_NAMESPACE; // 加载DCM格式转换命名空间
 using namespace std;
@@ -320,10 +321,12 @@ int main()
 
 	}
 	 
-	Candidate candidate;
+	//Candidate candidate;
 	//candidate.WorldCoordinateConvert();
-	candidate.OutputCandidate();
+	//candidate.OutputCandidate();
 
+	//Printer printer;
+	//printer.getEasyCNNFunction();
 
 	system("pause");
 
