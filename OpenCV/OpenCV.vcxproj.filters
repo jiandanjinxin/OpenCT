@@ -48,6 +48,9 @@
     <ClCompile Include="CNN.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="opecv2413x86.Debug.props">
@@ -92,6 +95,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="CNN.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MnistDataLoader.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

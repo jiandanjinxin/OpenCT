@@ -67,7 +67,7 @@ int test_CNN_train()
 }
 
 
-int main()
+int opencv_main(int argc, char* argv[])
 {
 	
 	/*
