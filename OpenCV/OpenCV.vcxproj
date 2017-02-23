@@ -96,6 +96,7 @@
     <ClCompile Include="CUtil.cpp" />
     <ClCompile Include="CCandidate.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MnistDataLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />
