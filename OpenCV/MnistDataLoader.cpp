@@ -71,3 +71,48 @@ bool load_mnist_images(const std::string& file_path, std::vector<image_t>& image
 
 	return true;
 }
+
+bool load_mnist_labels(const std::string& file_path, std::vector<label_t>& labels)
+{
+	labels.clear();
+	std::ifstream ifs(file_path, std::ios::binary);
+
+	if (!ifs.is_open())
+	{
+		return false;
+	}
+	//detect platform information
+	const bool is_little_endian_flag = is_little_endian();
+
+	//magic number
+	uint32_t magic_number;
+	ifs.read((char*)&magic_number, sizeof(magic_number));
+	if (is_little_endian_flag)
+	{
+		magic_number = reverse_endian<uint32_t>(magic_number);
+	}
+	const bool magic_number_validate = (magic_number == 0x00000801);
+	assert(magic_number_validate);
+	if (!magic_number_validate)
+	{
+		return false;
+	}
+
+	//count
+	uint32_t labels_total_count = 0;
+	ifs.read((char*)&labels_total_count, sizeof(labels_total_count));
+	if (is_little_endian_flag)
+	{
+		labels_total_count = reverse_endian<uint32_t>(labels_total_count);
+	}
+
+	//labels
+	for (uint32_t i = 0; i < labels_total_count; i++)
+	{
+		label_t label;
+		ifs.read((char*)&label.data, sizeof(label.data));
+		labels.push_back(label);
+	}
+
+	return true;
+}
