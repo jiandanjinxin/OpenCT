@@ -96,6 +96,7 @@
     <ClCompile Include="CUtil.cpp" />
     <ClCompile Include="CCandidate.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="main_mnist.cpp" />
     <ClCompile Include="MnistDataLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -104,6 +105,8 @@
     <None Include="CxImage.Release.props" />
     <None Include="DCMTK.Debug.props" />
     <None Include="DCMTK.Release.props" />
+    <None Include="EasyCNN.Debug.props" />
+    <None Include="EasyCNN.Release.props" />
     <None Include="opecv2413x86.Debug.props" />
     <None Include="opecv2413x86.Release.props" />
   </ItemGroup>
