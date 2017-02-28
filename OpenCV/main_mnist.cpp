@@ -7,6 +7,62 @@
 
 #include <opencv2/opencv.hpp>
 
+const int classes = 10;
+
+static EasyCNN::NetWork buildConvNet(const size_t batch, const size_t channels, const size_t width, const size_t height)
+{
+	EasyCNN::NetWork network;
+	network.setPhase(EasyCNN::Phase::Train);
+	network.setInputSize(EasyCNN::DataSize(batch, channels, width, height));
+	network.setLossFunctor(std::make_shared<EasyCNN::CrossEntropyFunctor>());
+
+	//input data layer 0
+	std::shared_ptr<EasyCNN::InputLayer> _0_inputLayer(std::make_shared<EasyCNN::InputLayer>());
+	network.addLayer(_0_inputLayer);
+
+	//convolution layer 1
+	std::shared_ptr<EasyCNN::ConvolutionLayer> _1_convLayer(std::make_shared<EasyCNN::ConvolutionLayer>());
+	_1_convLayer->setParamaters(EasyCNN::ParamSize(6, 1, 5, 5), 1, 1, true);
+	network.addLayer(_1_convLayer);
+	network.addLayer(std::make_shared<EasyCNN::ReluLayer>());
+
+	//pooling layer 2
+	std::shared_ptr<EasyCNN::PoolingLayer> _2_poolingLayer(std::make_shared<EasyCNN::PoolingLayer>());
+	_2_poolingLayer->setParamaters(EasyCNN::PoolingLayer::PoolingType::MaxPooling, EasyCNN::ParamSize(1, 6, 2, 2), 2, 2);
+	network.addLayer(_2_poolingLayer);
+	network.addLayer(std::make_shared<EasyCNN::ReluLayer>());
+
+	//convolution layer 3
+	std::shared_ptr<EasyCNN::ConvolutionLayer> _3_convLayer(std::make_shared<EasyCNN::ConvolutionLayer>());
+	_3_convLayer->setParamaters(EasyCNN::ParamSize(16, 6, 5, 5), 1, 1, true);
+	network.addLayer(_3_convLayer);
+	network.addLayer(std::make_shared<EasyCNN::ReluLayer>());
+
+	//pooling layer 4
+	std::shared_ptr<EasyCNN::PoolingLayer> _4_pooingLayer(std::make_shared<EasyCNN::PoolingLayer>());
+	_4_pooingLayer->setParamaters(EasyCNN::PoolingLayer::PoolingType::MaxPooling, EasyCNN::ParamSize(1, 16, 2, 2), 2, 2);
+	network.addLayer(_4_pooingLayer);
+	network.addLayer(std::make_shared<EasyCNN::ReluLayer>());
+
+	//full connect layer 5
+	std::shared_ptr<EasyCNN::FullconnectLayer> _5_fullconnectLayer(std::make_shared<EasyCNN::FullconnectLayer>());
+	_5_fullconnectLayer->setParamaters(EasyCNN::ParamSize(1, 512, 1, 1), true);
+	network.addLayer(_5_fullconnectLayer);
+	network.addLayer(std::make_shared<EasyCNN::ReluLayer>());
+
+	//full connect layer 6
+	std::shared_ptr<EasyCNN::FullconnectLayer> _6_fullconnectLayer(std::make_shared<EasyCNN::FullconnectLayer>());
+	_6_fullconnectLayer->setParamaters(EasyCNN::ParamSize(1, classes, 1, 1), true);
+	network.addLayer(_6_fullconnectLayer);
+	network.addLayer(std::make_shared<EasyCNN::ReluLayer>());
+
+	//soft max layer 6
+	std::shared_ptr<EasyCNN::SoftmaxLayer> _7_softmaxLayer(std::make_shared<EasyCNN::SoftmaxLayer>());
+	network.addLayer(_7_softmaxLayer);
+
+	return network;
+}
+
 //image shuffle using random_shuffle in algorithm
 static void shuffle_data(std::vector<image_t>& images, std::vector<label_t>& labels)
 {
