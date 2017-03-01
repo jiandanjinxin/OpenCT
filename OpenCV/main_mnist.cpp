@@ -63,6 +63,47 @@ static EasyCNN::NetWork buildConvNet(const size_t batch, const size_t channels, 
 	return network;
 }
 
+//fetch data
+static bool fetch_data(const std::vector<image_t>& images, std::shared_ptr<EasyCNN::DataBucket> inputDataBucket,
+	const std::vector<label_t>& labels, std::shared_ptr<EasyCNN::DataBucket> labelDataBucket,
+	const size_t offset, const size_t length)
+{
+	assert(images.size() == labels.size() && inputDataBucket->getSize().number == labelDataBucket->getSize().number);
+
+	if (offset >= images.size())
+	{
+		return false;
+	}
+
+	size_t actualEndPos = offset + length;
+	if (actualEndPos > images.size())
+	{
+		//image data
+		auto inputDataSize = inputDataBucket->getSize();
+		inputDataSize.number = images.size() - offset;
+		actualEndPos = offset + inputDataSize.number;
+		inputDataBucket.reset(new EasyCNN::DataBucket(inputDataSize));
+
+		//label data
+		auto labelDataSize = labelDataBucket->getSize();
+		labelDataSize.number = inputDataSize.number;
+		labelDataBucket.reset(new EasyCNN::DataBucket(inputDataSize));
+	}
+
+	//copy
+	const size_t sizePerImage = inputDataBucket->getSize()._3DSize();
+	const size_t sizePerLabel = labelDataBucket->getSize()._3DSize();
+	assert(sizePerImage == images[0].channels * images[0].width * images[0].height);
+
+	//scale to 0.0f~1.0f
+	const float scaleRate = 1.0f / 256.0f;
+	for (size_t i = offset; i < actualEndPos; i++)
+	{
+
+	}
+}
+
+
 //image shuffle using random_shuffle in algorithm
 static void shuffle_data(std::vector<image_t>& images, std::vector<label_t>& labels)
 {
@@ -137,9 +178,24 @@ static void train(const std::string& mnist_train_images_file, const std::string&
 	EasyCNN::logCritical("learningRate:%f ,decayRate:%f , minLearningRate:%f", learningRate, decayRate, minLearningRate);
 	EasyCNN::logCritical("channels:%d , width:%d , height:%d", channels, width, height);
 
-	/*easycnn::logcritical("construct network begin...");
-	easycnn::network network(buildconvnet(batch, channels, width, height));
-	easycnn::logcritical("construct network done.");*/
+	EasyCNN::logCritical("construct network begin...");
+	EasyCNN::NetWork network(buildConvNet(batch, channels, width, height));
+	EasyCNN::logCritical("construct network done.");
+
+	//train
+	EasyCNN::logCritical("begin training...");
+	std::shared_ptr<EasyCNN::DataBucket> inputDataBucket = std::make_shared<EasyCNN::DataBucket>(EasyCNN::DataSize(batch, channels, width, height));
+	std::shared_ptr<EasyCNN::DataBucket> labelDataBucket = std::make_shared<EasyCNN::DataBucket>(EasyCNN::DataSize(batch, classes, 1, 1));
+	size_t epochIdx = 0;
+
+	while (epochIdx < max_epoch)
+	{
+		size_t batchIdx = 0;
+		while (true)
+		{
+
+		}
+	}
 
 
 }
