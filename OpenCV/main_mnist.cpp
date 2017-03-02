@@ -99,8 +99,29 @@ static bool fetch_data(const std::vector<image_t>& images, std::shared_ptr<EasyC
 	const float scaleRate = 1.0f / 256.0f;
 	for (size_t i = offset; i < actualEndPos; i++)
 	{
+		float* inputData = inputDataBucket->getData().get() + (i - offset) * sizePerImage;
+		const uint8_t* imageData = &images[i].data[0];
+		for (size_t j = 0; j < sizePerImage; j++)
+		{
+			inputData[j] = (float)imageData[j] * scaleRate;
+		}
 
+		//label data
+		float* labelData = labelDataBucket->getData().get() + (i - offset) * sizePerLabel;
+		const uint8_t label = labels[i].data;
+		for (size_t j = 0; j < sizePerLabel; j++)
+		{
+			if (j == label)
+			{
+				labelData[j] = 1.0f;
+			}
+			else
+			{
+				labelData[j] = 0.0f;
+			}
+		}
 	}
+	return true;
 }
 
 
