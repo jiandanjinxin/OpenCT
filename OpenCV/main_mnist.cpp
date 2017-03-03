@@ -125,6 +125,34 @@ static bool fetch_data(const std::vector<image_t>& images, std::shared_ptr<EasyC
 }
 
 
+
+static float test(EasyCNN::NetWork& network, const size_t batch, const std::vector<image_t>& test_images, const std::vector<label_t>& test_labels)
+{
+	assert(test_images.size() == test_labels.size() && test_images.size()>0);
+	int correctCount = 0;
+	for (size_t i = 0; i < test_labels.size(); i += batch)
+	{
+		const size_t start = i;
+		const size_t len = std::min(test_labels.size() - start, batch);
+		const std::shared_ptr<EasyCNN::DataBucket> inputDataBucket = convertVectorToDataBucket(test_images, start, len);
+		const std::shared_ptr<EasyCNN::DataBucket> probDataBucket = network.testBatch(inputDataBucket);
+		const size_t labelSize = probDataBucket->getSize()._3DSize();
+		const float* probData = probDataBucket->getData().get();
+		for (size_t j = 0; j < len; j++)
+		{
+			const uint8_t stdProb = test_labels[i + j].data;
+			const uint8_t testProb = getMaxIdxInArray(probData + j*labelSize, probData + (j + 1) * labelSize);
+			if (stdProb == testProb)
+			{
+				correctCount++;
+			}
+		}
+	}
+	const float result = (float)correctCount / (float)test_labels.size();
+	return result;
+}
+
+
 //image shuffle using random_shuffle in algorithm
 static void shuffle_data(std::vector<image_t>& images, std::vector<label_t>& labels)
 {
@@ -214,7 +242,21 @@ static void train(const std::string& mnist_train_images_file, const std::string&
 		size_t batchIdx = 0;
 		while (true)
 		{
+			if ( !fetch_data(train_images, inputDataBucket, train_labels, labelDataBucket, batchIdx * batch, batch) )
+			{
+				break;
+			}
 
+			const float loss = network.trainBatch(inputDataBucket, labelDataBucket, learningRate);
+
+			if (batchIdx > 0 && batchIdx % testAfterBatches == 0)
+			{
+				learningRate -= decayRate;
+				learningRate = std::max(learningRate, minLearningRate);
+				const float accuracy = test(network, 128, validate_images, validate_labels);
+				EasyCNN::logCritical("sample : %d/%d , learningRate : %f , loss : %f , accuracy : %.4f%%",
+					batchIdx*batch, train_images.size(), learningRate, loss, accuracy * 100.0f);
+			}
 		}
 	}
 
