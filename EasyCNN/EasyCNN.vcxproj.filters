@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="Configure.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -110,5 +107,8 @@
     <ClCompile Include="TestPrint.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.md" />
   </ItemGroup>
 </Project>
