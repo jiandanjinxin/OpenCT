@@ -9,5 +9,5 @@ extern int cuda_main(int argc, char* argv[]);
 
 int main(int argc, char* argv[])
 {
-	return mnist_main(argc, argv);
+	return opencv_main(argc, argv);
 }

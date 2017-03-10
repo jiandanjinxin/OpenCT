@@ -10,7 +10,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenCV", "OpenCV\OpenCV.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EasyCNN", "EasyCNN\EasyCNN.vcxproj", "{57EC63B0-104F-428D-910B-36AC0260083F}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DcmViewer", "DcmViewer\DcmViewer.vcxproj", "{A80C5257-445D-3472-95AC-556D4D6662DF}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DcmViewer", "DcmViewer\DcmViewer.vcxproj", "{44BB5326-E0F5-47F8-A400-904F80949116}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,10 +26,10 @@ Global
 		{57EC63B0-104F-428D-910B-36AC0260083F}.Debug|Win32.Build.0 = Debug|Win32
 		{57EC63B0-104F-428D-910B-36AC0260083F}.Release|Win32.ActiveCfg = Release|Win32
 		{57EC63B0-104F-428D-910B-36AC0260083F}.Release|Win32.Build.0 = Release|Win32
-		{A80C5257-445D-3472-95AC-556D4D6662DF}.Debug|Win32.ActiveCfg = Debug|Win32
-		{A80C5257-445D-3472-95AC-556D4D6662DF}.Debug|Win32.Build.0 = Debug|Win32
-		{A80C5257-445D-3472-95AC-556D4D6662DF}.Release|Win32.ActiveCfg = Release|Win32
-		{A80C5257-445D-3472-95AC-556D4D6662DF}.Release|Win32.Build.0 = Release|Win32
+		{44BB5326-E0F5-47F8-A400-904F80949116}.Debug|Win32.ActiveCfg = Debug|Win32
+		{44BB5326-E0F5-47F8-A400-904F80949116}.Debug|Win32.Build.0 = Debug|Win32
+		{44BB5326-E0F5-47F8-A400-904F80949116}.Release|Win32.ActiveCfg = Release|Win32
+		{44BB5326-E0F5-47F8-A400-904F80949116}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
