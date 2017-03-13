@@ -89,6 +89,8 @@
     <ClCompile Include="DcmFileFormat.cpp" />
     <ClCompile Include="CHoG.cpp" />
     <ClCompile Include="CLymphHOG.cpp" />
+    <ClCompile Include="DcmFileProcess.cpp" />
+    <ClCompile Include="ImageConvert.cpp" />
     <ClCompile Include="main_opencv.cpp" />
     <ClCompile Include="CBmpConvert.cpp" />
     <ClCompile Include="Util.cpp" />
@@ -113,6 +115,7 @@
     <ClInclude Include="DcmFileFormat.h" />
     <ClInclude Include="HLymphHOG.h" />
     <ClInclude Include="HBmpConvert.h" />
+    <ClInclude Include="ImageConvert.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="MnistDataLoader.h" />
   </ItemGroup>

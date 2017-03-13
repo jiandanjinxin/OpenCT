@@ -1,5 +1,7 @@
 #include "Util.h"
 #include "DcmFileFormat.h"
+#include "ImageConvert.h"
+
 #include "HBmpConvert.h"
 #include "HLymphHOG.h"
 #include "HCandidate.h"
@@ -311,6 +313,8 @@ int opencv_main(int argc, char* argv[])
 		}
 
 	}
+
+	ImageConvert::ImageShow("F:\\lymph node detection dataset\\DOI\\ABD_LYMPH_001\\000367.bmp");
 	 
 	//Candidate candidate;
 	//candidate.WorldCoordinateConvert();
