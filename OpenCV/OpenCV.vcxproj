@@ -86,7 +86,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CDcmFileFormat.cpp" />
+    <ClCompile Include="DcmFileFormat.cpp" />
     <ClCompile Include="CHoG.cpp" />
     <ClCompile Include="CLymphHOG.cpp" />
     <ClCompile Include="opencv_main.cpp" />
@@ -111,7 +111,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HCandidate.h" />
-    <ClInclude Include="HDcmFileFormat.h" />
+    <ClInclude Include="DcmFileFormat.h" />
     <ClInclude Include="HLymphHOG.h" />
     <ClInclude Include="HBmpConvert.h" />
     <ClInclude Include="HReadUByte.h" />

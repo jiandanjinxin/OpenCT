@@ -7,7 +7,7 @@
 #include "dcmtk/dcmjpeg/djdecode.h"
 #include "dcmtk/dcmdata/dcvrfd.h"
 //包含自定义的头文件
-#include "HDcmFileFormat.h"
+#include "DcmFileFormat.h"
 //包含系统头文件
 #include <stdio.h>
 #include <stdlib.h>
