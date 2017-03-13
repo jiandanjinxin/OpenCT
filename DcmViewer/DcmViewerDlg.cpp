@@ -163,10 +163,7 @@ void CDcmViewerDlg::OnPaint()
 	{
 		//刷新可视化区域
 		UpdateWindow();
-		int height, width;
 		CRect rect;//定义矩形类
-		height = image.GetHeight();
-		width = image.GetWidth();
 		m_axial.GetClientRect(&rect); //获得pictrue控件所在的矩形区域
 		CDC *pDc = m_axial.GetDC();   //获得pictrue控件的Dc
 		SetStretchBltMode(pDc->m_hDC, STRETCH_HALFTONE);
@@ -204,15 +201,12 @@ void CDcmViewerDlg::OnOpenFile()
 		filepath = FilePathName.Left(FilePathName.GetLength() - 10);
 		//刷新picture control控件，加载打开文件的图片
 		UpdateWindow();
-		int height, width;
 		CRect rect;//定义矩形类
-		height = image.GetHeight();
-		width = image.GetWidth();
 		m_axial.GetClientRect(&rect); //获得pictrue控件所在的矩形区域
 		CDC *pDc = m_axial.GetDC();   //获得pictrue控件的Dc
 		SetStretchBltMode(pDc->m_hDC, STRETCH_HALFTONE);
 		image.StretchBlt(pDc->m_hDC, rect, SRCCOPY);
-		ReleaseDC(pDc);//释放picture控件的Dc
+		ReleaseDC(pDc);               //释放picture控件的Dc
 
 		//截取输入文件名文件夹
 	}
@@ -241,10 +235,7 @@ void CDcmViewerDlg::OnCustomdrawSlider1(NMHDR *pNMHDR, LRESULT *pResult)
 		image.Load(FilePathName);
 
 		UpdateWindow();
-		int height, width;
 		CRect rect;//定义矩形类
-		height = image.GetHeight();
-		width = image.GetWidth();
 		m_axial.GetClientRect(&rect); //获得pictrue控件所在的矩形区域
 		CDC *pDc = m_axial.GetDC();   //获得pictrue控件的Dc
 		SetStretchBltMode(pDc->m_hDC, STRETCH_HALFTONE);
