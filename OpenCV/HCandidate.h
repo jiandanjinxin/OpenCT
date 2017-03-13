@@ -5,11 +5,10 @@
 #include <fstream>
 
 #include "HCandidate.h"
-#include "HUtil.h"
-#include "HDcmFileFormat.h"
+#include "Util.h"
+#include "DcmFileFormat.h"
 #include "HBmpConvert.h"
 #include "HLymphHOG.h"
-#include "CNN.h"
 
 #include "ximage.h"
 

@@ -1,4 +1,4 @@
-#include "HUtil.h"
+#include "Util.h"
 
 // 缺省构造器
 CBrowseDir::CBrowseDir()
@@ -31,7 +31,7 @@ bool CBrowseDir::SetInitDir(const char *dir)
 	return true;
 }
 
-vector<string> CBrowseDir::BeginBrowseFilenames(const char *filespec)
+std::vector<std::string> CBrowseDir::BeginBrowseFilenames(const char *filespec)
 {
 	ProcessDir(m_szInitDir, NULL);
 	return GetDirFilenames(m_szInitDir, filespec);
@@ -67,7 +67,7 @@ bool CBrowseDir::BrowseDir(const char *dir, const char *filespec)
 				char filename[_MAX_PATH];
 				strcpy_s(filename, dir);
 				strcat_s(filename, fileinfo.name);
-				cout << filename << endl;
+				std::cout << filename << std::endl;
 				if (!ProcessFile(filename))
 					return false;
 			}
@@ -109,10 +109,10 @@ bool CBrowseDir::BrowseDir(const char *dir, const char *filespec)
 	return true;
 }
 
-vector<string> CBrowseDir::GetDirFilenames(const char *dir, const char *filespec)
+std::vector<std::string> CBrowseDir::GetDirFilenames(const char *dir, const char *filespec)
 {
 	_chdir(dir);
-	vector<string> filename_vector;
+	std::vector<std::string> filename_vector;
 	filename_vector.clear();
 
 	// 首先查找dir中符合要求的文件
@@ -158,8 +158,8 @@ vector<string> CBrowseDir::GetDirFilenames(const char *dir, const char *filespec
 					strcat_s(subdir, fileinfo.name);
 					strcat_s(subdir, "\\");
 					ProcessDir(subdir, dir);
-					vector<string> tmp = GetDirFilenames(subdir, filespec);
-					for (vector<string>::iterator it = tmp.begin(); it < tmp.end(); it++)
+					std::vector<std::string> tmp = GetDirFilenames(subdir, filespec);
+					for (std::vector<std::string>::iterator it = tmp.begin(); it < tmp.end(); it++)
 						filename_vector.push_back(*it);
 				}
 			}

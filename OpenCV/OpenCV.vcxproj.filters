@@ -21,9 +21,6 @@
     <ClCompile Include="CHoG.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CUtil.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="CBmpConvert.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -31,9 +28,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="CCandidate.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="CReadUByte.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
@@ -45,10 +39,13 @@
     <ClCompile Include="main_mnist.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="opencv_main.cpp">
+    <ClCompile Include="DcmFileFormat.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="DcmFileFormat.cpp">
+    <ClCompile Include="main_opencv.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Util.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -82,9 +79,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="HUtil.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="HBmpConvert.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -94,13 +88,13 @@
     <ClInclude Include="HCandidate.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="HReadUByte.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="MnistDataLoader.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="DcmFileFormat.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Util.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

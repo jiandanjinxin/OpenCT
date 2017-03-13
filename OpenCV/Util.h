@@ -21,8 +21,6 @@
 #include <iostream>
 #include <vector>
 
-using namespace std;
-
 // 文件夹下文件遍历工具类
 class CBrowseDir
 {
@@ -42,14 +40,14 @@ public:
 	// 如果返回false，表示遍历过程被用户中止
 	bool BeginBrowse(const char *filespec);
 
-	vector<string> BeginBrowseFilenames(const char *filespec);
+	std::vector<std::string> BeginBrowseFilenames(const char *filespec);
 
 protected:
 	// 遍历目录dir下由filespec指定的文件  
 	// 对于子目录,采用迭代的方法
 	// 如果返回false,表示中止遍历文件
 	bool BrowseDir(const char *dir, const char *filespec);
-	vector<string> GetDirFilenames(const char *dir, const char *filespec);
+	std::vector<std::string> GetDirFilenames(const char *dir, const char *filespec);
 
 	// 函数BrowseDir每找到一个文件,就调用ProcessFile  
 	// 并把文件名作为参数传递过去  

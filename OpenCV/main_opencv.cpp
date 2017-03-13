@@ -1,8 +1,7 @@
-#include "HUtil.h"
-#include "HDcmFileFormat.h"
+#include "Util.h"
+#include "DcmFileFormat.h"
 #include "HBmpConvert.h"
 #include "HLymphHOG.h"
-#include "CNN.h"
 #include "HCandidate.h"
 
 #include "ximage.h"
@@ -57,14 +56,6 @@ void split(const string& src, const string& separator, vector<string>& dest)
 	dest.push_back(substring);
 }
 
-int test_CNN_train()
-{
-	CNN::CNN cnn1;
-	cnn1.init();
-	cnn1.train();
-
-	return 0;
-}
 
 
 int opencv_main(int argc, char* argv[])
