@@ -89,9 +89,8 @@
     <ClCompile Include="CDcmFileFormat.cpp" />
     <ClCompile Include="CHoG.cpp" />
     <ClCompile Include="CLymphHOG.cpp" />
-    <ClCompile Include="CMain.cpp" />
+    <ClCompile Include="opencv_main.cpp" />
     <ClCompile Include="CBmpConvert.cpp" />
-    <ClCompile Include="CNN.cpp" />
     <ClCompile Include="CReadUByte.cpp" />
     <ClCompile Include="CUtil.cpp" />
     <ClCompile Include="CCandidate.cpp" />
@@ -111,7 +110,6 @@
     <None Include="opecv2413x86.Release.props" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CNN.h" />
     <ClInclude Include="HCandidate.h" />
     <ClInclude Include="HDcmFileFormat.h" />
     <ClInclude Include="HLymphHOG.h" />

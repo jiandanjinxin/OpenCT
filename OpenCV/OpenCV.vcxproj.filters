@@ -18,9 +18,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CMain.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="CHoG.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -42,9 +39,6 @@
     <ClCompile Include="CReadUByte.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CNN.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -52,6 +46,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="main_mnist.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv_main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -101,9 +98,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="HReadUByte.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="CNN.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="MnistDataLoader.h">
