@@ -1,5 +1,6 @@
 #include "Util.h"
 #include "DcmFileFormat.h"
+#include "DcmFileProcess.h"
 #include "ImageConvert.h"
 
 #include "HBmpConvert.h"
@@ -314,7 +315,7 @@ int opencv_main(int argc, char* argv[])
 
 	}
 
-	ImageConvert::ImageShow("F:\\lymph node detection dataset\\DOI\\ABD_LYMPH_001\\000367.bmp");
+	//ImageConvert::ImageShow("F:\\lymph node detection dataset\\DOI\\ABD_LYMPH_001\\000367.bmp");
 	 
 	//Candidate candidate;
 	//candidate.WorldCoordinateConvert();
@@ -322,6 +323,12 @@ int opencv_main(int argc, char* argv[])
 
 	//Printer printer;
 	//printer.getEasyCNNFunction();
+	vector<string> result;
+	DcmFileProcess::readAllDcm("F:\\lymph node detection dataset\\DOI\\ABD_LYMPH_001\\61.7.22285965616260355338860879829667630274\\61.7.167248355135476067044532759811631626828",
+		result);
+
+	DcmFileProcess::createCache();
+	DcmFileProcess::deleteCache();
 
 	system("pause");
 
