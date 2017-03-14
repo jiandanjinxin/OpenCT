@@ -13,7 +13,7 @@ class CDcmViewerDlg : public CDialogEx
 // 构造
 public:
 	CDcmViewerDlg(CWnd* pParent = NULL);	// 标准构造函数
-
+	//~CDcmViewerDlg();
 // 对话框数据
 	enum { IDD = IDD_DCMVIEWER_DIALOG };
 
@@ -43,4 +43,5 @@ public:
 	CStatic m_axial;
 	CSliderCtrl m_slider1;
 	CEdit m_edit1;
+	afx_msg void OnBnClickedOk();
 };

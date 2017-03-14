@@ -72,6 +72,7 @@ BEGIN_MESSAGE_MAP(CDcmViewerDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_COMMAND(ID_OPEN_FILE, &CDcmViewerDlg::OnOpenFile)
 	ON_NOTIFY(NM_CUSTOMDRAW, IDC_SLIDER1, &CDcmViewerDlg::OnCustomdrawSlider1)
+	ON_BN_CLICKED(IDOK, &CDcmViewerDlg::OnBnClickedOk)
 END_MESSAGE_MAP()
 
 
@@ -245,4 +246,13 @@ void CDcmViewerDlg::OnCustomdrawSlider1(NMHDR *pNMHDR, LRESULT *pResult)
 	}
 
 	*pResult = 0;
+}
+
+
+void CDcmViewerDlg::OnBnClickedOk()
+{
+	// TODO:  在此添加控件通知处理程序代码
+	MessageBox(_T("haha"));
+
+	CDialogEx::OnOK();
 }
