@@ -1,21 +1,14 @@
-#include "Util.h"
-#include "DcmFileFormat.h"
+#include "DcmFileProcess.h"
 
-#include "ximage.h"
-
-#include "dcmtk/config/osconfig.h"  
-#include "dcmtk/dcmdata/dctk.h"  
-#include "dcmtk/dcmdata/dcpxitem.h"  
-#include "dcmtk/dcmjpeg/djdecode.h"  
-#include "dcmtk/dcmjpeg/djencode.h" 
-#include "dcmtk/dcmjpeg/djcodece.h"  
-#include "dcmtk/dcmjpeg/djrplol.h"  
-#include "dcmtk/dcmimgle/dcmimage.h"
-#include "dcmtk/dcmdata/dcvrfd.h"
-#include "dcmtk/dcmdata/dcistrmf.h"
-
-class DcmFileProcess
+void DcmFileProcess::readAllDcm(const char* FilePath, const std::vector<std::string>& AllDcmFile)
 {
-public:
-
-};
+	//构造类对象  
+	CStatDir statdir;
+	//设置要遍历的目录  
+	if (!statdir.SetInitDir(FilePath))
+	{
+		puts("目录不存在");
+	}
+	//开始遍历,获取该文件夹下所有dcm格式图像，一般为一个病患
+	std::vector<std::string> file_vec = statdir.BeginBrowseFilenames("*.dcm");
+}

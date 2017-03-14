@@ -87,7 +87,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DcmFileFormat.cpp" />
-    <ClCompile Include="CHoG.cpp" />
     <ClCompile Include="CLymphHOG.cpp" />
     <ClCompile Include="DcmFileProcess.cpp" />
     <ClCompile Include="ImageConvert.cpp" />
@@ -111,6 +110,7 @@
     <None Include="opecv2413x86.Release.props" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DcmFileProcess.h" />
     <ClInclude Include="HCandidate.h" />
     <ClInclude Include="DcmFileFormat.h" />
     <ClInclude Include="HLymphHOG.h" />

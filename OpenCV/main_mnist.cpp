@@ -56,7 +56,7 @@ static EasyCNN::NetWork buildConvNet(const size_t batch, const size_t channels, 
 	network.addLayer(_6_fullconnectLayer);
 	network.addLayer(std::make_shared<EasyCNN::ReluLayer>());
 
-	//soft max layer 6
+	//soft max layer 7
 	std::shared_ptr<EasyCNN::SoftmaxLayer> _7_softmaxLayer(std::make_shared<EasyCNN::SoftmaxLayer>());
 	network.addLayer(_7_softmaxLayer);
 
