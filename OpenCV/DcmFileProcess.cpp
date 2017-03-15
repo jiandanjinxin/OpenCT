@@ -28,25 +28,26 @@ void DcmFileProcess::readAllDcm(const char* FilePath, std::vector<std::string>& 
 	//创建缓冲文件夹
 	createCache();
 	std::string dirName = GetExePath();
-	dirName += "\\cache";
-
-	// 获取原始dcm图像的前缀目录
-	std::string subImageName = dirName;
-	// 将原始dcm图像的string转换为char*
-	const char *chImageName = dirName.c_str();
-	// 获取原始dcm图像的前缀目录的string转换为char*
-	const char *chSubImageName = subImageName.c_str();
-	// 基于dcmtk实现类
-	THU_STD_NAMESPACE::TDcmFileFormat dcm = THU_STD_NAMESPACE::TDcmFileFormat(chImageName);
-	// 获取dcm图像的InstanceNumber
-	int InstancePosition = dcm.getPositionNumber();
-	// 生成bmp图像存储路径
-	char BmpName[256];
-	sprintf_s(BmpName, "%s%06d.bmp", chSubImageName, InstancePosition);
-	// 进行图像转换
-	dcm.setWindow(715, 3478);
-	dcm.saveToBmp(BmpName);
-
+	dirName += "\\cache\\";
+	for (auto iter = AllDcmFile.cbegin(); iter != AllDcmFile.cend(); iter++)
+	{
+		// 获取原始dcm图像的前缀目录
+		std::string subImageName = dirName;
+		// 将原始dcm图像的string转换为char*
+		const char *chImageName = (*iter).c_str();
+		// 获取原始dcm图像的前缀目录的string转换为char*
+		const char *chSubImageName = subImageName.c_str();
+		// 基于dcmtk实现类
+		THU_STD_NAMESPACE::TDcmFileFormat dcm = THU_STD_NAMESPACE::TDcmFileFormat(chImageName);
+		// 获取dcm图像的InstanceNumber
+		int InstancePosition = dcm.getPositionNumber();
+		// 生成bmp图像存储路径
+		char BmpName[256];
+		sprintf_s(BmpName, "%s%06d.bmp", chSubImageName, InstancePosition);
+		// 进行图像转换
+		dcm.setWindow(715, 3478);
+		dcm.saveToBmp(BmpName);
+	}
 
 }
 
