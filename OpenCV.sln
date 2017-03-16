@@ -4,13 +4,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenCV", "OpenCV\OpenCV.vcxproj", "{6AA51DC0-63C4-42B2-BF82-2CB3E2C019F0}"
-	ProjectSection(ProjectDependencies) = postProject
-		{57EC63B0-104F-428D-910B-36AC0260083F} = {57EC63B0-104F-428D-910B-36AC0260083F}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EasyCNN", "EasyCNN\EasyCNN.vcxproj", "{57EC63B0-104F-428D-910B-36AC0260083F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DcmViewer", "DcmViewer\DcmViewer.vcxproj", "{C2C9323D-DA54-4B34-AED6-3462854FD5F5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{57EC63B0-104F-428D-910B-36AC0260083F} = {57EC63B0-104F-428D-910B-36AC0260083F}
+		{6AA51DC0-63C4-42B2-BF82-2CB3E2C019F0} = {6AA51DC0-63C4-42B2-BF82-2CB3E2C019F0}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
