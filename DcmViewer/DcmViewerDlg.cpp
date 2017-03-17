@@ -132,6 +132,23 @@ void CDcmViewerDlg::OnSysCommand(UINT nID, LPARAM lParam)
 //  来绘制该图标。  对于使用文档/视图模型的 MFC 应用程序，
 //  这将由框架自动完成。
 
+std::string CStringToString(LPCWSTR pwszSrc)
+{
+	int nLen = WideCharToMultiByte(CP_ACP, 0, pwszSrc, -1, NULL, 0, NULL, NULL);
+
+	if (nLen <= 0) return std::string("");
+
+	char* pszDst = new char[nLen];
+	if (NULL == pszDst) return std::string("");
+
+	WideCharToMultiByte(CP_ACP, 0, pwszSrc, -1, pszDst, nLen, NULL, NULL);
+	pszDst[nLen - 1] = 0;
+	std::string strTemp(pszDst);
+	delete[] pszDst;
+
+	return strTemp;
+}
+
 void CDcmViewerDlg::OnPaint()
 {
 	if (IsIconic())
@@ -200,8 +217,10 @@ void CDcmViewerDlg::OnOpenFile()
 	if (dialog.DoModal() == IDOK)
 	{
 		FilePathName = dialog.GetPathName();
+		filepath = dialog.GetFolderPath();
+		filepath.Append(_T("\\"));
 		image.Load(FilePathName);
-		filepath = FilePathName.Left(FilePathName.GetLength() - 10);
+		
 		//刷新picture control控件，加载打开文件的图片
 		UpdateWindow();
 		CRect rect;//定义矩形类
@@ -212,6 +231,10 @@ void CDcmViewerDlg::OnOpenFile()
 		ReleaseDC(pDc);               //释放picture控件的Dc
 
 		//截取输入文件名文件夹
+		std::vector<std::string> result;
+		std::string str = CStringToString(filepath.Left(filepath.GetLength() - 1));
+		DcmFileProcess::readAllDcm(str.c_str(),
+			result);
 	}
 	else
 	{
