@@ -8,6 +8,13 @@
 #include "afxdialogex.h"
 
 #include <locale>
+#include <direct.h>
+
+#ifdef _DEBUG
+#pragma comment(lib,"..\\Debug\\OpenCV.lib")
+#else
+#pragma comment(lib,"..\\Release\\OpenCV.lib")
+#endif
 
 #include "DcmFileProcess.h"
 
@@ -149,6 +156,20 @@ std::string CStringToString(LPCWSTR pwszSrc)
 	return strTemp;
 }
 
+CString GetModuleDir()
+{
+	HMODULE module = GetModuleHandle(0);
+	TCHAR pFileName[MAX_PATH];
+	GetModuleFileName(module, pFileName, MAX_PATH);
+
+	CString csFullPath(pFileName);
+	int nPos = csFullPath.ReverseFind(_T('\\'));
+	if (nPos < 0)
+		return CString("");
+	else
+		return csFullPath.Left(nPos);
+}
+
 void CDcmViewerDlg::OnPaint()
 {
 	if (IsIconic())
@@ -212,14 +233,26 @@ void CDcmViewerDlg::OnOpenFile()
 {
 	// TODO:  在此添加命令处理程序代码;
 
-	CString FilePathName;
+	CString FileName;
 	CFileDialog dialog(true, NULL, NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, (LPCTSTR)_TEXT("Picture format(*.bmp *.jpg *jpeg)|*.bmp;*.jpg;*jpeg|All Files(*.*)|*.*||"), NULL);
 	if (dialog.DoModal() == IDOK)
 	{
-		FilePathName = dialog.GetPathName();
+		FileName = dialog.GetPathName();
 		filepath = dialog.GetFolderPath();
 		filepath.Append(_T("\\"));
-		image.Load(FilePathName);
+
+		//截取输入文件名文件夹
+		std::vector<std::string> result;
+		std::string str = CStringToString(filepath.Left(filepath.GetLength() - 1));
+		DcmFileProcess::readAllDcm(str.c_str(), result);
+
+		FileName = GetModuleDir();
+		FileName.Append(_T("\\cache\\"));
+		CString temp = FileName;
+		FileName.Format(_T("%s%06d.bmp"), temp, 1);
+		image.Load(FileName);
+
+		filepath = temp;
 		
 		//刷新picture control控件，加载打开文件的图片
 		UpdateWindow();
@@ -230,11 +263,7 @@ void CDcmViewerDlg::OnOpenFile()
 		image.StretchBlt(pDc->m_hDC, rect, SRCCOPY);
 		ReleaseDC(pDc);               //释放picture控件的Dc
 
-		//截取输入文件名文件夹
-		std::vector<std::string> result;
-		std::string str = CStringToString(filepath.Left(filepath.GetLength() - 1));
-		DcmFileProcess::readAllDcm(str.c_str(),
-			result);
+		
 	}
 	else
 	{
