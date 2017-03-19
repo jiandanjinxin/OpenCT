@@ -1,4 +1,3 @@
-
 // DcmViewerDlg.cpp : 实现文件
 //
 
@@ -117,7 +116,7 @@ BOOL CDcmViewerDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO:  在此添加额外的初始化代码
-	SetRange(1, 600);
+
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -242,16 +241,17 @@ void CDcmViewerDlg::OnOpenFile()
 		filepath.Append(_T("\\"));
 
 		//截取输入文件名文件夹
-		std::vector<std::string> result;
 		std::string str = CStringToString(filepath.Left(filepath.GetLength() - 1));
-		DcmFileProcess::readAllDcm(str.c_str(), result);
+		int count = DcmFileProcess::readAllDcm(str.c_str());
+		SetRange(1, count);
 
+		//获取dcm图像中的第一个加载到控件中
 		FileName = GetModuleDir();
 		FileName.Append(_T("\\cache\\"));
 		CString temp = FileName;
 		FileName.Format(_T("%s%06d.bmp"), temp, 1);
 		image.Load(FileName);
-
+		GetDlgItem(IDC_EDIT1)->SetWindowText(_T("1"));
 		filepath = temp;
 		
 		//刷新picture control控件，加载打开文件的图片
@@ -262,8 +262,7 @@ void CDcmViewerDlg::OnOpenFile()
 		SetStretchBltMode(pDc->m_hDC, STRETCH_HALFTONE);
 		image.StretchBlt(pDc->m_hDC, rect, SRCCOPY);
 		ReleaseDC(pDc);               //释放picture控件的Dc
-
-		
+	
 	}
 	else
 	{
@@ -306,7 +305,9 @@ void CDcmViewerDlg::OnCustomdrawSlider1(NMHDR *pNMHDR, LRESULT *pResult)
 void CDcmViewerDlg::OnBnClickedOk()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	MessageBox(_T("haha"));
+	//释放图像缓存文件夹
+	DcmFileProcess::deleteCache();
+
 
 	CDialogEx::OnOK();
 }

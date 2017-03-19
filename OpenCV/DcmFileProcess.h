@@ -25,7 +25,7 @@ public:
 	//删除缓存文件夹
 	static void deleteCache();
 	//读取当前文件夹下所有dcm图像，返回vector
-	static void readAllDcm(const char* FilePath, std::vector<std::string>& AllDcmFile);
+	static int readAllDcm(const char* FilePath);
 };
 
 #endif

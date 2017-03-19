@@ -13,10 +13,12 @@ std::string GetExePath(void)
 	return path;
 }
 
-void DcmFileProcess::readAllDcm(const char* FilePath, std::vector<std::string>& AllDcmFile)
+int DcmFileProcess::readAllDcm(const char* FilePath)
 {
 	//构造类对象  
 	CStatDir statdir;
+	std::vector<std::string> AllDcmFile;
+	int count = 0;
 	//设置要遍历的目录  
 	if (!statdir.SetInitDir(FilePath))
 	{
@@ -47,8 +49,10 @@ void DcmFileProcess::readAllDcm(const char* FilePath, std::vector<std::string>& 
 		// 进行图像转换
 		dcm.setWindow(715, 3478);
 		dcm.saveToBmp(BmpName);
+		count++;
 	}
 
+	return count;
 }
 
 void DcmFileProcess::createCache()
@@ -62,5 +66,19 @@ void DcmFileProcess::deleteCache()
 {
 	std::string dirName = GetExePath();
 	dirName += "\\cache";
+	//构造类对象  
+	CStatDir statdir;
+	std::vector<std::string> AllDcmFile;
+	if (!statdir.SetInitDir(dirName.c_str()))
+	{
+		puts("目录不存在");
+	}
+	//开始遍历,获取该文件夹下所有dcm格式图像，一般为一个病患
+	AllDcmFile.clear();
+	AllDcmFile = statdir.BeginBrowseFilenames("*.bmp");
+	for (auto iter = AllDcmFile.cbegin(); iter != AllDcmFile.cend(); iter++)
+	{
+		remove((*iter).c_str());
+	}
 	rmdir(dirName.c_str());
 }
