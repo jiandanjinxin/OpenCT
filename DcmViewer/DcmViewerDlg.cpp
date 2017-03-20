@@ -233,7 +233,7 @@ void CDcmViewerDlg::OnOpenFile()
 	// TODO:  在此添加命令处理程序代码;
 
 	CString FileName;
-	CFileDialog dialog(true, NULL, NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, (LPCTSTR)_TEXT("Picture format(*.bmp *.jpg *jpeg)|*.bmp;*.jpg;*jpeg|All Files(*.*)|*.*||"), NULL);
+	CFileDialog dialog(true, NULL, NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, (LPCTSTR)_TEXT("All Files(*.*)|*.*||"), NULL);
 	if (dialog.DoModal() == IDOK)
 	{
 		FileName = dialog.GetPathName();
