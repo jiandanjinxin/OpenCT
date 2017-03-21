@@ -26,6 +26,10 @@ public:
 	static void deleteCache();
 	//读取当前文件夹下所有dcm图像，返回vector
 	static int readAllDcm(const char* FilePath);
+
+public:
+	//读取所有文件
+	static int readAllFile(const char* FilePath, std::vector<std::string> result);
 };
 
 #endif

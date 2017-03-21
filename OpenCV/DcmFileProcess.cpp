@@ -82,3 +82,25 @@ void DcmFileProcess::deleteCache()
 	}
 	rmdir(dirName.c_str());
 }
+
+
+int DcmFileProcess::readAllFile(const char* FilePath, std::vector<std::string> result)
+{
+	//构造类对象  
+	CStatDir statdir;
+
+	//设置要遍历的目录  
+	if (!statdir.SetInitDir(FilePath))
+	{
+		puts("目录不存在");
+		return 0;
+	}
+	result.clear();
+	//开始遍历  
+	result = statdir.BeginBrowseFilenames("*.*");
+	for (std::vector<std::string>::const_iterator it = result.begin(); it < result.end(); ++it)
+		std::cout << *it << std::endl;
+
+	return result.size();
+	
+}

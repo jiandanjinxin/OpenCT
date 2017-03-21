@@ -70,30 +70,6 @@ int opencv_main(int argc, char* argv[])
 	negativeSample.HandleNegativeSamples();
 	*/
 
-	// 生成所有dcm文件的目录 F:\\lymph node detection dataset\\DOI\\file.lst
-	if (DirGenerationDcm)
-	{
-		//构造类对象  
-		CStatDir statdir;
-
-		char buf[256] = "F:\\lymph node detection dataset\\DOI";
-		char posfilename[] = "F:\\lymph node detection dataset\\DOI\\file.lst";
-		ofstream fout(posfilename);
-		//设置要遍历的目录  
-		if (!statdir.SetInitDir(buf))
-		{
-			puts("目录不存在");
-			return 0;
-		}
-
-		//开始遍历  
-		vector<string> file_vec = statdir.BeginBrowseFilenames("*.*");
-		for (vector<string>::const_iterator it = file_vec.begin(); it < file_vec.end(); ++it)
-			fout << *it << endl;
-
-		// printf("文件总数: %d\n", file_vec.size());
-	}
-
 	// 对所有dcm文件根据已经生成的file.lst进行全部dcm图像的格式转换
 	if (DcmToBmp)
 	{
