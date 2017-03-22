@@ -1,6 +1,8 @@
 #include "DcmFileProcess.h"
 #include "DcmFileFormat.h"
 
+#include <opencv2/opencv.hpp>
+
 #include <direct.h>
 
 std::string GetExePath(void)
@@ -31,6 +33,9 @@ int DcmFileProcess::readAllDcm(const char* FilePath)
 	createCache();
 	std::string dirName = GetExePath();
 	dirName += "\\cache\\";
+
+	std::vector<cv::Mat> mat;
+
 	for (auto iter = AllDcmFile.cbegin(); iter != AllDcmFile.cend(); iter++)
 	{
 		// 获取原始dcm图像的前缀目录
@@ -49,7 +54,20 @@ int DcmFileProcess::readAllDcm(const char* FilePath)
 		// 进行图像转换
 		dcm.setWindow(715, 3478);
 		dcm.saveToBmp(BmpName);
+		mat.push_back(cv::imread(BmpName, 1));
 		count++;
+	}
+
+	for (auto iter = mat.cbegin(); iter != mat.cend(); iter++)
+	{
+		for (size_t nrow = 0; nrow < (*iter).rows; nrow++)
+		{
+			for (size_t ncol = 0; ncol < (*iter).cols; ncol++)
+			{
+				uchar val = (*iter).at<uchar>(nrow, ncol);
+			}
+		}
+      
 	}
 
 	return count;

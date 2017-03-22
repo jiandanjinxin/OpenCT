@@ -87,13 +87,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DcmFileFormat.cpp" />
-    <ClCompile Include="CLymphHOG.cpp" />
+    <ClCompile Include="LymphHOG.cpp" />
     <ClCompile Include="DcmFileProcess.cpp" />
     <ClCompile Include="ImageConvert.cpp" />
     <ClCompile Include="main_opencv.cpp" />
-    <ClCompile Include="CBmpConvert.cpp" />
+    <ClCompile Include="BmpConvert.cpp" />
     <ClCompile Include="Util.cpp" />
-    <ClCompile Include="CCandidate.cpp" />
+    <ClCompile Include="Candidate.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="main_mnist.cpp" />
     <ClCompile Include="MnistDataLoader.cpp" />
