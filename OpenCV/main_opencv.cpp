@@ -306,15 +306,37 @@ int opencv_main(int argc, char* argv[])
 
 	cv::Mat temp = cv::imread("D:\\MFC\\Samples\\OpenCV\\Debug\\cache\\000001.bmp", cv::IMREAD_GRAYSCALE);
 	std::cout << temp.channels();
+	uchar* data = new uchar[temp.rows * temp.cols];
+	int count = 0;
 	for (int i = 0; i < temp.rows; i++)
 	{
 		for (int j = 0; j < temp.cols; j++)
 		{
-			if (i >= 0 && i<temp.cols && j >= 0 && j< temp.rows)
-				std::cout << (int)temp.at<uchar>(i, j) << " ";
+			if (i >= 0 && i < temp.cols && j >= 0 && j < temp.rows)
+				//std::cout << (int)temp.at<uchar>(i, j) << " ";
+			data[count] = temp.at<uchar>(i, j);
+			count++;
 		}
 		std::cout << std::endl;
 	}
+
+	cv::Mat mat(temp.rows, temp.cols, CV_8UC1);
+	for (int i = 0; i < mat.rows; ++i){       //站长说指针效率最高，我就用了指针= =#
+		uchar *p = mat.ptr<uchar>(i);
+		for (int j = 0; j < mat.cols; ++j) //M.ptr<uchar>(i)返回的是第 i 行像素点的首地址
+			p[j] = data[i * mat.rows + j];
+	}
+
+	for (int i = 0; i < temp.rows; i++)
+	{
+		for (int j = 0; j < temp.cols; j++)
+		{
+			if (i >= 0 && i < temp.cols && j >= 0 && j < temp.rows)
+				std::cout << (int)mat.at<uchar>(i, j) << " ";
+		}
+		std::cout << std::endl;
+	}
+	imwrite("test.bmp", mat);
 
 	system("pause");
 
