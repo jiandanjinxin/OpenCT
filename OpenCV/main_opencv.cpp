@@ -301,8 +301,20 @@ int opencv_main(int argc, char* argv[])
 	//printer.getEasyCNNFunction();
 	
 
-	//DcmFileProcess::createCache();
+	//DcmFileProcess::readAllDcm("F:\\lymph node detection dataset\\DOI\\ABD_LYMPH_001\\61.7.22285965616260355338860879829667630274\\61.7.167248355135476067044532759811631626828");
 	//DcmFileProcess::deleteCache();
+
+	cv::Mat temp = cv::imread("D:\\MFC\\Samples\\OpenCV\\Debug\\cache\\000001.bmp", cv::IMREAD_GRAYSCALE);
+	std::cout << temp.channels();
+	for (int i = 0; i < temp.rows; i++)
+	{
+		for (int j = 0; j < temp.cols; j++)
+		{
+			if (i >= 0 && i<temp.cols && j >= 0 && j< temp.rows)
+				std::cout << (int)temp.at<uchar>(i, j) << " ";
+		}
+		std::cout << std::endl;
+	}
 
 	system("pause");
 

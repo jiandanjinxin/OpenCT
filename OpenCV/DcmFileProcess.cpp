@@ -1,7 +1,7 @@
-#include "DcmFileProcess.h"
+ï»¿#include "DcmFileProcess.h"
 #include "DcmFileFormat.h"
 
-#include <opencv2/opencv.hpp>
+#include <opencv2\opencv.hpp>  
 
 #include <direct.h>
 
@@ -9,7 +9,7 @@ std::string GetExePath(void)
 {
 	char szFilePath[MAX_PATH + 1] = { 0 };
 	GetModuleFileNameA(NULL, szFilePath, MAX_PATH);
-	(strrchr(szFilePath, '\\') + 1)[0] = 0; // É¾³ıÎÄ¼şÃû£¬Ö»»ñµÃÂ·¾¶×Ö´®
+	(strrchr(szFilePath, '\\') + 1)[0] = 0; // åˆ é™¤æ–‡ä»¶åï¼Œåªè·å¾—è·¯å¾„å­—ä¸²
 	std::string path = szFilePath;
 
 	return path;
@@ -17,59 +17,53 @@ std::string GetExePath(void)
 
 int DcmFileProcess::readAllDcm(const char* FilePath)
 {
-	//¹¹ÔìÀà¶ÔÏó  
+	//æ„é€ ç±»å¯¹è±¡  
 	CStatDir statdir;
 	std::vector<std::string> AllDcmFile;
 	int count = 0;
-	//ÉèÖÃÒª±éÀúµÄÄ¿Â¼  
+	//è®¾ç½®è¦éå†çš„ç›®å½•  
 	if (!statdir.SetInitDir(FilePath))
 	{
-		puts("Ä¿Â¼²»´æÔÚ");
+		puts("ç›®å½•ä¸å­˜åœ¨");
 	}
-	//¿ªÊ¼±éÀú,»ñÈ¡¸ÃÎÄ¼ş¼ĞÏÂËùÓĞdcm¸ñÊ½Í¼Ïñ£¬Ò»°ãÎªÒ»¸ö²¡»¼
+	//å¼€å§‹éå†,è·å–è¯¥æ–‡ä»¶å¤¹ä¸‹æ‰€æœ‰dcmæ ¼å¼å›¾åƒï¼Œä¸€èˆ¬ä¸ºä¸€ä¸ªç—…æ‚£
 	AllDcmFile.clear();
 	AllDcmFile = statdir.BeginBrowseFilenames("*.dcm");
-	//´´½¨»º³åÎÄ¼ş¼Ğ
+	//åˆ›å»ºç¼“å†²æ–‡ä»¶å¤¹
 	createCache();
 	std::string dirName = GetExePath();
 	dirName += "\\cache\\";
 
-	std::vector<cv::Mat> mat;
-
+	
 	for (auto iter = AllDcmFile.cbegin(); iter != AllDcmFile.cend(); iter++)
 	{
-		// »ñÈ¡Ô­Ê¼dcmÍ¼ÏñµÄÇ°×ºÄ¿Â¼
+		// è·å–åŸå§‹dcmå›¾åƒçš„å‰ç¼€ç›®å½•
 		std::string subImageName = dirName;
-		// ½«Ô­Ê¼dcmÍ¼ÏñµÄstring×ª»»Îªchar*
+		// å°†åŸå§‹dcmå›¾åƒçš„stringè½¬æ¢ä¸ºchar*
 		const char *chImageName = (*iter).c_str();
-		// »ñÈ¡Ô­Ê¼dcmÍ¼ÏñµÄÇ°×ºÄ¿Â¼µÄstring×ª»»Îªchar*
+		// è·å–åŸå§‹dcmå›¾åƒçš„å‰ç¼€ç›®å½•çš„stringè½¬æ¢ä¸ºchar*
 		const char *chSubImageName = subImageName.c_str();
-		// »ùÓÚdcmtkÊµÏÖÀà
+		// åŸºäºdcmtkå®ç°ç±»
 		THU_STD_NAMESPACE::TDcmFileFormat dcm = THU_STD_NAMESPACE::TDcmFileFormat(chImageName);
-		// »ñÈ¡dcmÍ¼ÏñµÄInstanceNumber
+		// è·å–dcmå›¾åƒçš„InstanceNumber
 		int InstancePosition = dcm.getPositionNumber();
-		// Éú³ÉbmpÍ¼Ïñ´æ´¢Â·¾¶
+		// ç”Ÿæˆbmpå›¾åƒå­˜å‚¨è·¯å¾„
 		char BmpName[256];
 		sprintf_s(BmpName, "%s%06d.bmp", chSubImageName, InstancePosition);
-		// ½øĞĞÍ¼Ïñ×ª»»
+		// è¿›è¡Œå›¾åƒè½¬æ¢
 		dcm.setWindow(715, 3478);
 		dcm.saveToBmp(BmpName);
-		mat.push_back(cv::imread(BmpName, 1));
+		//mat.push_back(cv::imread(BmpName, 1));
+		
+
 		count++;
 	}
+	
+	
 
-	for (auto iter = mat.cbegin(); iter != mat.cend(); iter++)
-	{
-		for (size_t nrow = 0; nrow < (*iter).rows; nrow++)
-		{
-			for (size_t ncol = 0; ncol < (*iter).cols; ncol++)
-			{
-				uchar val = (*iter).at<uchar>(nrow, ncol);
-			}
-		}
-      
-	}
+	
 
+	
 	return count;
 }
 
@@ -84,14 +78,14 @@ void DcmFileProcess::deleteCache()
 {
 	std::string dirName = GetExePath();
 	dirName += "\\cache";
-	//¹¹ÔìÀà¶ÔÏó  
+	//æ„é€ ç±»å¯¹è±¡  
 	CStatDir statdir;
 	std::vector<std::string> AllDcmFile;
 	if (!statdir.SetInitDir(dirName.c_str()))
 	{
-		puts("Ä¿Â¼²»´æÔÚ");
+		puts("ç›®å½•ä¸å­˜åœ¨");
 	}
-	//¿ªÊ¼±éÀú,»ñÈ¡¸ÃÎÄ¼ş¼ĞÏÂËùÓĞdcm¸ñÊ½Í¼Ïñ£¬Ò»°ãÎªÒ»¸ö²¡»¼
+	//å¼€å§‹éå†,è·å–è¯¥æ–‡ä»¶å¤¹ä¸‹æ‰€æœ‰dcmæ ¼å¼å›¾åƒï¼Œä¸€èˆ¬ä¸ºä¸€ä¸ªç—…æ‚£
 	AllDcmFile.clear();
 	AllDcmFile = statdir.BeginBrowseFilenames("*.bmp");
 	for (auto iter = AllDcmFile.cbegin(); iter != AllDcmFile.cend(); iter++)
@@ -104,17 +98,17 @@ void DcmFileProcess::deleteCache()
 
 int DcmFileProcess::readAllFile(const char* FilePath, std::vector<std::string> result)
 {
-	//¹¹ÔìÀà¶ÔÏó  
+	//æ„é€ ç±»å¯¹è±¡  
 	CStatDir statdir;
 
-	//ÉèÖÃÒª±éÀúµÄÄ¿Â¼  
+	//è®¾ç½®è¦éå†çš„ç›®å½•  
 	if (!statdir.SetInitDir(FilePath))
 	{
-		puts("Ä¿Â¼²»´æÔÚ");
+		puts("ç›®å½•ä¸å­˜åœ¨");
 		return 0;
 	}
 	result.clear();
-	//¿ªÊ¼±éÀú  
+	//å¼€å§‹éå†  
 	result = statdir.BeginBrowseFilenames("*.*");
 	for (std::vector<std::string>::const_iterator it = result.begin(); it < result.end(); ++it)
 		std::cout << *it << std::endl;

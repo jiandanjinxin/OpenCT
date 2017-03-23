@@ -38,11 +38,13 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\OpenCV\DCMTK.Debug.props" />
     <Import Project="..\OpenCV\CxImage.Debug.props" />
+    <Import Project="..\OpenCV\opecv2413x86.Debug.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\OpenCV\CxImage.Release.props" />
     <Import Project="..\OpenCV\DCMTK.Release.props" />
+    <Import Project="..\OpenCV\opecv2413x86.Release.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -63,6 +65,9 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>../Debug/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <StackReserveSize>10000000</StackReserveSize>
+      <StackCommitSize>
+      </StackCommitSize>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
