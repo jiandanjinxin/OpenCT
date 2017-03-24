@@ -91,11 +91,37 @@ int DcmFileProcess::readAllDcm(const char* FilePath)
 		}
 
 		char BmpName[256];
-		sprintf_s(BmpName, "%s%s%06d.bmp", chSubImageName, "C", total);
+		sprintf_s(BmpName, "%s%s%06d.bmp", chSubImageName, "C", total + 1);
 		cv::imwrite(BmpName, mat_temp);
 
 		delete data;
 	}
+
+	//构造矢状位图像数据
+	uchar* data = new uchar[count * mat[0].cols];
+	int countdata = 0;
+	for (int num = 0; num < count; num++)
+	{
+		for (int j = 0; j < mat[0].cols; j++)
+		{
+			//std::cout << (int)mat[num].at<uchar>(300, j) << " ";
+			data[countdata] = mat[num].at<uchar>(j, 300);
+			countdata++;
+		}
+		//std::cout << std::endl;
+	}
+
+	cv::Mat mat_temp(count, mat[0].cols, CV_8UC1);
+	for (int i = 0; i < mat_temp.rows; ++i)
+	{
+		uchar *p = mat_temp.ptr<uchar>(mat_temp.rows - 1 - i);
+		for (int j = 0; j < mat_temp.cols; ++j) //M.ptr<uchar>(i)返回的是第 i 行像素点的首地址
+			p[j] = data[i * mat[0].cols + j];
+	}
+
+	cv::imwrite("C:\\Users\\Administrator\\Desktop\\test.bmp", mat_temp);
+
+	delete data;
 	
 
 	return count;

@@ -72,6 +72,9 @@ void CDcmViewerDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_STATIC1, m_axial);
 	DDX_Control(pDX, IDC_SLIDER1, m_slider1);
 	DDX_Control(pDX, IDC_EDIT1, m_edit1);
+	DDX_Control(pDX, IDC_STATIC2, m_coronal);
+	DDX_Control(pDX, IDC_SLIDER3, m_slider3);
+	DDX_Control(pDX, IDC_EDIT3, m_edit3);
 }
 
 BEGIN_MESSAGE_MAP(CDcmViewerDlg, CDialogEx)
@@ -81,6 +84,7 @@ BEGIN_MESSAGE_MAP(CDcmViewerDlg, CDialogEx)
 	ON_COMMAND(ID_OPEN_FILE, &CDcmViewerDlg::OnOpenFile)
 	ON_NOTIFY(NM_CUSTOMDRAW, IDC_SLIDER1, &CDcmViewerDlg::OnCustomdrawSlider1)
 	ON_BN_CLICKED(IDOK, &CDcmViewerDlg::OnBnClickedOk)
+	ON_NOTIFY(NM_CUSTOMDRAW, IDC_SLIDER3, &CDcmViewerDlg::OnNMCustomdrawSlider3)
 END_MESSAGE_MAP()
 
 
@@ -116,7 +120,8 @@ BOOL CDcmViewerDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO:  在此添加额外的初始化代码
-
+	GetDlgItem(IDC_EDIT1)->SetWindowText(_T("0"));
+	GetDlgItem(IDC_EDIT3)->SetWindowText(_T("0"));
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -201,14 +206,20 @@ void CDcmViewerDlg::OnPaint()
 	}
 	else
 	{
-		//刷新可视化区域
+		//刷新picture control控件，加载打开文件的图片
 		UpdateWindow();
-		CRect rect;//定义矩形类
-		m_axial.GetClientRect(&rect); //获得pictrue控件所在的矩形区域
-		CDC *pDc = m_axial.GetDC();   //获得pictrue控件的Dc
-		SetStretchBltMode(pDc->m_hDC, STRETCH_HALFTONE);
-		image.StretchBlt(pDc->m_hDC, rect, SRCCOPY);
-		ReleaseDC(pDc);//释放picture控件的DC
+		CRect rect1;//定义矩形类
+		CRect rect2;
+		m_axial.GetClientRect(&rect1); //获得pictrue控件所在的矩形区域
+		m_coronal.GetClientRect(&rect2);
+		CDC *pDc1 = m_axial.GetDC();   //获得pictrue控件的Dc
+		CDC *pDc2 = m_coronal.GetDC();
+		SetStretchBltMode(pDc1->m_hDC, STRETCH_HALFTONE);
+		SetStretchBltMode(pDc2->m_hDC, STRETCH_HALFTONE);
+		image.StretchBlt(pDc1->m_hDC, rect1, SRCCOPY);
+		image_cor.StretchBlt(pDc2->m_hDC, rect2, SRCCOPY);
+		ReleaseDC(pDc1);               //释放picture控件的Dc
+		ReleaseDC(pDc2);
 	}
 
 	
@@ -225,6 +236,7 @@ HCURSOR CDcmViewerDlg::OnQueryDragIcon()
 void CDcmViewerDlg::SetRange(int nMin, int nMax, BOOL bRedrGETaw)
 {
 	m_slider1.SetRange(nMin, nMax);
+	m_slider3.SetRange(1, 512);
 }
 
 
@@ -249,20 +261,31 @@ void CDcmViewerDlg::OnOpenFile()
 		FileName = GetModuleDir();
 		FileName.Append(_T("\\cache\\"));
 		CString temp = FileName;
+		CString temp2 = FileName;
+
 		FileName.Format(_T("%s%06d.bmp"), temp, 1);
 		image.Load(FileName);
+		FileName.Format(_T("%s%s%06d.bmp"), temp, _T("C"), 1);
+		image_cor.Load(FileName);
+
 		GetDlgItem(IDC_EDIT1)->SetWindowText(_T("1"));
+		GetDlgItem(IDC_EDIT3)->SetWindowText(_T("1"));
 		filepath = temp;
-		
+	
 		//刷新picture control控件，加载打开文件的图片
 		UpdateWindow();
-		CRect rect;//定义矩形类
-		m_axial.GetClientRect(&rect); //获得pictrue控件所在的矩形区域
-		CDC *pDc = m_axial.GetDC();   //获得pictrue控件的Dc
-		SetStretchBltMode(pDc->m_hDC, STRETCH_HALFTONE);
-		image.StretchBlt(pDc->m_hDC, rect, SRCCOPY);
-		ReleaseDC(pDc);               //释放picture控件的Dc
-	
+		CRect rect1;//定义矩形类
+		CRect rect2;
+		m_axial.GetClientRect(&rect1); //获得pictrue控件所在的矩形区域
+		m_coronal.GetClientRect(&rect2);
+		CDC *pDc1 = m_axial.GetDC();   //获得pictrue控件的Dc
+		CDC *pDc2 = m_coronal.GetDC();
+		SetStretchBltMode(pDc1->m_hDC, STRETCH_HALFTONE);
+		SetStretchBltMode(pDc2->m_hDC, STRETCH_HALFTONE);
+		image.StretchBlt(pDc1->m_hDC, rect1, SRCCOPY);
+		image_cor.StretchBlt(pDc2->m_hDC, rect2, SRCCOPY);
+		ReleaseDC(pDc1);               //释放picture控件的Dc
+		ReleaseDC(pDc2);
 	}
 	else
 	{
@@ -308,6 +331,34 @@ void CDcmViewerDlg::OnBnClickedOk()
 	//释放图像缓存文件夹
 	DcmFileProcess::deleteCache();
 
-
 	CDialogEx::OnOK();
+}
+
+
+void CDcmViewerDlg::OnNMCustomdrawSlider3(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMCUSTOMDRAW pNMCD = reinterpret_cast<LPNMCUSTOMDRAW>(pNMHDR);
+	// TODO:  在此添加控件通知处理程序代码
+	CString pos;
+	pos.Format(_T("%d"), m_slider3.GetPos());
+	GetDlgItem(IDC_EDIT3)->SetWindowText(pos);
+
+	if (filepath.GetLength() > 1)
+	{
+		CString FilePathName;
+		FilePathName.Format(_T("%s%s%06d.bmp"), filepath, _T("C"), m_slider3.GetPos());
+
+		image_cor.Destroy();
+		image_cor.Load(FilePathName);
+
+		UpdateWindow();
+		CRect rect;//定义矩形类
+		m_coronal.GetClientRect(&rect); //获得pictrue控件所在的矩形区域
+		CDC *pDc = m_coronal.GetDC();   //获得pictrue控件的Dc
+		SetStretchBltMode(pDc->m_hDC, STRETCH_HALFTONE);
+		image_cor.StretchBlt(pDc->m_hDC, rect, SRCCOPY);
+		ReleaseDC(pDc);//释放picture控件的Dc
+	}
+
+	*pResult = 0;
 }
