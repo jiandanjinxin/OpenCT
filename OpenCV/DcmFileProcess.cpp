@@ -34,7 +34,8 @@ int DcmFileProcess::readAllDcm(const char* FilePath)
 	std::string dirName = GetExePath();
 	dirName += "\\cache\\";
 
-	
+	cv::Mat mat[700];
+
 	for (auto iter = AllDcmFile.cbegin(); iter != AllDcmFile.cend(); iter++)
 	{
 		// 获取原始dcm图像的前缀目录
@@ -54,16 +55,38 @@ int DcmFileProcess::readAllDcm(const char* FilePath)
 		dcm.setWindow(715, 3478);
 		dcm.saveToBmp(BmpName);
 		//mat.push_back(cv::imread(BmpName, 1));
-		
+		cv::Mat temp = cv::imread(BmpName, cv::IMREAD_GRAYSCALE);
+		mat[InstancePosition - 1] = temp;
 
 		count++;
 	}
 	
-	
+	uchar* data = new uchar[count * mat[0].cols];
+	int countdata = 0;
+	for (int num = 0; num < count; num++)
+	{	
+		for (int j = 0; j < mat[0].cols; j++)
+		{
+			//std::cout << (int)mat[num].at<uchar>(300, j) << " ";
+			data[countdata] = mat[num].at<uchar>(300, j);
+			countdata++;
 
-	
+		}	
+		//std::cout << std::endl;
+	}
 
-	
+	cv::Mat mat0(count, mat[0].cols, CV_8UC1);
+
+	std::cout << mat0.rows << " " << mat0.cols;
+
+	for (int i = 0; i < mat0.rows; ++i)
+	{
+		uchar *p = mat0.ptr<uchar>(i);
+		for (int j = 0; j < mat0.cols; ++j) //M.ptr<uchar>(i)返回的是第 i 行像素点的首地址
+			p[j] = data[i * mat[0].rows + j];
+	}
+
+	cv::imwrite("test.bmp", mat0);
 	return count;
 }
 
