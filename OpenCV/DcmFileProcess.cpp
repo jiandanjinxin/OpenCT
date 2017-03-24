@@ -54,39 +54,50 @@ int DcmFileProcess::readAllDcm(const char* FilePath)
 		// 进行图像转换
 		dcm.setWindow(715, 3478);
 		dcm.saveToBmp(BmpName);
-		//mat.push_back(cv::imread(BmpName, 1));
+		//读取所有dcm图像构造三维数组
 		cv::Mat temp = cv::imread(BmpName, cv::IMREAD_GRAYSCALE);
 		mat[InstancePosition - 1] = temp;
 
 		count++;
 	}
 	
-	uchar* data = new uchar[count * mat[0].cols];
-	int countdata = 0;
-	for (int num = 0; num < count; num++)
-	{	
-		for (int j = 0; j < mat[0].cols; j++)
-		{
-			//std::cout << (int)mat[num].at<uchar>(300, j) << " ";
-			data[countdata] = mat[num].at<uchar>(300, j);
-			countdata++;
-
-		}	
-		//std::cout << std::endl;
-	}
-
-	cv::Mat mat0(count, mat[0].cols, CV_8UC1);
-
-	std::cout << mat0.rows << " " << mat0.cols;
-
-	for (int i = 0; i < mat0.rows; ++i)
+	for (int total = 0; total < mat[0].rows; total++)
 	{
-		uchar *p = mat0.ptr<uchar>(i);
-		for (int j = 0; j < mat0.cols; ++j) //M.ptr<uchar>(i)返回的是第 i 行像素点的首地址
-			p[j] = data[i * mat[0].rows + j];
-	}
+		// 获取原始dcm图像的前缀目录
+		std::string subImageName = dirName;
+		// 获取原始dcm图像的前缀目录的string转换为char*
+		const char *chSubImageName = subImageName.c_str();
 
-	cv::imwrite("test.bmp", mat0);
+		//构造冠状位图像数据
+		uchar* data = new uchar[count * mat[0].cols];
+		int countdata = 0;
+		for (int num = 0; num < count; num++)
+		{
+			for (int j = 0; j < mat[0].cols; j++)
+			{
+				//std::cout << (int)mat[num].at<uchar>(300, j) << " ";
+				data[countdata] = mat[num].at<uchar>(total, j);
+				countdata++;
+
+			}
+			//std::cout << std::endl;
+		}
+
+		cv::Mat mat_temp(count, mat[0].cols, CV_8UC1);
+		for (int i = 0; i < mat_temp.rows; ++i)
+		{
+			uchar *p = mat_temp.ptr<uchar>(mat_temp.rows - 1 - i);
+			for (int j = 0; j < mat_temp.cols; ++j) //M.ptr<uchar>(i)返回的是第 i 行像素点的首地址
+				p[j] = data[i * mat[0].cols + j];
+		}
+
+		char BmpName[256];
+		sprintf_s(BmpName, "%s%s%06d.bmp", chSubImageName, "C", total);
+
+		cv::imwrite(BmpName, mat_temp);
+	}
+	
+
 	return count;
 }
 
