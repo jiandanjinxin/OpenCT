@@ -78,7 +78,6 @@ int DcmFileProcess::readAllDcm(const char* FilePath)
 				//std::cout << (int)mat[num].at<uchar>(300, j) << " ";
 				data[countdata] = mat[num].at<uchar>(total, j);
 				countdata++;
-
 			}
 			//std::cout << std::endl;
 		}
@@ -93,8 +92,9 @@ int DcmFileProcess::readAllDcm(const char* FilePath)
 
 		char BmpName[256];
 		sprintf_s(BmpName, "%s%s%06d.bmp", chSubImageName, "C", total);
-
 		cv::imwrite(BmpName, mat_temp);
+
+		delete data;
 	}
 	
 
