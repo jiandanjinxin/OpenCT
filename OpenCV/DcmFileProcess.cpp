@@ -24,7 +24,48 @@ std::string GetExePath(void)
 	return path;
 }
 
+unsigned int __stdcall ThreadSagittal(PVOID p)
+{
+	ThreadInfo *threadInfo = (ThreadInfo*)p;
 
+	for (int total = 0; total < threadInfo->mat[0].rows; total++)
+	{
+		// 获取原始dcm图像的前缀目录
+		std::string subImageName = threadInfo->dirName;
+		// 获取原始dcm图像的前缀目录的string转换为char*
+		const char *chSubImageName = subImageName.c_str();
+
+		//构造矢状位图像数据
+		uchar* data = new uchar[threadInfo->count * threadInfo->mat[0].cols];
+		int countdata = 0;
+		for (int num = 0; num < threadInfo->count; num++)
+		{
+			for (int j = 0; j < threadInfo->mat[0].cols; j++)
+			{
+				//std::cout << (int)mat[num].at<uchar>(300, j) << " ";
+				data[countdata] = threadInfo->mat[num].at<uchar>(j, total);
+				countdata++;
+			}
+			//std::cout << std::endl;
+		}
+
+		cv::Mat mat_temp(threadInfo->count, threadInfo->mat[0].cols, CV_8UC1);
+		for (int i = 0; i < mat_temp.rows; ++i)
+		{
+			uchar *p = mat_temp.ptr<uchar>(mat_temp.rows - 1 - i);
+			for (int j = 0; j < mat_temp.cols; ++j) //M.ptr<uchar>(i)返回的是第 i 行像素点的首地址
+				p[j] = data[i * threadInfo->mat[0].cols + j];
+		}
+
+		char BmpName[256];
+		sprintf_s(BmpName, "%s%s%06d.bmp", chSubImageName, "S", total + 1);
+		cv::imwrite(BmpName, mat_temp);
+
+		delete data;
+	}
+
+	return 0;
+}
 
 unsigned int __stdcall ThreadCoronal(PVOID p)
 {
@@ -116,7 +157,7 @@ int DcmFileProcess::readAllDcm(const char* FilePath)
 	}
 
 	//多线程需要处理的线程数，分别对应矢状位与冠状位
-	const int THREAD_NUM = 1;
+	const int THREAD_NUM = 2;
 	HANDLE handle[THREAD_NUM];
 	//构造子线程参数结构体
 	ThreadInfo threadInfo;
@@ -126,35 +167,9 @@ int DcmFileProcess::readAllDcm(const char* FilePath)
 		threadInfo.mat[i] = mat[i];
 	//Coronal子线程
 	handle[0] = (HANDLE)_beginthreadex(NULL, 0, ThreadCoronal, &threadInfo, 0, NULL);
-	
+	//Sigattal子线程
+	handle[1] = (HANDLE)_beginthreadex(NULL, 0, ThreadSagittal, &threadInfo, 0, NULL);
 	WaitForMultipleObjects(THREAD_NUM, handle, TRUE, INFINITE);
-
-	//构造矢状位图像数据
-	uchar* data = new uchar[count * mat[0].cols];
-	int countdata = 0;
-	for (int num = 0; num < count; num++)
-	{
-		for (int j = 0; j < mat[0].cols; j++)
-		{
-			//std::cout << (int)mat[num].at<uchar>(300, j) << " ";
-			data[countdata] = mat[num].at<uchar>(j, 300);
-			countdata++;
-		}
-		//std::cout << std::endl;
-	}
-
-	cv::Mat mat_temp(count, mat[0].cols, CV_8UC1);
-	for (int i = 0; i < mat_temp.rows; ++i)
-	{
-		uchar *p = mat_temp.ptr<uchar>(mat_temp.rows - 1 - i);
-		for (int j = 0; j < mat_temp.cols; ++j) //M.ptr<uchar>(i)返回的是第 i 行像素点的首地址
-			p[j] = data[i * mat[0].cols + j];
-	}
-
-	cv::imwrite("C:\\Users\\Administrator\\Desktop\\test.bmp", mat_temp);
-
-	delete data;
-	
 
 	return count;
 }
