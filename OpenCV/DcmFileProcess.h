@@ -31,6 +31,8 @@ public:
 public:
 	//读取所有文件
 	static int readAllFile(const char* FilePath, std::vector<std::string> result);
+
+	std::string dirName;
 };
 
 #endif
