@@ -40,11 +40,14 @@ public:
 
 	CImage image;        //创建图片类
 	CImage image_cor;
-	CImage image_sig;
+	CImage image_sag;
+
 	CString filepath;    //打开文件的文件夹目录
 
 	CStatic m_axial;
 	CStatic m_coronal;
+	CStatic m_sagittal;
+
 	CSliderCtrl m_slider1;
 	CSliderCtrl m_slider3;
 	CEdit m_edit1;

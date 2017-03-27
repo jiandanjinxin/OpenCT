@@ -28,15 +28,16 @@ unsigned int __stdcall ThreadSagittal(PVOID p)
 {
 	ThreadInfo *threadInfo = (ThreadInfo*)p;
 
+	// 获取原始dcm图像的前缀目录
+	std::string subImageName = threadInfo->dirName;
+	// 获取原始dcm图像的前缀目录的string转换为char*
+	const char *chSubImageName = subImageName.c_str();
+
+	//构造矢状位图像数据
+	uchar* data = new uchar[threadInfo->count * threadInfo->mat[0].cols];
+
 	for (int total = 0; total < threadInfo->mat[0].rows; total++)
 	{
-		// 获取原始dcm图像的前缀目录
-		std::string subImageName = threadInfo->dirName;
-		// 获取原始dcm图像的前缀目录的string转换为char*
-		const char *chSubImageName = subImageName.c_str();
-
-		//构造矢状位图像数据
-		uchar* data = new uchar[threadInfo->count * threadInfo->mat[0].cols];
 		int countdata = 0;
 		for (int num = 0; num < threadInfo->count; num++)
 		{
@@ -61,8 +62,9 @@ unsigned int __stdcall ThreadSagittal(PVOID p)
 		sprintf_s(BmpName, "%s%s%06d.bmp", chSubImageName, "S", total + 1);
 		cv::imwrite(BmpName, mat_temp);
 
-		delete data;
 	}
+
+	delete data;
 
 	return 0;
 }
@@ -71,15 +73,16 @@ unsigned int __stdcall ThreadCoronal(PVOID p)
 {
 	ThreadInfo *threadInfo = (ThreadInfo*)p;
 
-	for (int total = 0; total < threadInfo->mat[0].rows; total++)
-	{
-		// 获取原始dcm图像的前缀目录
-		std::string subImageName = threadInfo->dirName;
-		// 获取原始dcm图像的前缀目录的string转换为char*
-		const char *chSubImageName = subImageName.c_str();
+	// 获取原始dcm图像的前缀目录
+	std::string subImageName = threadInfo->dirName;
+	// 获取原始dcm图像的前缀目录的string转换为char*
+	const char *chSubImageName = subImageName.c_str();
 
-		//构造冠状位图像数据
-		uchar* data = new uchar[threadInfo->count * threadInfo->mat[0].cols];
+	//构造冠状位图像数据
+	uchar* data = new uchar[threadInfo->count * threadInfo->mat[0].cols];
+
+	for (int total = 0; total < threadInfo->mat[0].rows; total++)
+	{	
 		int countdata = 0;
 		for (int num = 0; num < threadInfo->count; num++)
 		{
@@ -104,8 +107,9 @@ unsigned int __stdcall ThreadCoronal(PVOID p)
 		sprintf_s(BmpName, "%s%s%06d.bmp", chSubImageName, "C", total + 1);
 		cv::imwrite(BmpName, mat_temp);
 
-		delete data;
 	}
+
+	delete data;
 
 	return 0;
 }
@@ -131,14 +135,15 @@ int DcmFileProcess::readAllDcm(const char* FilePath)
 
 	cv::Mat mat[700];
 
+	// 获取原始dcm图像的前缀目录
+	std::string subImageName = dirName;
+	// 获取原始dcm图像的前缀目录的string转换为char*
+	const char *chSubImageName = subImageName.c_str();
+
 	for (auto iter = AllDcmFile.cbegin(); iter != AllDcmFile.cend(); iter++)
 	{
-		// 获取原始dcm图像的前缀目录
-		std::string subImageName = dirName;
 		// 将原始dcm图像的string转换为char*
 		const char *chImageName = (*iter).c_str();
-		// 获取原始dcm图像的前缀目录的string转换为char*
-		const char *chSubImageName = subImageName.c_str();
 		// 基于dcmtk实现类
 		THU_STD_NAMESPACE::TDcmFileFormat dcm = THU_STD_NAMESPACE::TDcmFileFormat(chImageName);
 		// 获取dcm图像的InstanceNumber
