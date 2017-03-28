@@ -76,6 +76,8 @@ void CDcmViewerDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SLIDER3, m_slider3);
 	DDX_Control(pDX, IDC_EDIT3, m_edit3);
 	DDX_Control(pDX, IDC_STATIC3, m_sagittal);
+	DDX_Control(pDX, IDC_SLIDER2, m_slider2);
+	DDX_Control(pDX, IDC_EDIT2, m_edit2);
 }
 
 BEGIN_MESSAGE_MAP(CDcmViewerDlg, CDialogEx)
@@ -86,6 +88,7 @@ BEGIN_MESSAGE_MAP(CDcmViewerDlg, CDialogEx)
 	ON_NOTIFY(NM_CUSTOMDRAW, IDC_SLIDER1, &CDcmViewerDlg::OnCustomdrawSlider1)
 	ON_BN_CLICKED(IDOK, &CDcmViewerDlg::OnBnClickedOk)
 	ON_NOTIFY(NM_CUSTOMDRAW, IDC_SLIDER3, &CDcmViewerDlg::OnNMCustomdrawSlider3)
+	ON_NOTIFY(NM_CUSTOMDRAW, IDC_SLIDER2, &CDcmViewerDlg::OnNMCustomdrawSlider2)
 END_MESSAGE_MAP()
 
 
@@ -249,6 +252,7 @@ HCURSOR CDcmViewerDlg::OnQueryDragIcon()
 void CDcmViewerDlg::SetRange(int nMin, int nMax, BOOL bRedrGETaw)
 {
 	m_slider1.SetRange(nMin, nMax);
+	m_slider2.SetRange(1, 512);
 	m_slider3.SetRange(1, 512);
 }
 
@@ -283,6 +287,7 @@ void CDcmViewerDlg::OnOpenFile()
 		image_sag.Load(FileName);
 
 		GetDlgItem(IDC_EDIT1)->SetWindowText(_T("1"));
+		GetDlgItem(IDC_EDIT2)->SetWindowText(_T("1"));
 		GetDlgItem(IDC_EDIT3)->SetWindowText(_T("1"));
 		filepath = temp;
 	
@@ -319,6 +324,15 @@ void CDcmViewerDlg::OnOpenFile()
 	}
 }
 
+void CDcmViewerDlg::OnBnClickedOk()
+{
+	// TODO:  在此添加控件通知处理程序代码
+	//释放图像缓存文件夹
+	DcmFileProcess::deleteCache();
+
+	CDialogEx::OnOK();
+}
+
 void CDcmViewerDlg::OnCustomdrawSlider1(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMCUSTOMDRAW pNMCD = reinterpret_cast<LPNMCUSTOMDRAW>(pNMHDR);
@@ -350,17 +364,6 @@ void CDcmViewerDlg::OnCustomdrawSlider1(NMHDR *pNMHDR, LRESULT *pResult)
 	*pResult = 0;
 }
 
-
-void CDcmViewerDlg::OnBnClickedOk()
-{
-	// TODO:  在此添加控件通知处理程序代码
-	//释放图像缓存文件夹
-	DcmFileProcess::deleteCache();
-
-	CDialogEx::OnOK();
-}
-
-
 void CDcmViewerDlg::OnNMCustomdrawSlider3(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMCUSTOMDRAW pNMCD = reinterpret_cast<LPNMCUSTOMDRAW>(pNMHDR);
@@ -384,6 +387,37 @@ void CDcmViewerDlg::OnNMCustomdrawSlider3(NMHDR *pNMHDR, LRESULT *pResult)
 		SetStretchBltMode(pDc->m_hDC, STRETCH_HALFTONE);
 		image_cor.StretchBlt(pDc->m_hDC, rect, SRCCOPY);
 		ReleaseDC(pDc);//释放picture控件的Dc
+	}
+
+	*pResult = 0;
+}
+
+
+void CDcmViewerDlg::OnNMCustomdrawSlider2(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMCUSTOMDRAW pNMCD = reinterpret_cast<LPNMCUSTOMDRAW>(pNMHDR);
+	// TODO:  在此添加控件通知处理程序代码
+	//编辑框随slider更新
+	CString pos;
+	pos.Format(_T("%d"), m_slider2.GetPos());
+	GetDlgItem(IDC_EDIT2)->SetWindowText(pos);
+
+	if (filepath.GetLength() > 1)
+	{
+		CString FilePathName;
+		FilePathName.Format(_T("%s%s%06d.bmp"), filepath, _T("S"), m_slider2.GetPos());
+
+		image_sag.Destroy();
+		image_sag.Load(FilePathName);
+
+		UpdateWindow();
+		CRect rect;//定义矩形类
+		m_sagittal.GetClientRect(&rect); //获得pictrue控件所在的矩形区域
+		CDC *pDc = m_sagittal.GetDC();   //获得pictrue控件的Dc
+		SetStretchBltMode(pDc->m_hDC, STRETCH_HALFTONE);
+		image_sag.StretchBlt(pDc->m_hDC, rect, SRCCOPY);
+		ReleaseDC(pDc);//释放picture控件的Dc
+
 	}
 
 	*pResult = 0;

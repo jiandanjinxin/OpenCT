@@ -36,6 +36,7 @@ protected:
 public:
 	afx_msg void OnOpenFile();
 	afx_msg void OnCustomdrawSlider1(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnNMCustomdrawSlider2(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnNMCustomdrawSlider3(NMHDR *pNMHDR, LRESULT *pResult);
 
 	CImage image;        //¥¥Ω®Õº∆¨¿‡
@@ -49,8 +50,13 @@ public:
 	CStatic m_sagittal;
 
 	CSliderCtrl m_slider1;
+	CSliderCtrl m_slider2;
 	CSliderCtrl m_slider3;
+
 	CEdit m_edit1;
+	CEdit m_edit2;
 	CEdit m_edit3;
+
 	afx_msg void OnBnClickedOk();
+
 };
