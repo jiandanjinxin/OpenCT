@@ -5,7 +5,7 @@ This project is aim to find the Lymph nodes in CT image (format of .dcm).It main
 
 >  author : Wang Jianyu
 
->  email: 873869027@qq.com
+>  email: wangjianyu@hit.edu.cn
 
 >  Harbin Institute of Technology
 
