@@ -80,6 +80,18 @@
     <None Include="..\README.md">
       <Filter>资源文件</Filter>
     </None>
+    <None Include="mnist_data\t10k-images.idx3-ubyte">
+      <Filter>资源文件\Image</Filter>
+    </None>
+    <None Include="mnist_data\t10k-labels.idx1-ubyte">
+      <Filter>资源文件\Image</Filter>
+    </None>
+    <None Include="mnist_data\train-images.idx3-ubyte">
+      <Filter>资源文件\Image</Filter>
+    </None>
+    <None Include="mnist_data\train-labels.idx1-ubyte">
+      <Filter>资源文件\Image</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HBmpConvert.h">

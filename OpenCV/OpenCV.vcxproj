@@ -107,6 +107,10 @@
     <None Include="DCMTK.Release.props" />
     <None Include="EasyCNN.Debug.props" />
     <None Include="EasyCNN.Release.props" />
+    <None Include="mnist_data\t10k-images.idx3-ubyte" />
+    <None Include="mnist_data\t10k-labels.idx1-ubyte" />
+    <None Include="mnist_data\train-images.idx3-ubyte" />
+    <None Include="mnist_data\train-labels.idx1-ubyte" />
     <None Include="opecv2413x86.Debug.props" />
     <None Include="opecv2413x86.Release.props" />
   </ItemGroup>
