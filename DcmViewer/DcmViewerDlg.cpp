@@ -10,9 +10,9 @@
 #include <direct.h>
 
 #ifdef _DEBUG
-#pragma comment(lib,"..\\Debug\\OpenCV.lib")
+#pragma comment(lib,"..\\Debug\\OpenCT.lib")
 #else
-#pragma comment(lib,"..\\Release\\OpenCV.lib")
+#pragma comment(lib,"..\\Release\\OpenCT.lib")
 #endif
 
 #include "DcmFileProcess.h"

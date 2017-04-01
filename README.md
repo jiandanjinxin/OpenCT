@@ -2,7 +2,7 @@
 # OpenCT
 ---
 This project is aim to find the Lymph nodes in CT image (format of .dcm) and rebuild sagittal view and coronal view.
-It can view the CT images through the MFC module "DcmViewer".EasyCNN can be used.CT images displays by OpenCT.lib(I called it OpenCV.lib).
+It can view the CT images through the MFC module "DcmViewer".EasyCNN can be used.CT images displays by OpenCT.lib.
 
 
 

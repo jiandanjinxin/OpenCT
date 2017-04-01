@@ -14,6 +14,7 @@
     <ProjectGuid>{6AA51DC0-63C4-42B2-BF82-2CB3E2C019F0}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>OpenCV</RootNamespace>
+    <ProjectName>OpenCT</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
