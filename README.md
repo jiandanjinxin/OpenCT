@@ -1,7 +1,10 @@
 ---
 # OpenCT
--------------
+---
 This project is aim to find the Lymph nodes in CT image (format of .dcm).
+It can view the CT images through the MFC module "DcmViewer".EasyCNN can be used.CT images displays by OpenCT.lib(I called it OpenCV.lib).
+
+
 
 >  author : Wang Jianyu
 
@@ -11,27 +14,26 @@ This project is aim to find the Lymph nodes in CT image (format of .dcm).
 
 ### Samples:
 
-
+![](Dcmviewer.jpg)
 
 ### Library Dependencies：
 - OpenCV 2.4.13
 - CxImage 701
 - DCMTK 3.6.0
 
-
 ### Environment and Function:
-Implemetation of HoG and SVM training based on [INRIAPerson dataset](http://pascal.inrialpes.fr/data/human/).
 
-DCM format image convert to bmp or jpg.
-
+Windows x86 and higher.
 
 ### Install
 
-
+Complie the Dcmviewer.exe and OpenCV.lib and EasyCNN.lib.
 
 ### TODO
-continue...
+
+Do whatever you want.
 
 ### License
 
+No License. Fuck the License.
 
