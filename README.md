@@ -1,7 +1,7 @@
 ---
 # OpenCT
 -------------
-This project is aim to find the Lymph nodes in CT image (format of .dcm).It mainly contains two modules which is HoG with SVM generating candidates dataset and using deep convolutional neural network classifed. 
+This project is aim to find the Lymph nodes in CT image (format of .dcm).
 
 >  author : Wang Jianyu
 
@@ -9,7 +9,8 @@ This project is aim to find the Lymph nodes in CT image (format of .dcm).It main
 
 >  Harbin Institute of Technology
 
-### Samples:  
+### Samples:
+
 
 
 ### Library Dependencies：
