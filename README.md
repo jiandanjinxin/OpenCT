@@ -27,7 +27,7 @@ Windows x86 and higher.
 
 ### Install
 
-Complie the Dcmviewer.exe and OpenCV.lib and EasyCNN.lib.
+Compile the Dcmviewer.exe and OpenCV.lib and EasyCNN.lib.
 
 ### TODO
 
