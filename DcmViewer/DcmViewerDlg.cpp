@@ -328,7 +328,8 @@ void CDcmViewerDlg::OnBnClickedOk()
 {
 	// TODO:  在此添加控件通知处理程序代码
 	//释放图像缓存文件夹
-	DcmFileProcess::deleteCache();
+	if (image != NULL)
+	  DcmFileProcess::deleteCache();
 
 	CDialogEx::OnOK();
 }

@@ -3,8 +3,8 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <IncludePath>D:\Computer Vision\dcmtk\Release\include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Computer Vision\dcmtk\Release\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\Library Dependencies\dcmtk\Release\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Library Dependencies\dcmtk\Release\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Link>

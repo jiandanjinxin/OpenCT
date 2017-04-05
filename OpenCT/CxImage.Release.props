@@ -3,8 +3,8 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <IncludePath>D:\Computer Vision\CxImage701\include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Computer Vision\CxImage701\static library\UnicodeRelease;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\Library Dependencies\CxImage\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Library Dependencies\CxImage\static library\UnicodeRelease;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Link>
