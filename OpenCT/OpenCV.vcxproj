@@ -125,9 +125,6 @@
     <ClInclude Include="Util.h" />
     <ClInclude Include="MnistDataLoader.h" />
   </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\Dcmviewer.jpg" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
