@@ -89,6 +89,7 @@ BEGIN_MESSAGE_MAP(CDcmViewerDlg, CDialogEx)
 	ON_BN_CLICKED(IDOK, &CDcmViewerDlg::OnBnClickedOk)
 	ON_NOTIFY(NM_CUSTOMDRAW, IDC_SLIDER3, &CDcmViewerDlg::OnNMCustomdrawSlider3)
 	ON_NOTIFY(NM_CUSTOMDRAW, IDC_SLIDER2, &CDcmViewerDlg::OnNMCustomdrawSlider2)
+	ON_COMMAND(ID_OPEN_MARK, &CDcmViewerDlg::OnOpenMark)
 END_MESSAGE_MAP()
 
 
@@ -422,4 +423,11 @@ void CDcmViewerDlg::OnNMCustomdrawSlider2(NMHDR *pNMHDR, LRESULT *pResult)
 	}
 
 	*pResult = 0;
+}
+
+
+void CDcmViewerDlg::OnOpenMark()
+{
+	// TODO:  在此添加命令处理程序代码
+	MessageBox(_T("haha"));
 }

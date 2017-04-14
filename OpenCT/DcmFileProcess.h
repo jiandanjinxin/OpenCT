@@ -28,6 +28,9 @@ public:
 	//读取当前文件夹下所有dcm图像，返回vector
 	static int readAllDcm(const char* FilePath);
 
+	//读取正例候选集的世界坐标文件，对应文件进行正例圈定
+	static void showPosPosition(const char* FilePath);
+
 public:
 	//读取所有文件
 	static int readAllFile(const char* FilePath, std::vector<std::string> result);
