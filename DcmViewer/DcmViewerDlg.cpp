@@ -394,7 +394,6 @@ void CDcmViewerDlg::OnNMCustomdrawSlider3(NMHDR *pNMHDR, LRESULT *pResult)
 	*pResult = 0;
 }
 
-
 void CDcmViewerDlg::OnNMCustomdrawSlider2(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMCUSTOMDRAW pNMCD = reinterpret_cast<LPNMCUSTOMDRAW>(pNMHDR);
@@ -429,5 +428,15 @@ void CDcmViewerDlg::OnNMCustomdrawSlider2(NMHDR *pNMHDR, LRESULT *pResult)
 void CDcmViewerDlg::OnOpenMark()
 {
 	// TODO:  在此添加命令处理程序代码
-	MessageBox(_T("haha"));
+	CString FileName;
+	CFileDialog dialog(true, NULL, NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, (LPCTSTR)_TEXT("All Files(*.*)|*.*||"), NULL);
+	if (dialog.DoModal() == IDOK)
+	{
+		FileName = dialog.GetPathName();
+		MessageBox(FileName);
+	}
+	else
+	{
+		return;
+	}
 }
