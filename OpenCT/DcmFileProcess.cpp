@@ -12,6 +12,7 @@ typedef struct threadinfo
 	std::string dirName;
 	int count;
 	cv::Mat mat[700];
+
 } ThreadInfo;
 
 std::string GetExePath(void)
@@ -207,7 +208,6 @@ void DcmFileProcess::deleteCache()
 	rmdir(dirName.c_str());
 }
 
-
 int DcmFileProcess::readAllFile(const char* FilePath, std::vector<std::string> result)
 {
 	//构造类对象  
@@ -227,4 +227,15 @@ int DcmFileProcess::readAllFile(const char* FilePath, std::vector<std::string> r
 
 	return result.size();
 	
+}
+
+void DcmFileProcess::showPosPosition(const char* FilePath)
+{
+	std::string coordinate;
+	std::ifstream finFile(FilePath);
+
+	while (std::getline(finFile, coordinate))
+	{
+		
+	}
 }

@@ -257,7 +257,6 @@ void CDcmViewerDlg::SetRange(int nMin, int nMax, BOOL bRedrGETaw)
 	m_slider3.SetRange(1, 512);
 }
 
-
 void CDcmViewerDlg::OnOpenFile()
 {
 	// TODO:  在此添加命令处理程序代码;
