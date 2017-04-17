@@ -31,6 +31,8 @@ public:
 	//读取正例候选集的世界坐标文件，对应文件进行正例圈定
 	static void showPosPosition(const char* FilePath);
 
+	static void split(const std::string& src, const std::string& separator, std::vector<std::string>& dest);
+
 public:
 	//读取所有文件
 	static int readAllFile(const char* FilePath, std::vector<std::string> result);

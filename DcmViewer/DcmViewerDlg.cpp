@@ -432,7 +432,8 @@ void CDcmViewerDlg::OnOpenMark()
 	if (dialog.DoModal() == IDOK)
 	{
 		FileName = dialog.GetPathName();
-		MessageBox(FileName);
+		//MessageBox(FileName);
+		DcmFileProcess::showPosPosition(CStringToString(FileName).c_str());
 	}
 	else
 	{
