@@ -138,11 +138,16 @@ unsigned int __stdcall ThreadCoronal(PVOID p)
 	return 0;
 }
 
-int DcmFileProcess::readAllDcm(const char* FilePath)
+int DcmFileProcess::readAllDcm(const char* FilePath, std::vector<float>& position)
 {
 	//构造类对象  
 	CStatDir statdir;
 	std::vector<std::string> AllDcmFile;
+
+	position.clear();
+	float min_axial = 1000.0f;
+	float max_axial = -1000.0f;
+
 	int count = 0;
 	//设置要遍历的目录  
 	if (!statdir.SetInitDir(FilePath))
@@ -170,6 +175,14 @@ int DcmFileProcess::readAllDcm(const char* FilePath)
 		const char *chImageName = (*iter).c_str();
 		// 基于dcmtk实现类
 		THU_STD_NAMESPACE::TDcmFileFormat dcm = THU_STD_NAMESPACE::TDcmFileFormat(chImageName);
+
+		std::string result = dcm.getImagePositionPatient();
+		std::vector<std::string> ImagePosition;
+		split(result, "\\", ImagePosition);
+		float axial = (float)atof(ImagePosition[2].c_str());
+		if (axial > max_axial) max_axial = axial;
+		if (axial < min_axial) min_axial = axial;
+
 		// 获取dcm图像的InstanceNumber
 		int InstancePosition = dcm.getPositionNumber();
 		// 生成bmp图像存储路径
@@ -184,6 +197,10 @@ int DcmFileProcess::readAllDcm(const char* FilePath)
 
 		count++;
 	}
+
+	position.push_back(max_axial);
+	position.push_back(min_axial);
+	position.push_back((max_axial - min_axial) / count);
 
 	//多线程需要处理的线程数，分别对应矢状位与冠状位
 	const int THREAD_NUM = 2;

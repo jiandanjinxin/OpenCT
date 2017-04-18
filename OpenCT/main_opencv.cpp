@@ -33,7 +33,7 @@ using namespace std;
 #define PixelRecords false         // 对所有真实像素坐标进行遍历
 #define CandidateGenerateNeg false  // 对所有数据坐标文件进行正负类标记文件生成
 #define CandidateGeneratePos false  // 对所有数据坐标文件进行正负类标记文件生成
-#define WorldCoordinate false
+#define WorldCoordinate true
 
 
 // 字符串split
@@ -138,8 +138,8 @@ int opencv_main(int argc, char* argv[])
 		//构造类对象  
 		CStatDir statdir;
 
-		char buf[256] = "F:\\lymph node detection dataset\\DOI";
-		char filename[] = "F:\\lymph node detection dataset\\DATA\\coordinate.txt";
+		char buf[256] = "G:\\lymph node detection dataset\\DOI";
+		char filename[] = "G:\\lymph node detection dataset\\DATA\\coordinate.txt";
 		ofstream fout(filename);
 		//设置要遍历的目录  
 		if (!statdir.SetInitDir(buf))
@@ -156,7 +156,7 @@ int opencv_main(int argc, char* argv[])
 		//printf("文件总数: %d\n", file_vec.size());  // 176
 
 		string DcmFileName;
-		ifstream finFile("F:\\lymph node detection dataset\\DATA\\coordinate.txt");
+		ifstream finFile("G:\\lymph node detection dataset\\DATA\\coordinate.txt");
 
 		while (getline(finFile, DcmFileName))
 		{

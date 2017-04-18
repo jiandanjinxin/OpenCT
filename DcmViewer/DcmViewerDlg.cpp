@@ -271,9 +271,10 @@ void CDcmViewerDlg::OnOpenFile()
 
 		//截取输入文件名文件夹
 		std::string str = CStringToString(filepath.Left(filepath.GetLength() - 1));
-		int count = DcmFileProcess::readAllDcm(str.c_str());
+		std::vector<float> axial;
+		int count = DcmFileProcess::readAllDcm(str.c_str(), axial);
 		SetRange(1, count);
-
+		
 		//获取dcm图像中的第一个加载到控件中
 		FileName = GetModuleDir();
 		FileName.Append(_T("\\cache\\"));
