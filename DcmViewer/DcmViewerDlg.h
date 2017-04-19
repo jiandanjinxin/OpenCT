@@ -57,7 +57,8 @@ public:
 	CEdit m_edit2;
 	CEdit m_edit3;
 
-	afx_msg void OnBnClickedOk();
+	std::vector<float> axial;
 
+	afx_msg void OnBnClickedOk();
 	afx_msg void OnOpenMark();
 };

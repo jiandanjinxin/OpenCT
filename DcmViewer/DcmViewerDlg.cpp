@@ -271,7 +271,8 @@ void CDcmViewerDlg::OnOpenFile()
 
 		//截取输入文件名文件夹
 		std::string str = CStringToString(filepath.Left(filepath.GetLength() - 1));
-		std::vector<float> axial;
+		//std::vector<float> axial;
+		axial.clear();
 		int count = DcmFileProcess::readAllDcm(str.c_str(), axial);
 		SetRange(1, count);
 		
