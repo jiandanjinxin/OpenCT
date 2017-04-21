@@ -269,7 +269,7 @@ int DcmFileProcess::readAllFile(const char* FilePath, std::vector<std::string> r
 	
 }
 
-void DcmFileProcess::showPosPosition(const char* FilePath)
+void DcmFileProcess::showPosPosition(const char* FilePath, std::vector<float>& position)
 {
 	std::string coordinate;
 	std::ifstream finFile(FilePath);
