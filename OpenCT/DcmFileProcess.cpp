@@ -147,6 +147,9 @@ int DcmFileProcess::readAllDcm(const char* FilePath, std::vector<float>& positio
 	position.clear();
 	float min_axial = 1000.0f;
 	float max_axial = -1000.0f;
+	float init_x = 0.0f;
+	float init_y = 0.0f;
+	float pixelspacing = 0.0f;
 
 	int count = 0;
 	//设置要遍历的目录  
@@ -182,7 +185,19 @@ int DcmFileProcess::readAllDcm(const char* FilePath, std::vector<float>& positio
 		float axial = (float)atof(ImagePosition[2].c_str());
 		if (axial > max_axial) max_axial = axial;
 		if (axial < min_axial) min_axial = axial;
+		// 得到世界坐标的初始值
+		if (count < 1)
+		{
+			init_x = (float)atof(ImagePosition[0].c_str());
+			init_y = (float)atof(ImagePosition[1].c_str());
 
+			// 获取dcm图像的PixelSpacing
+			std::string space = dcm.getPixelSpacing();
+			std::vector<std::string> PixelSpacing;
+			split(space, "\\", PixelSpacing);
+			pixelspacing = (float)atof(PixelSpacing[0].c_str());
+		}
+		
 		// 获取dcm图像的InstanceNumber
 		int InstancePosition = dcm.getPositionNumber();
 		// 生成bmp图像存储路径
@@ -201,6 +216,9 @@ int DcmFileProcess::readAllDcm(const char* FilePath, std::vector<float>& positio
 	position.push_back(max_axial);
 	position.push_back(min_axial);
 	position.push_back((max_axial - min_axial) / count);
+	position.push_back(init_x);
+	position.push_back(init_y);
+	position.push_back(pixelspacing);
 
 	//多线程需要处理的线程数，分别对应矢状位与冠状位
 	const int THREAD_NUM = 2;

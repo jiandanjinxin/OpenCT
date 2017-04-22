@@ -6,6 +6,8 @@
 #include "afxwin.h"
 #include "afxcmn.h"
 
+#include <vector>
+
 
 // CDcmViewerDlg ¶Ô»°¿ò
 class CDcmViewerDlg : public CDialogEx
