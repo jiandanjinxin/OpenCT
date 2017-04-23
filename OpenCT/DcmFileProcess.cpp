@@ -294,6 +294,18 @@ void DcmFileProcess::showPosPosition(const char* FilePath, std::vector<float>& p
 
 	while (std::getline(finFile, coordinate))
 	{
-		
+		std::vector<std::string> result;
+		split(coordinate, " ", result);
+		//得到输入的原始世界坐标数据
+		float realx = (float)atof(result[0].c_str());
+		float realy = (float)atof(result[1].c_str());
+		float realz = (float)atof(result[2].c_str());
+		// position max_axial, min_axial, (max_axial-min_axial)/count, initx, inity, pixelspacing
+		int pixelx = (int)((realx - position[3]) / position[5] + 0.5);
+		int pixely = (int)((realy - position[4]) / position[5] + 0.5);
+		int pixelz = (int)((realz - position[1]) / position[2] + 0.5);
+
+		//找到对应图像
+
 	}
 }
