@@ -248,7 +248,7 @@ void DcmFileProcess::createCache()
 void DcmFileProcess::deleteCache()
 {
 	std::string dirName = GetExePath();
-	dirName += "\\cache";
+	dirName += "cache";
 	//构造类对象  
 	CStatDir statdir;
 	std::vector<std::string> AllDcmFile;
@@ -306,6 +306,13 @@ void DcmFileProcess::showPosPosition(const char* FilePath, std::vector<float>& p
 		int pixelz = (int)((realz - position[1]) / position[2] + 0.5);
 
 		//找到对应图像
+		std::string dirName = GetExePath();
+		dirName += "cache\\";
+		const char *dir = dirName.c_str();
+		char BmpName[256];
+		sprintf_s(BmpName, "%s%06d.bmp", dir, pixelz);
+		cv::Mat bmp = cv::imread(BmpName);
+		//cv::imwrite("D:\\ss.bmp", bmp);
 
 	}
 }
