@@ -1,5 +1,6 @@
 ﻿#include "DcmFileProcess.h"
 #include "DcmFileFormat.h"
+#include "ImageConvert.h"
 
 #include <opencv2\opencv.hpp>  
 
@@ -312,7 +313,8 @@ void DcmFileProcess::showPosPosition(const char* FilePath, std::vector<float>& p
 		char BmpName[256];
 		sprintf_s(BmpName, "%s%06d.bmp", dir, pixelz);
 		cv::Mat bmp = cv::imread(BmpName);
-		//cv::imwrite("D:\\ss.bmp", bmp);
+		ImageConvert::markRect(bmp, pixelx, pixely);
+		cv::imwrite("D:\\ss.bmp", bmp);
 
 	}
 }
