@@ -1,4 +1,4 @@
-#include "HLymphHOG.h"
+#include "LymphHOG.h"
 #include <hash_map>
 
 // 字符串split
@@ -286,7 +286,7 @@ void LymphHOG::classify()
 				testFeatureMat.at<float>(0, i) = descriptor[i];
 
 			// 用训练好的SVM分类器对测试图片的特征向量进行分类
-			int result = svm.predict(testFeatureMat); // 返回类标
+			int result = (int)svm.predict(testFeatureMat); // 返回类标
 			cout << "分类结果：" << result << endl;
 		}
 	}

@@ -30,9 +30,6 @@
     <ClCompile Include="DcmFileFormat.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="main_opencv.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Util.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -43,12 +40,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="LymphHOG.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Candidate.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="BmpConvert.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -94,15 +85,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="HBmpConvert.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="HLymphHOG.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="HCandidate.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="MnistDataLoader.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -116,6 +98,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="DcmFileProcess.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="LymphHOG.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

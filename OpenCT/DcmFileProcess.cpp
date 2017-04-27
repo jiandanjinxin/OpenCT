@@ -314,7 +314,7 @@ void DcmFileProcess::showPosPosition(const char* FilePath, std::vector<float>& p
 		sprintf_s(BmpName, "%s%06d.bmp", dir, pixelz);
 		cv::Mat bmp = cv::imread(BmpName);
 		ImageConvert::markRect(bmp, pixelx, pixely);
-		cv::imwrite("D:\\ss.bmp", bmp);
-
+		//将标记文件写入缓冲区，替换原有文件
+		cv::imwrite(BmpName, bmp);
 	}
 }

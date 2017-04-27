@@ -92,10 +92,7 @@
     <ClCompile Include="LymphHOG.cpp" />
     <ClCompile Include="DcmFileProcess.cpp" />
     <ClCompile Include="ImageConvert.cpp" />
-    <ClCompile Include="main_opencv.cpp" />
-    <ClCompile Include="BmpConvert.cpp" />
     <ClCompile Include="Util.cpp" />
-    <ClCompile Include="Candidate.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="main_mnist.cpp" />
     <ClCompile Include="MnistDataLoader.cpp" />
@@ -117,10 +114,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DcmFileProcess.h" />
-    <ClInclude Include="HCandidate.h" />
     <ClInclude Include="DcmFileFormat.h" />
-    <ClInclude Include="HLymphHOG.h" />
-    <ClInclude Include="HBmpConvert.h" />
+    <ClInclude Include="LymphHOG.h" />
     <ClInclude Include="ImageConvert.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="MnistDataLoader.h" />
