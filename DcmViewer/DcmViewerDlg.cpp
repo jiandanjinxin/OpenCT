@@ -148,6 +148,7 @@ void CDcmViewerDlg::OnSysCommand(UINT nID, LPARAM lParam)
 //  来绘制该图标。  对于使用文档/视图模型的 MFC 应用程序，
 //  这将由框架自动完成。
 
+// CString to String 转换函数
 std::string CStringToString(LPCWSTR pwszSrc)
 {
 	int nLen = WideCharToMultiByte(CP_ACP, 0, pwszSrc, -1, NULL, 0, NULL, NULL);
@@ -336,6 +337,31 @@ void CDcmViewerDlg::OnBnClickedOk()
 	CDialogEx::OnOK();
 }
 
+void CDcmViewerDlg::OnOpenMark()
+{
+	// TODO:  在此添加命令处理程序代码
+	CString FileName;
+	CFileDialog dialog(true, NULL, NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, (LPCTSTR)_TEXT("All Files(*.*)|*.*||"), NULL);
+	if (dialog.DoModal() == IDOK)
+	{
+		if (axial.size > 1)
+		{
+			FileName = dialog.GetPathName();
+			//MessageBox(FileName);
+			DcmFileProcess::showPosPosition(CStringToString(FileName).c_str(), axial);
+		}
+		else
+		{
+			return;
+		}
+
+	}
+	else
+	{
+		return;
+	}
+}
+
 void CDcmViewerDlg::OnCustomdrawSlider1(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMCUSTOMDRAW pNMCD = reinterpret_cast<LPNMCUSTOMDRAW>(pNMHDR);
@@ -423,22 +449,4 @@ void CDcmViewerDlg::OnNMCustomdrawSlider2(NMHDR *pNMHDR, LRESULT *pResult)
 	}
 
 	*pResult = 0;
-}
-
-
-void CDcmViewerDlg::OnOpenMark()
-{
-	// TODO:  在此添加命令处理程序代码
-	CString FileName;
-	CFileDialog dialog(true, NULL, NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, (LPCTSTR)_TEXT("All Files(*.*)|*.*||"), NULL);
-	if (dialog.DoModal() == IDOK)
-	{
-		FileName = dialog.GetPathName();
-		//MessageBox(FileName);
-		DcmFileProcess::showPosPosition(CStringToString(FileName).c_str(), axial);
-	}
-	else
-	{
-		return;
-	}
 }

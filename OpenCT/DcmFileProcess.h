@@ -27,7 +27,6 @@ public:
 	static void deleteCache();
 	//读取当前文件夹下所有dcm图像，返回vector
 	static int readAllDcm(const char* FilePath, std::vector<float>& position);
-
 	//读取正例候选集的世界坐标文件，对应文件进行正例圈定
 	static void showPosPosition(const char* FilePath, std::vector<float>& position);
 
