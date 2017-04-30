@@ -56,6 +56,9 @@
     <Image Include="res\DcmViewer.ico">
       <Filter>资源文件</Filter>
     </Image>
+    <Image Include="dcmviewer.png">
+      <Filter>资源文件</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.md" />

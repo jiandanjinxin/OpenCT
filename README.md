@@ -14,7 +14,7 @@ It can view the CT images through the MFC module "DcmViewer".EasyCNN can be used
 
 ### Samples:
 
-![](dcmviewer.jpg)
+![](dcmviewer.png)
 
 ### Library Dependencies：
 - OpenCV 2.4.13

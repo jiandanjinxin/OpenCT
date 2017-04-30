@@ -344,7 +344,7 @@ void CDcmViewerDlg::OnOpenMark()
 	CFileDialog dialog(true, NULL, NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, (LPCTSTR)_TEXT("All Files(*.*)|*.*||"), NULL);
 	if (dialog.DoModal() == IDOK)
 	{
-		if (axial.size > 1)
+		if (axial.size() > 1)
 		{
 			FileName = dialog.GetPathName();
 			//MessageBox(FileName);

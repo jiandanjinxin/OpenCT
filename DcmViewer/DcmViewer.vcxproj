@@ -133,6 +133,7 @@
     <None Include="res\DcmViewer.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="dcmviewer.png" />
     <Image Include="res\DcmViewer.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
