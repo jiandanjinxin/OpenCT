@@ -21,15 +21,51 @@
 class DcmFileProcess
 {
 public:
-	//创建缓存文件夹
+	/*--------------------------------------
+	Func:createCache
+	Purpose:
+	创建文件夹缓冲区
+	Paras:
+	--------------------------------------*/
 	static void createCache();
-	//删除缓存文件夹
+
+	/*--------------------------------------
+	Func:deleteCache
+	Purpose:
+	删除文件夹缓冲区
+	Paras:
+	--------------------------------------*/
 	static void deleteCache();
-	//读取当前文件夹下所有dcm图像，返回vector
+
+	/*--------------------------------------
+	Func:readAllDcm
+	Purpose:
+	读取当前文件夹下所有dcm图像，返回vector
+	Paras:
+	FilePath : 文件夹路径
+	position : 返回一些dcm属性，放入position
+	--------------------------------------*/
 	static int readAllDcm(const char* FilePath, std::vector<float>& position);
-	//读取正例候选集的世界坐标文件，对应文件进行正例圈定
+
+	/*--------------------------------------
+	Func:showPosPosition
+	Purpose:
+	读取正例候选集的世界坐标文件，对应文件进行正例圈定
+	Paras:
+	FilePath : 文件夹路径
+	position : 基于返回的一些dcm属性position，进行区域确定
+	--------------------------------------*/
 	static void showPosPosition(const char* FilePath, std::vector<float>& position);
 
+	/*--------------------------------------
+	Func:split
+	Purpose:
+	字符串分割函数
+	Paras:
+	src : 原始字符串
+	separator : 分割关键字
+	dest : 返回分割结果vector
+	--------------------------------------*/
 	static void split(const std::string& src, const std::string& separator, std::vector<std::string>& dest);
 
 public:
